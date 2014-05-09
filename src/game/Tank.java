@@ -77,7 +77,7 @@ public class Tank implements Drawable {
 		return theta;
 	}
 
-	public void setTheta(int theta) {
+	public void setTheta(int theta) {	
 		this.theta = (int)AngleMath.adjustAngle(theta);
 	}
 	
