@@ -102,7 +102,6 @@ public class Frame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("TEST");
 			game.update(down, right, clickpoint);
 			frame.repaint();
 		}
