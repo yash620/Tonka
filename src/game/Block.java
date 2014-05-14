@@ -24,8 +24,12 @@ public class Block implements Drawable, Collidable {
 		return blockShape;
 	}
 	@Override
-	public boolean collisionCheck(Shape s) {
+	public boolean collisionCheck(Collidable s) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	@Override
+	public Shape getBoundingBox() {
+		return blockShape.getBounds();
 	}
 }

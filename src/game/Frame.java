@@ -110,15 +110,6 @@ public class Frame {
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
 			
-//			int[] xarr = {(int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20)};
-//			int[] yarr = {(int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20), (int)(Math.random()*20)};
-//			for (int i = 0;i<6;i++){
-//				xarr[i] += clickpoint.x;
-//				yarr[i] += clickpoint.y;
-//			}
-//			Polygon hi = new Polygon(xarr, yarr, 6);
-//			block.destroy(hi);
-//			System.out.println("DESTROY");
 		}
 
 		@Override

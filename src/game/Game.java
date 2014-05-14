@@ -92,6 +92,12 @@ public class Game implements Drawable {
 			p.collided();
 		}
 	}
+	public ArrayList<Collidable> checkCollision(Collidable c){
+		for (Collidable b : allBlocks){
+			b.collisionCheck(c);
+		}
+		return null;
+	}
 	public boolean removeObject(Object o){
 		if (o instanceof Block){
 			return allBlocks.remove(o);
