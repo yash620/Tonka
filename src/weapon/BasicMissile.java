@@ -88,10 +88,6 @@ public class BasicMissile extends Projectile{
 	}
 
 	@Override
-	public Shape getBoundingBox() {
-		return this.getProjectileShape().getBounds();
-	}
-	@Override
 	public boolean isColliding(Collidable c) {
 		if (c.equals(this) || c.equals(getWeapon().getTank())) {
 			return false;

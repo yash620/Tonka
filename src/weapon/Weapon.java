@@ -15,11 +15,18 @@ public abstract class Weapon implements Drawable {
 	private Tank t;
 	private Projectile projectile;
 	protected int ammo;
-	protected double spread;
+	protected double spread;  //How large the spread of the weapon is
+
+	//Called whenever the timer tics
 	public abstract void update();
+
+	//Sets the target angle of the weapon
 	public abstract void clickPoint(Point tgt);
-//	public abstract Point getProjectileSpawn();
+
+	//Returns the projectile that the weapon shoots
 	public abstract Projectile shoot();
+	
+	//Returns if the weapon can shoot or not
 	public abstract boolean canShoot();
 	public Tank getTank(){
 		return this.t;
