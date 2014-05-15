@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Area;
+import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 
 import weapon.BasicMissile;
@@ -15,12 +16,14 @@ public class Game implements Drawable {
 	private ArrayList<Block> allBlocks;
 	private ArrayList<Projectile> allProjectiles;
 	private ArrayList<Tank> allTanks;
+	private ArrayList<Object> removeQue;		//Prevent Concurrent Modification Errors
 	private Tank playerTank;
 	
 	public Game(){
 		allBlocks = new ArrayList<Block>();
 		allProjectiles = new ArrayList<Projectile>();
 		allTanks = new ArrayList<Tank>();
+		removeQue = new ArrayList<Object>();
 		
 		allBlocks.add(new Block());
 		ArrayList<Weapon> weapon = new ArrayList<Weapon>();
@@ -28,12 +31,18 @@ public class Game implements Drawable {
 		weapon.add(new BasicTurret(t));
 		allTanks.add(t);
 		playerTank = t;
+		allTanks.add(new Tank(150,150, weapon, this));
 	}
 	
 	private Shape test;
+	// Test method, draw whatever you want on the panel
+	public void setTestDraw(Shape s){
+		test = s;
+	}
 	
 	@Override
 	public void draw(Graphics2D g2) {
+//		g2.drawRect(500, 200, 5, 5);
 		for (Block b : allBlocks){
 			b.draw(g2);
 		}
@@ -52,10 +61,12 @@ public class Game implements Drawable {
 		for (Projectile p : allProjectiles){
 			p.update();
 		}
-		for (Tank t : allTanks){
-			t.movement(down, right, clickpoint);
-		}
+		playerTank.movement(down, right, clickpoint);
+//		for (Tank t : allTanks){
+//			t.movement(down, right, clickpoint);
+//		}
 		collisions();
+		removeObjects();
 	}
 	
 	public void click(Point clickPoint){
@@ -67,44 +78,53 @@ public class Game implements Drawable {
 		allProjectiles.add(p);
 	}
 	
-	public void createProjectile(int x, int y, int angle){
-		allProjectiles.add(new BasicMissile(new Point(x,y), angle, this));
-	}
+//	public void createProjectile(Projectileint x, int y, int angle, weapon){
+//		allProjectiles.add(new BasicMissile(new Point(x,y), angle, this));
+//	}
 	
 	private void collisions(){
-		ArrayList<Projectile> removeThese = new ArrayList<Projectile>();
-		for (Block b : allBlocks){
-			for (Projectile p : allProjectiles){
-				if (b.getShape().getBounds().intersects(p.getShape().getBounds())){
-					Area projectile = new Area(p.getShape());
-					Area block = new Area(b.getShape());
-					block.intersect(projectile);
-					if (!block.isEmpty()){
-						Shape dest = p.getDestroyed();
-						test = dest;
-						b.destroy(dest);
-						removeThese.add(p);
-					}
-				}
+		for (int i = allBlocks.size()-1;i >= 0;i--){
+			Block b = allBlocks.get(i);
+			if (b.isSplit()){
+				ArrayList<Block> newBlocks = b.splitBlock();
+				allBlocks.remove(b);
+				allBlocks.addAll(newBlocks);
+			}
+			if (b.isEmpty()){
+				allBlocks.remove(b);
 			}
 		}
-		for (Projectile p : removeThese){
-			p.collided();
+	}
+	public ArrayList<Collidable> getCollisions(Collidable init){
+		ArrayList<Collidable> collisions = new ArrayList<Collidable>();
+		for (Collidable c : allBlocks){
+			if (c.isColliding(init)){
+				collisions.add(c);
+			}
+		}
+		for (Collidable c : allProjectiles){
+			if (c.isColliding(init)){
+				collisions.add(c);
+			}
+		}
+		for (Collidable c : allTanks){
+			if (c.isColliding(init)){
+				collisions.add(c);
+			}
+		}
+		return collisions;
+	}
+	private void removeObjects(){
+		for (Object o : removeQue){
+			if (o instanceof Block){
+				allBlocks.remove(o);
+			}
+			if (o instanceof Projectile){
+				allProjectiles.remove(o);
+			}
 		}
 	}
-	public ArrayList<Collidable> checkCollision(Collidable c){
-		for (Collidable b : allBlocks){
-			b.collisionCheck(c);
-		}
-		return null;
-	}
-	public boolean removeObject(Object o){
-		if (o instanceof Block){
-			return allBlocks.remove(o);
-		}
-		if (o instanceof Projectile){
-			return allProjectiles.remove(o);
-		}
-		return false;
+	public void removeQueue(Object o){
+		removeQue.add(o);
 	}
 }

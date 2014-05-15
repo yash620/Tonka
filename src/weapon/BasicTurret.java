@@ -12,10 +12,9 @@ import java.util.Random;
 
 public class BasicTurret extends Weapon {
 	private AffineTransform old;
-
 			
 	public BasicTurret(Tank t){
-		this.t = t;
+		this.setTank(t);
 		this.ammo = 5;
 		this.center = t.getCenter();
 		this.turnSpeed = 3;
@@ -35,12 +34,12 @@ public class BasicTurret extends Weapon {
 		g2.draw(weaponShape);
 		g2.setTransform(old);
 		for (int i = -1;i<=1;i++){
-			g2.drawLine(center.x, center.y, (int)(1000 * Math.cos(Math.toRadians(angle + i*this.spread)))+center.x, (int)(1000*Math.sin(Math.toRadians(angle + i*this.spread)))+center.y);
+			g2.drawLine((int)center.getX(), (int)center.getY(), (int)(1000 * Math.cos(Math.toRadians(angle + i*this.spread))+center.getX()), (int)(1000*Math.sin(Math.toRadians(angle + i*this.spread))+center.getY()));
 		}
 	}
 	@Override
 	public void clickPoint(Point tgt){
-		double tgtAng = Math.atan2(tgt.y - center.y, tgt.x - center.x);
+		double tgtAng = Math.atan2(tgt.y - center.getY(), tgt.x - center.getX());
 		this.tgtAngle = AngleMath.adjustAngle((int)Math.toDegrees(tgtAng));
 	}
 	@Override
@@ -64,11 +63,11 @@ public class BasicTurret extends Weapon {
 				angle = tgtAngle;
 			}
 		}
-		double deltax = t.getCenter().getX() - center.getX();
-		double deltay = t.getCenter().getY() - center.getY();
-		center = t.getCenter();
+		double deltax = getTank().getCenter().getX() - center.getX();
+		double deltay = getTank().getCenter().getY() - center.getY();
+		center = getTank().getCenter();
 		weaponShape = Transform.transform(weaponShape, deltax, deltay, 0,
-				center.x, center.y);
+				center.getX(), center.getY());
 	}
 	
 	private void replenishAmmo(){
@@ -84,7 +83,7 @@ public class BasicTurret extends Weapon {
 		if (canShoot()){
 			Random die = new Random();
 			return new BasicMissile(this.center,
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.spread + angle, t.getGame());
+					(die.nextInt(2)*2-1)*die.nextDouble()*this.spread + angle, getTank().getGame(), this);
 		}
 		return null;
 	}

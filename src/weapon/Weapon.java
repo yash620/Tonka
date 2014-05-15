@@ -4,15 +4,16 @@ import game.Drawable;
 import game.Tank;
 import java.awt.Point;
 import java.awt.Shape;
+import java.awt.geom.Point2D;
 
 public abstract class Weapon implements Drawable {
 	protected Shape weaponShape;
-	protected Projectile projectile;
 	protected double turnSpeed;
-	protected Point center;
+	protected Point2D center;
 	protected int angle;
 	protected int tgtAngle;
-	protected Tank t;
+	private Tank t;
+	private Projectile projectile;
 	protected int ammo;
 	protected double spread;
 	public abstract void update();
@@ -20,4 +21,16 @@ public abstract class Weapon implements Drawable {
 //	public abstract Point getProjectileSpawn();
 	public abstract Projectile shoot();
 	public abstract boolean canShoot();
+	public Tank getTank(){
+		return this.t;
+	}
+	public void setTank(Tank t) {
+		this.t = t;
+	}
+	public Projectile getProjectile() {
+		return projectile;
+	}
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
+	}
 }
