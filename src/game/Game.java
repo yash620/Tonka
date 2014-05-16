@@ -79,17 +79,17 @@ public class Game implements Drawable {
 				addQueue(new Explosion(t.getCenter()));
 			}
 		}
-		for(Explosion e: explosions){
-			if(e.timeToChain()){
-				if(e.chain() != null){
-					addQueue(e.chain());
-					addQueue(e.chain());
-				}
-			}
-			if(e.done()){
-				removeQueue(e);
-			}
-		}
+//		for(Explosion e: explosions){
+//			if(e.timeToChain()){
+//				if(e.chain() != null){
+//					addQueue(e.chain());
+//					addQueue(e.chain());
+//				}
+//			}
+//			if(e.done()){
+//				removeQueue(e);
+//			}
+//		}
 		addObjects();
 		removeObjects();
 	}
