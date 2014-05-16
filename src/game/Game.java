@@ -17,6 +17,8 @@ public class Game implements Drawable {
 	private ArrayList<Projectile> allProjectiles;
 	private ArrayList<Tank> allTanks;
 	private ArrayList<Object> removeQue;		//Prevent Concurrent Modification Errors
+	private ArrayList<Explosion> explosions;
+	private ArrayList<Object> addQue;
 	private Tank playerTank;
 	
 	public Game(){
@@ -24,6 +26,8 @@ public class Game implements Drawable {
 		allProjectiles = new ArrayList<Projectile>();
 		allTanks = new ArrayList<Tank>();
 		removeQue = new ArrayList<Object>();
+		addQue = new ArrayList<Object>();
+		explosions = new ArrayList<Explosion>();
 		
 		allBlocks.add(new Block());
 		ArrayList<Weapon> weapon = new ArrayList<Weapon>();
@@ -52,6 +56,9 @@ public class Game implements Drawable {
 		for (Tank t : allTanks){
 			t.draw(g2);
 		}
+		for (Explosion e: explosions){
+			e.draw(g2);
+		}
 		if (test != null){
 			g2.draw(test);
 		}
@@ -66,6 +73,24 @@ public class Game implements Drawable {
 //			t.movement(down, right, clickpoint);
 //		}
 		collisions();
+		for (Tank t : allTanks){
+			if(t.getHp() <= 0){
+				removeQueue(t);
+				addQueue(new Explosion(t.getCenter()));
+			}
+		}
+		for(Explosion e: explosions){
+			if(e.timeToChain()){
+				if(e.chain() != null){
+					addQueue(e.chain());
+					addQueue(e.chain());
+				}
+			}
+			if(e.done()){
+				removeQueue(e);
+			}
+		}
+		addObjects();
 		removeObjects();
 	}
 	
@@ -122,9 +147,25 @@ public class Game implements Drawable {
 			if (o instanceof Projectile){
 				allProjectiles.remove(o);
 			}
+			if (o instanceof Tank){
+				allTanks.remove(o);
+			}
+			if (o instanceof Explosion){
+				explosions.remove(o);
+			}
 		}
 	}
 	public void removeQueue(Object o){
 		removeQue.add(o);
+	}
+	private void addObjects(){
+		for (Object o : addQue){
+			if (o instanceof Explosion){
+				explosions.add((Explosion)o);
+			}
+		}
+	}
+	public void addQueue(Object o){
+		addQue.add(o);
 	}
 }
