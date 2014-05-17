@@ -85,10 +85,6 @@ public class Tank implements Drawable, Collidable {
 			w.clickPoint(clickpoint);
 			w.update();
 		}
-		if(getHp() <= 0){
-			Game.removeQueue(this);
-			Game.addQueue(new Explosion(getCenter()));
-		}
 	}
 	private int determineTheta(int right){
 		return getTheta() + right * turnSpeed;
@@ -110,6 +106,10 @@ public class Tank implements Drawable, Collidable {
 	public void collision(Collidable c) {
 		if (c instanceof Projectile){
 			c.collision(this);
+		}
+		if(getHp() <= 0){
+			Game.removeQueue(this);
+			Game.addQueue(new Explosion(getCenter()));
 		}
 	}
 
