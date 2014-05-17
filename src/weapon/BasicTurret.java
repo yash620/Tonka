@@ -34,7 +34,7 @@ public class BasicTurret extends Weapon {
 		g2.draw(weaponShape);
 		g2.setTransform(old);
 		for (int i = -1;i<=1;i++){
-			g2.drawLine((int)center.getX(), (int)center.getY(), (int)(1000 * Math.cos(Math.toRadians(angle + i*this.spread))+center.getX()), (int)(1000*Math.sin(Math.toRadians(angle + i*this.spread))+center.getY()));
+//			g2.drawLine((int)center.getX(), (int)center.getY(), (int)(1000 * Math.cos(Math.toRadians(angle + i*this.spread))+center.getX()), (int)(1000*Math.sin(Math.toRadians(angle + i*this.spread))+center.getY()));
 		}
 	}
 	@Override
@@ -83,7 +83,7 @@ public class BasicTurret extends Weapon {
 		if (canShoot()){
 			Random die = new Random();
 			return new BasicMissile(this.center,
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.spread + angle, getTank().getGame(), this);
+					(die.nextInt(2)*2-1)*die.nextDouble()*this.spread + angle,this);
 		}
 		return null;
 	}

@@ -1,32 +1,31 @@
 package weapon;
 
-import game.Collidable;
-import game.Drawable;
-import game.Game;
-
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
-public abstract class Projectile implements Drawable, Collidable {
+import util.Collidable;
+import util.Drawable;
+import util.Updatable;
+
+public abstract class Projectile implements Drawable, Collidable, Updatable {
 	private Shape projectileShape;
 	protected double damage;
 	protected double velocity;
 	protected final double theta;
 	protected Point2D.Double center;
 	private Weapon weapon;
-	private Game game;
 
-	public Projectile(Shape s, int xstart, int ystart, double velocity, double damage, double theta, Game game){
+	public Projectile(Shape s, int xstart, int ystart, double velocity, double damage, double theta){
 		this.setProjectileShape(s);
 		this.velocity = velocity;
 		this.damage = damage;
 		this.theta = theta;
-		this.setGame(game);
 		this.center = new Point2D.Double(xstart, ystart);
 	}
 	
 	//Update is called everytime the timer tics
+	@Override
 	public abstract void update();
 	//Draws the missile
 	@Override
@@ -41,12 +40,6 @@ public abstract class Projectile implements Drawable, Collidable {
 	}
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
-	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
 	}
 	public Shape getProjectileShape() {
 		return projectileShape;

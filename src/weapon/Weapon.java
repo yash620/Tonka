@@ -1,12 +1,14 @@
 package weapon;
 
-import game.Drawable;
 import game.Tank;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
-public abstract class Weapon implements Drawable {
+import util.Drawable;
+import util.Updatable;
+
+public abstract class Weapon implements Drawable, Updatable {
 	protected Shape weaponShape;
 	protected double turnSpeed;
 	protected Point2D center;
@@ -18,6 +20,7 @@ public abstract class Weapon implements Drawable {
 	protected double spread;  //How large the spread of the weapon is
 
 	//Called whenever the timer tics
+	@Override
 	public abstract void update();
 
 	//Sets the target angle of the weapon

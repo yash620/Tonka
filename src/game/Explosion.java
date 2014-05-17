@@ -5,7 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 
-public class Explosion implements Drawable{
+import util.Drawable;
+import util.Updatable;
+
+public class Explosion implements Drawable, Updatable {
 
 	private double timeAtStart;
 	private double timeSinceStart;
@@ -93,13 +96,17 @@ public class Explosion implements Drawable{
 		maxSize = 30;
 		currSize = 0;
 	}
-	
+	@Override
 	public void update(){
 		timeSinceStart = ((double)System.currentTimeMillis())/1000 - timeAtStart;
+		if (this.done()){
+			
+		}
 	}
 	
 	@Override
 	public void draw(Graphics2D g2) {
+		Color initColor = g2.getColor();
 		// TODO Auto-generated method stub
 		double tc = 1 / timelapse;
 		draw(g2, timeSinceStart - 0.2, 1, maxSize - 4);
@@ -107,7 +114,7 @@ public class Explosion implements Drawable{
 		 if(timeSinceStart <= timelapse){
 			//g2.setColor(Color.black);
 //			g2.setColor(new Color(255, (int)(255 - 250 * (timeSinceStart * tc/2)), 0));
-			 g2.setColor(colorList.get((int)(255 - 250 * (timeSinceStart * tc/2))));
+			g2.setColor(colorList.get((int)(255 - 250 * (timeSinceStart * tc/2))));
 			g2.fillOval((int)xc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
 						(int)yc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
 						(int)(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize), 
@@ -124,6 +131,7 @@ public class Explosion implements Drawable{
 		else if(timeSinceStart >= timelapse * 6){
 			isDone = true;
 		}
+		 g2.setColor(initColor);
 	}
 	public void draw(Graphics2D g2, double time, int place, double size) {
 		// TODO Auto-generated method stub

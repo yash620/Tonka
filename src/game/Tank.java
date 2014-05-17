@@ -9,6 +9,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import util.Collidable;
+import util.Drawable;
 import weapon.Projectile;
 import weapon.Weapon;
 
@@ -21,9 +23,8 @@ public class Tank implements Drawable, Collidable {
 	private Shape tankShape;
 	private double xcenter;
 	private double ycenter;
-	private Game game;
 	
-	public Tank(double x, double y, ArrayList<Weapon> weapons, Game game){
+	public Tank(double x, double y, ArrayList<Weapon> weapons){
 		this.xcenter = x;
 		this.ycenter = y;
 		this.myWeapons = weapons;
@@ -31,7 +32,6 @@ public class Tank implements Drawable, Collidable {
 		this.speed = 3;
 		this.turnSpeed = 5;
 		tankShape = new Rectangle((int)x-20, (int)y-10, 35,20);
-		this.game = game;
 	}
 	
 	@Override
@@ -46,7 +46,7 @@ public class Tank implements Drawable, Collidable {
 	public void shoot(Point shootPoint){
 		for (Weapon w : myWeapons){
 			if (w.canShoot()){
-				game.addProjectile(w.shoot());
+				Game.addQueue(w.shoot());
 			}
 		}
 	}
@@ -66,7 +66,7 @@ public class Tank implements Drawable, Collidable {
 		tankShape = Transform.transform(tankShape, xvel, yvel,
 				Math.toRadians(tgtTheta-getTheta()), xcenter, ycenter);
 		setTheta(tgtTheta);
-		ArrayList<Collidable> collisions = game.getCollisions(this);
+		ArrayList<Collidable> collisions = Game.getCollisions(this);
 		boolean blocked = false;
 		for (Collidable c : collisions){
 			c.collision(this);
@@ -85,6 +85,10 @@ public class Tank implements Drawable, Collidable {
 			w.clickPoint(clickpoint);
 			w.update();
 		}
+		if(getHp() <= 0){
+			Game.removeQueue(this);
+			Game.addQueue(new Explosion(getCenter()));
+		}
 	}
 	private int determineTheta(int right){
 		return getTheta() + right * turnSpeed;
@@ -100,10 +104,6 @@ public class Tank implements Drawable, Collidable {
 
 	public void setTheta(int theta) {	
 		this.theta = (int)AngleMath.adjustAngle(theta);
-	}
-	
-	public Game getGame(){
-		return game;
 	}
 
 	@Override

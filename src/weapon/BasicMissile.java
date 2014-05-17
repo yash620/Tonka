@@ -1,30 +1,30 @@
 package weapon;
 
 import game.Block;
-import game.Collidable;
 import game.Game;
 import game.Tank;
 import game.Transform;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import util.Collidable;
+
 public class BasicMissile extends Projectile{
 	private int time;
 	private int timerDelay;
 	private final double deltax, deltay;
 	
-	public BasicMissile(Point2D center, double theta, Game game, Weapon weapon){
-		this((int)center.getX(), (int)center.getY(), 9, 10, theta, game, weapon);
+	public BasicMissile(Point2D center, double theta, Weapon weapon){
+		this((int)center.getX(), (int)center.getY(), 9, 10, theta, weapon);
 	}
 
-	public BasicMissile(int xstart, int ystart, double velocity, double damage, double theta, Game game, Weapon weapon){
-		super(new Polygon(), xstart, ystart, velocity, damage, theta, game);
+	public BasicMissile(int xstart, int ystart, double velocity, double damage, double theta, Weapon weapon){
+		super(new Polygon(), xstart, ystart, velocity, damage, theta);
 		int[] x = new int[3];
 		int[] y = new int[3];
 		x[0] = xstart+15;
@@ -34,7 +34,6 @@ public class BasicMissile extends Projectile{
 		x[2] = xstart-5;
 		y[2] = ystart-3;
 		this.setProjectileShape(new Polygon(x,y,3));
-		this.setGame(game);
 		this.setWeapon(weapon);
 		deltax = Math.cos(Math.toRadians(theta))*velocity;
 		deltay = Math.sin(Math.toRadians(theta))*velocity;
@@ -47,7 +46,7 @@ public class BasicMissile extends Projectile{
 		double xcenter = center.getX() + deltax;
 		double ycenter = center.getY() + deltay;
 		center.setLocation(xcenter, ycenter);
-		for (Collidable c : getGame().getCollisions(this)){
+		for (Collidable c : Game.getCollisions(this)){
 			c.collision(this);
 		}
 	}
@@ -78,12 +77,12 @@ public class BasicMissile extends Projectile{
 				timerDelay = time;
 			}
 			if (timerDelay + 1 <= time){
-				getGame().removeQueue(this);
+				Game.removeQueue(this);
 			}
 		}
 		if (c instanceof Tank && !c.equals(this.getWeapon().getTank())){
 			((Tank) c).setHp((int) (((Tank)c).getHp()-this.damage));
-			getGame().removeQueue(this);
+			Game.removeQueue(this);
 		}
 	}
 
