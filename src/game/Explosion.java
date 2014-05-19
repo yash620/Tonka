@@ -22,7 +22,7 @@ public class Explosion implements Drawable, Updatable {
 	
 	/*
 	 * A HashMap is created with every single color shade that is used in the explosion
-	 * The Key value is the shade of Green that is used in the Color, Red is always 225, blue is always 0
+	 * The Key value is the shade of Green that is used in the Color, Red is always 255, blue is always 0
 	 * This way, we don't have to create a new Color object every time we change the color
 	 */
 	private static HashMap<Integer, Color> colorList;
@@ -30,8 +30,8 @@ public class Explosion implements Drawable, Updatable {
 	public Explosion(double x2, double y2, double size){
 		if (Explosion.colorList == null){
 			Explosion.colorList = new HashMap<Integer, Color>();
-			for (int i = 0;i<=225;i++){
-				Explosion.colorList.put(i, new Color(225,i,0));
+			for (int i = 0;i<=255;i++){
+				Explosion.colorList.put(i, new Color(255,i,0));
 			}
 		}
 		xc = x2;
@@ -99,8 +99,8 @@ public class Explosion implements Drawable, Updatable {
 	@Override
 	public void update(){
 		timeSinceStart = ((double)System.currentTimeMillis())/1000 - timeAtStart;
-		if (this.done()){
-			
+		if (isDone){
+			Game.removeQueue(this);
 		}
 	}
 	
@@ -128,7 +128,7 @@ public class Explosion implements Drawable, Updatable {
 						(int)(maxSize - maxSize * (timeSinceStart - timelapse)), 
 						(int)(maxSize - maxSize * (timeSinceStart - timelapse)));
 		}
-		else if(timeSinceStart >= timelapse * 6){
+		else if(timeSinceStart >= timelapse * 8){
 			isDone = true;
 		}
 		 g2.setColor(initColor);
@@ -137,9 +137,9 @@ public class Explosion implements Drawable, Updatable {
 		// TODO Auto-generated method stub
 		double tc = 1 / timelapse;
 //		System.out.println(place + ": " + time);
-		if(size > 18){
-			draw(g2, time - 0.2, place*2 + 1, size - 4);
-			draw(g2, time - 0.2, place * 2 + 2, size - 4);
+		if(size > 24){
+			draw(g2, time - 0.2, place*2 + 1, size - 2);
+			draw(g2, time - 0.2, place * 2 + 2, size - 2);
 		}
 		if(time <= 0){
 			
