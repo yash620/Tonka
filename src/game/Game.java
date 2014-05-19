@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.util.ArrayList;
 
+import map.Map;
+
 import util.Collidable;
 import util.Drawable;
 import util.Updatable;
@@ -16,6 +18,7 @@ public class Game implements Drawable {
 	private static ArrayList<Collidable> collidables;
 	private static ArrayList<Drawable> drawables;
 	private static ArrayList<Updatable> updatables;
+	private  Map map;
 	
 	/*
 	 * Tanks are special because their update method needs params
@@ -34,6 +37,12 @@ public class Game implements Drawable {
 		allTanks = new ArrayList<Tank>();
 		removeQue = new ArrayList<Object>();
 		addQue = new ArrayList<Object>();
+		map = new Map();
+		map.basicMap();
+		for(Block b: map.showBlocks()){
+			addObject(b);
+		}
+		//addObject(map.showBlocks());
 
 		ArrayList<Weapon> weapon = new ArrayList<Weapon>();
 		Tank t = new Tank(100,100, weapon);
@@ -107,6 +116,7 @@ public class Game implements Drawable {
 			allTanks.add((Tank) o);
 		}
 	}
+	
 	private void removeObject(Object o){
 		if (o instanceof Collidable){
 			collidables.remove((Collidable) o);

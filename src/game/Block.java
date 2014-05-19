@@ -15,9 +15,16 @@ import weapon.Projectile;
 
 public class Block implements Drawable, Collidable {
 	private Area blockShape;
+	private boolean destructible;
 
+	public Block(Shape s, boolean b){
+		blockShape = new Area(s);
+		destructible = b;
+	}
+	
 	public Block(Shape s) {
 		blockShape = new Area(s);
+		destructible = true;
 	}
 
 	public Block() {
@@ -42,16 +49,18 @@ public class Block implements Drawable, Collidable {
 	public void collision(Collidable s) {
 		if (s instanceof Projectile) {
 			s.collision(this);
-			Area projectile = new Area(((Projectile) s).getDestroyed());
-			blockShape.subtract(projectile);
-			if (!blockShape.isSingular()) {
-				Game.removeQueue(this);
-				for (Block b : splitBlock()) {
-					Game.addQueue(b);
+			if(destructible){
+				Area projectile = new Area(((Projectile) s).getDestroyed());
+				blockShape.subtract(projectile);
+				if (!blockShape.isSingular()) {
+					Game.removeQueue(this);
+					for (Block b : splitBlock()) {
+						Game.addQueue(b);
+					}
 				}
-			}
-			if (blockShape.isEmpty() || this.getBoundsArea() < 25) {
-				Game.removeQueue(this);
+				if (blockShape.isEmpty() || this.getBoundsArea() < 25) {
+					Game.removeQueue(this);
+				}
 			}
 		}
 	}

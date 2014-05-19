@@ -17,6 +17,7 @@ public abstract class Weapon implements Drawable, Updatable {
 	private Tank t;
 	private Projectile projectile;
 	protected int ammo;
+	protected double firerate;
 	protected double spread;  //How large the spread of the weapon is
 
 	//Called whenever the timer tics
@@ -27,7 +28,9 @@ public abstract class Weapon implements Drawable, Updatable {
 	public abstract void clickPoint(Point tgt);
 
 	//Returns the projectile that the weapon shoots
-	public abstract Projectile shoot();
+	public Projectile shoot(){
+		return projectile;
+	}
 	
 	//Returns if the weapon can shoot or not
 	public abstract boolean canShoot();

@@ -36,7 +36,9 @@ public class Frame {
 		Listener li = new Listener();
 		frame.addKeyListener(li);
 		JPanel mainDraw = new MainDraw();
+		mainDraw.setPreferredSize(windowSize);
 		frame.add(mainDraw);
+		frame.pack();
 		mainDraw.addMouseListener(li);
 		mainDraw.addMouseMotionListener(li);
 		frame.setVisible(true);
