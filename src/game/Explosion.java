@@ -3,12 +3,14 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.HashMap;
 
+import util.ColorList;
 import util.Drawable;
 import util.Updatable;
 
-public class Explosion implements Drawable, Updatable {
+public class Explosion implements Drawable, Updatable, Serializable {
 
 	private double timeAtStart;
 	private double timeSinceStart;
@@ -19,21 +21,8 @@ public class Explosion implements Drawable, Updatable {
 	protected double xc, yc;
 	private double[][] places;
 	private double timelapse = .4;
-	
-	/*
-	 * A HashMap is created with every single color shade that is used in the explosion
-	 * The Key value is the shade of Green that is used in the Color, Red is always 255, blue is always 0
-	 * This way, we don't have to create a new Color object every time we change the color
-	 */
-	private static HashMap<Integer, Color> colorList;
-	
+		
 	public Explosion(double x2, double y2, double size){
-		if (Explosion.colorList == null){
-			Explosion.colorList = new HashMap<Integer, Color>();
-			for (int i = 0;i<=255;i++){
-				Explosion.colorList.put(i, new Color(255,i,0));
-			}
-		}
 		xc = x2;
 		yc = y2;
 		places = new double[2][32];
@@ -51,12 +40,6 @@ public class Explosion implements Drawable, Updatable {
 		currSize = 0;
 	}
 	public Explosion(double x2, double y2){
-		if (Explosion.colorList == null){
-			Explosion.colorList = new HashMap<Integer, Color>();
-			for (int i = 0;i<=225;i++){
-				Explosion.colorList.put(i, new Color(225,i,0));
-			}
-		}
 		xc = x2;
 		yc = y2;
 		places = new double[2][32];
@@ -74,12 +57,6 @@ public class Explosion implements Drawable, Updatable {
 		currSize = 0;
 	}
 	public Explosion(Point2D center){
-		if (Explosion.colorList == null){
-			Explosion.colorList = new HashMap<Integer, Color>();
-			for (int i = 0;i<=225;i++){
-				Explosion.colorList.put(i, new Color(225,i,0));
-			}
-		}
 		xc = center.getX();
 		yc = center.getY();
 		places = new double[2][32];
@@ -114,7 +91,7 @@ public class Explosion implements Drawable, Updatable {
 		 if(timeSinceStart <= timelapse){
 			//g2.setColor(Color.black);
 //			g2.setColor(new Color(255, (int)(255 - 250 * (timeSinceStart * tc/2)), 0));
-			g2.setColor(colorList.get((int)(255 - 250 * (timeSinceStart * tc/2))));
+			g2.setColor(ColorList.getColor((int)(255 - 250 * (timeSinceStart * tc/2))));
 			g2.fillOval((int)xc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
 						(int)yc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
 						(int)(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize), 
@@ -122,7 +99,7 @@ public class Explosion implements Drawable, Updatable {
 		}
 		else if(timeSinceStart <= timelapse * 2){
 //			g2.setColor(new Color(255, (int)(255 - 250 * (timeSinceStart * tc/2)), 0));
-			g2.setColor(colorList.get((int)(255 - 250 * (timeSinceStart * tc/2))));
+			g2.setColor(ColorList.getColor((int)(255 - 250 * (timeSinceStart * tc/2))));
 			g2.fillOval((int)xc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
 						(int)yc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
 						(int)(maxSize - maxSize * (timeSinceStart - timelapse)), 
@@ -147,7 +124,7 @@ public class Explosion implements Drawable, Updatable {
 		else if(time <= timelapse){
 			//g2.setColor(Color.black);
 //			g2.setColor(new Color(255, (int)(255 - 255 * (time * tc)), 0));
-			g2.setColor(colorList.get((int)(255 - 255 * (time * tc))));
+			g2.setColor(ColorList.getColor((int)(255 - 255 * (time * tc))));
 			g2.fillOval((int)(places[0][place]) - (int)(.5*(Math.sqrt(Math.sqrt(time * tc)) * size)), 
 						(int)(places[1][place]) - (int)(.5*(Math.sqrt(Math.sqrt(time * tc)) * size)), 
 						(int)(Math.sqrt(Math.sqrt(time * tc)) * size), 
@@ -155,7 +132,7 @@ public class Explosion implements Drawable, Updatable {
 		}
 		else if(time <= timelapse * 2){
 //			g2.setColor(new Color(255, (int)(255 - 255 * (time/2 * tc)), 0));
-			g2.setColor(colorList.get((int)(255 - 255 * (time/2 * tc))));
+			g2.setColor(ColorList.getColor((int)(255 - 255 * (time/2 * tc))));
 			g2.fillOval((int)(places[0][place]) - (int)(.5*(size - size * (time - timelapse))), 
 						(int)(places[1][place]) - (int)(.5*(size - size * (time - timelapse))), 
 						(int)(size - size * (time - timelapse)), 

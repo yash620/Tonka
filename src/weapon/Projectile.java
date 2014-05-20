@@ -3,12 +3,13 @@ package weapon;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import util.Collidable;
 import util.Drawable;
 import util.Updatable;
 
-public abstract class Projectile implements Drawable, Collidable, Updatable {
+public abstract class Projectile implements Drawable, Collidable, Updatable, Serializable {
 	private Shape projectileShape;
 	protected double damage;
 	protected double velocity;

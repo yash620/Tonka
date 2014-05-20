@@ -8,6 +8,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import util.Collidable;
@@ -15,7 +16,7 @@ import util.Drawable;
 import weapon.Projectile;
 import weapon.Weapon;
 
-public class Tank implements Drawable, Collidable {
+public class Tank implements Drawable, Collidable, Serializable {
 	private int hp;
 	private double speed;
 	private int turnSpeed;

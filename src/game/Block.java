@@ -8,21 +8,22 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import util.Collidable;
 import util.Drawable;
+import util.SerialArea;
 import weapon.Projectile;
 
-public class Block implements Drawable, Collidable {
+public class Block implements Drawable, Collidable, Serializable {
 	private Color color;
-	private Area blockShape;
+	private SerialArea blockShape;
 	private boolean destructible;
 
-	
 	public Block(Shape s, boolean b, Color c){
 		color = c;
-		blockShape = new Area(s);
+		blockShape = new SerialArea(s);
 		destructible = b;
 	}
 	

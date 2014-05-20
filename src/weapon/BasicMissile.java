@@ -108,4 +108,8 @@ public class BasicMissile extends Projectile{
 		}
 		return false;
 	}
+	
+	public double getDX(){
+		return deltax;
+	}
 }

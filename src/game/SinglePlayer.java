@@ -16,9 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class Frame {
+public class SinglePlayer {
 	public static void main(String[] args) {
-		new Frame();
+		new SinglePlayer();
 	}
 
 	private JFrame frame;
@@ -28,7 +28,7 @@ public class Frame {
 
 	public static final int TIMESTEP = 17;
 
-	public Frame() {
+	public SinglePlayer() {
 		game = new Game(1);
 		frame = new JFrame();
 		windowSize = new Dimension(1280, 720);

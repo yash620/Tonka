@@ -4,6 +4,9 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 public class Transform {
+	private Transform(){
+		
+	}
 	private static AffineTransform translate;
 	private static AffineTransform rotate;
 	public static Shape transform(Shape s, double deltax, double deltay,

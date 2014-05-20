@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Map implements Serializable{
+public class Map implements Serializable {
 	
 	private ArrayList<Block> blocks;
 	

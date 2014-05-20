@@ -4,21 +4,23 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import map.Map;
 
 import util.Collidable;
 import util.Drawable;
+import util.KeyInput;
 import util.Updatable;
 import weapon.BasicTurret;
 import weapon.Weapon;
 
-public class Game implements Drawable {
+public class Game implements Drawable, Serializable {
 	private static ArrayList<Collidable> collidables;
 	private static ArrayList<Drawable> drawables;
 	private static ArrayList<Updatable> updatables;
-	private  Map map;
+	private Map map;
 	
 	/*
 	 * Tanks are special because their update method needs params
@@ -65,7 +67,6 @@ public class Game implements Drawable {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.black);
-//		g2.drawRect(500, 200, 5, 5);
 		for (Drawable d : drawables){
 			d.draw(g2);
 		}
@@ -89,14 +90,16 @@ public class Game implements Drawable {
 		}
 		removeQue.clear();
 	}
-	
+	//Single player update
 	public void update(int down, int right, Point clickpoint, boolean shoot){
 		playerTanks.get(0).movement(down, right, clickpoint, shoot);
 		this.tick();
 	}
-//	public void click(Point clickPoint){
-//		playerTank.shoot(clickPoint);
-//	}
+	//MultiPlayer update
+	public void update(KeyInput i, int player){
+		playerTanks.get(player).movement(i.getDown(), i.getRight(), i.getClickPoint(), i.isShoot());
+		this.tick();
+	}
 	//Called by other collidables to see who is colliding with the frame
 	public static ArrayList<Collidable> getCollisions(Collidable init){
 		ArrayList<Collidable> collisions = new ArrayList<Collidable>();
@@ -141,5 +144,8 @@ public class Game implements Drawable {
 	}
 	public static void removeQueue(Object o){
 		removeQue.add(o);
+	}
+	public ArrayList<Drawable> getDrawables(){
+		return drawables;
 	}
 }

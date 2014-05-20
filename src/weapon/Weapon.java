@@ -4,11 +4,12 @@ import game.Tank;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import util.Drawable;
 import util.Updatable;
 
-public abstract class Weapon implements Drawable, Updatable {
+public abstract class Weapon implements Drawable, Updatable, Serializable {
 	protected Shape weaponShape;
 	protected double turnSpeed;
 	protected Point2D center;
