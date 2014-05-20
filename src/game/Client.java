@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import util.Drawable;
 import util.KeyInput;
+import weapon.BasicMissile;
 
 public class Client implements Runnable {
 	private String hostName;					//IP of host
@@ -72,6 +73,11 @@ public class Client implements Runnable {
 		try {
 			Object o = clientIn.readUnshared();
 			drawables = (ArrayList<Drawable>) o;
+			for (Drawable d : drawables){
+				if (d instanceof BasicMissile){
+					System.out.println(((BasicMissile)d).getVar());
+				}
+			}
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

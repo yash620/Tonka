@@ -62,9 +62,6 @@ public class ClientFrame {
 			if (drawables != null){
 				for (Drawable d : drawables){
 					d.draw(g2);
-					if (d instanceof BasicMissile){
-						System.out.println(((BasicMissile)d).getDX());
-					}
 				}
 			}
 		}

@@ -59,23 +59,23 @@ public class BasicMissile extends Projectile{
 		return getProjectileShape();
 	}
 	public Shape getDestroyed(){
-		int sides = 20;
-		int[] xarr = new int[sides];
-		int[] yarr = new int[sides];
-		for (int i = 0;i<sides;i++){
-			xarr[i] = (int)(((Math.random()*6)+4)*Math.cos(Math.toRadians(i*360/sides)) + this.center.getX() + deltax/20);
-			yarr[i] = (int)(((Math.random()*6)+4)*Math.sin(Math.toRadians(i*360/sides)) + this.center.getY() + deltay/20);
-		}
-		Polygon destroyed = new Polygon(xarr, yarr, sides);
-		return destroyed;
 //		int sides = 20;
 //		int[] xarr = new int[sides];
 //		int[] yarr = new int[sides];
-//		for(int i = 0; i < sides; i++){
-//			xarr[i] = (int)(this.center.getX() + 10 * Math.cos(Math.PI/10 * i));
-//			yarr[i] = (int)(this.center.getY() + 10 * Math.sin(Math.PI/10 * i));
+//		for (int i = 0;i<sides;i++){
+//			xarr[i] = (int)(((Math.random()*6)+4)*Math.cos(Math.toRadians(i*360/sides)) + this.center.getX() + deltax/20);
+//			yarr[i] = (int)(((Math.random()*6)+4)*Math.sin(Math.toRadians(i*360/sides)) + this.center.getY() + deltay/20);
 //		}
-//		return new Polygon(xarr, yarr, sides);
+//		Polygon destroyed = new Polygon(xarr, yarr, sides);
+//		return destroyed;
+		int sides = 20;
+		int[] xarr = new int[sides];
+		int[] yarr = new int[sides];
+		for(int i = 0; i < sides; i++){
+			xarr[i] = (int)(this.center.getX() + 6 * Math.cos(Math.PI/10 * i) + deltax/20);
+			yarr[i] = (int)(this.center.getY() + 6 * Math.sin(Math.PI/10 * i) + deltay/20);
+		}
+		return new Polygon(xarr, yarr, sides);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class BasicMissile extends Projectile{
 		return false;
 	}
 	
-	public double getDX(){
-		return deltax;
+	public double getVar(){
+		return this.center.getX();
 	}
 }

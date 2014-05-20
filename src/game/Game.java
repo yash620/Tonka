@@ -13,13 +13,14 @@ import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
 import util.Updatable;
+import weapon.BasicMissile;
 import weapon.BasicTurret;
 import weapon.Weapon;
 
-public class Game implements Drawable, Serializable {
+public class Game implements Drawable {
 	private static ArrayList<Collidable> collidables;
-	private static ArrayList<Drawable> drawables;
-	private static ArrayList<Updatable> updatables;
+	private ArrayList<Drawable> drawables;
+	private ArrayList<Updatable> updatables;
 	private Map map;
 	
 	/*
@@ -59,8 +60,8 @@ public class Game implements Drawable, Serializable {
 	}
 	
 	// Test method, draw whatever you want on the panel
-	private Shape test;
-	public void setTestDraw(Shape s){
+	private static Shape test;
+	public static void setTestDraw(Shape s){
 		test = s;
 	}
 	
@@ -146,6 +147,7 @@ public class Game implements Drawable, Serializable {
 		removeQue.add(o);
 	}
 	public ArrayList<Drawable> getDrawables(){
-		return drawables;
+		ArrayList<Drawable> test = new ArrayList<Drawable>(drawables);
+		return test;
 	}
 }

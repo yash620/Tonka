@@ -60,6 +60,7 @@ public class Block implements Drawable, Collidable, Serializable {
 			s.collision(this);
 			if(destructible){
 				Area projectile = new Area(((Projectile) s).getDestroyed());
+				Game.setTestDraw(projectile);
 				blockShape.subtract(projectile);
 				if (!blockShape.isSingular()) {
 					Game.removeQueue(this);
