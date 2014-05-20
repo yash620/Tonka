@@ -60,7 +60,7 @@ public class Tank implements Drawable, Collidable {
 		}
 	}
 	
-	public void movement(int down, int right, Point clickpoint){
+	public void movement(int down, int right, Point clickpoint, boolean shoot){
 		int originalTheta = getTheta();
 		int tgtTheta = this.determineTheta(right);
 		double tempSpeed = speed;
@@ -93,6 +93,10 @@ public class Tank implements Drawable, Collidable {
 		for (Weapon w : myWeapons){
 			w.clickPoint(clickpoint);
 			w.update();
+		}
+		
+		if (shoot){
+			this.shoot(clickpoint);
 		}
 	}
 	private int determineTheta(int right){

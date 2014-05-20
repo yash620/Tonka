@@ -24,17 +24,18 @@ public class Game implements Drawable {
 	 * Tanks are special because their update method needs params
 	 */
 	private static ArrayList<Tank> allTanks;
-	private Tank playerTank;
+	private ArrayList<Tank> playerTanks;
 	
 	//Prevent Concurrent Modification Errors
 	private static ArrayList<Object> removeQue;
 	private static ArrayList<Object> addQue;
 	
-	public Game(){
+	public Game(int playerNum){
 		collidables = new ArrayList<Collidable>();
 		drawables = new ArrayList<Drawable>();
 		updatables = new ArrayList<Updatable>();
 		allTanks = new ArrayList<Tank>();
+		playerTanks = new ArrayList<Tank>();
 		removeQue = new ArrayList<Object>();
 		addQue = new ArrayList<Object>();
 		map = new Map();
@@ -44,13 +45,15 @@ public class Game implements Drawable {
 		}
 		//addObject(map.showBlocks());
 
-		ArrayList<Weapon> weapon = new ArrayList<Weapon>();
-		Tank t = new Tank(100,100, weapon);
-		weapon.add(new BasicTurret(t));
-		addObject(t);
-		addObject(new Block());
-		playerTank = t;
-		addObject(new Tank(150,150, weapon));
+		for (int i = 0;i<playerNum;i++){
+			ArrayList<Weapon> weapon = new ArrayList<Weapon>();
+			Tank t = new Tank(100,100, weapon);
+			weapon.add(new BasicTurret(t));
+			playerTanks.add(t);
+			addObject(t);
+			addObject(new Block());
+			addObject(new Tank(150,150, weapon));
+		}
 	}
 	
 	// Test method, draw whatever you want on the panel
@@ -71,13 +74,10 @@ public class Game implements Drawable {
 		}
 	}
 	
-	public void update(int down, int right, Point clickpoint){
+	private void tick(){
 		for (Updatable u : updatables){
 			u.update();
-			if (u instanceof Explosion){
-			}
 		}
-		playerTank.movement(down, right, clickpoint);
 		
 		//Adding and removing
 		for (Object o : addQue){
@@ -89,9 +89,14 @@ public class Game implements Drawable {
 		}
 		removeQue.clear();
 	}
-	public void click(Point clickPoint){
-		playerTank.shoot(clickPoint);
+	
+	public void update(int down, int right, Point clickpoint, boolean shoot){
+		playerTanks.get(0).movement(down, right, clickpoint, shoot);
+		this.tick();
 	}
+//	public void click(Point clickPoint){
+//		playerTank.shoot(clickPoint);
+//	}
 	//Called by other collidables to see who is colliding with the frame
 	public static ArrayList<Collidable> getCollisions(Collidable init){
 		ArrayList<Collidable> collisions = new ArrayList<Collidable>();

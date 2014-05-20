@@ -29,7 +29,7 @@ public class Frame {
 	public static final int TIMESTEP = 17;
 
 	public Frame() {
-		game = new Game();
+		game = new Game(1);
 		frame = new JFrame();
 		windowSize = new Dimension(1280, 720);
 		frame.setSize(windowSize);
@@ -61,6 +61,7 @@ public class Frame {
 			MouseListener, MouseMotionListener {
 		private int down, right;
 		private Point clickpoint;
+		private boolean shoot;
 
 		public Listener() {
 			clickpoint = new Point();
@@ -108,7 +109,7 @@ public class Frame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			game.update(down, right, clickpoint);
+			game.update(down, right, clickpoint, shoot);
 			frame.repaint();
 		}
 
@@ -131,15 +132,13 @@ public class Frame {
 
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			game.click(arg0.getPoint());
+			shoot = true;
 			// clickpoint = arg0.getPoint();
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
-			// game.createProjectile(clickpoint.x, clickpoint.y, (int)
-			// Math.toDegrees(Math.atan2(clickpoint.y-arg0.getPoint().y,
-			// clickpoint.x-arg0.getPoint().x)));
+			shoot = false;
 		}
 
 		@Override
