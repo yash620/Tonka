@@ -4,6 +4,7 @@ import game.AngleMath;
 import game.Tank;
 import game.Transform;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -31,7 +32,8 @@ public class BasicTurret extends Weapon {
 	public void draw(Graphics2D g2) {
 		old = g2.getTransform();
 		g2.rotate(Math.toRadians(angle), center.getX(), center.getY());
-		g2.draw(weaponShape);
+		g2.setColor(Color.black);
+		g2.fill(weaponShape);
 		g2.setTransform(old);
 		for (int i = -1;i<=1;i++){
 //			g2.drawLine((int)center.getX(), (int)center.getY(), (int)(1000 * Math.cos(Math.toRadians(angle + i*this.spread))+center.getX()), (int)(1000*Math.sin(Math.toRadians(angle + i*this.spread))+center.getY()));

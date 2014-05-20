@@ -41,6 +41,8 @@ public class Tank implements Drawable, Collidable, Serializable {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(color);
+		g2.fill(tankShape);
+		g2.setColor(Color.black);
 		g2.draw(tankShape);
 		g2.setColor(Color.red);
 		g2.fillRect((int)xcenter - 25, (int)ycenter - 30, (int)(((double)this.hp)/100 * 50), 5);

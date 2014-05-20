@@ -11,12 +11,13 @@ import util.Drawable;
 import weapon.*;
 import game.Tank;
 
-public class TankCreator implements Drawable{
+public class TankCreator extends JFrame{
 	
 	JColorChooser jcc;
 	Tank tank;
 
 	public TankCreator(){
+		this.setSize(800,600);
 		jcc = new JColorChooser();
 		tank = new Tank(200,200,new ArrayList<Weapon>());
 	}
@@ -27,11 +28,5 @@ public class TankCreator implements Drawable{
 		jfc.setVisible(true);
 		jfc.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		jfc.setSize(600,500);
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		// TODO Auto-generated method stub
-		
 	}
 }
