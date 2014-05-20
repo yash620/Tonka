@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -23,6 +24,7 @@ public class Tank implements Drawable, Collidable {
 	private Shape tankShape;
 	private double xcenter;
 	private double ycenter;
+	private Color color;
 	
 	public Tank(double x, double y, ArrayList<Weapon> weapons){
 		this.xcenter = x;
@@ -31,13 +33,20 @@ public class Tank implements Drawable, Collidable {
 		this.hp = 100;
 		this.speed = 3;
 		this.turnSpeed = 5;
+		setColor(Color.green);
 		tankShape = new Rectangle((int)x-20, (int)y-10, 35,20);
 	}
 	
 	@Override
 	public void draw(Graphics2D g2) {
+		g2.setColor(color);
 		g2.draw(tankShape);
-		g2.drawString("HP" + this.hp, (int)xcenter, (int)ycenter);
+		g2.setColor(Color.red);
+		g2.fillRect((int)xcenter - 25, (int)ycenter - 30, (int)(((double)this.hp)/100 * 50), 5);
+		g2.setColor(Color.black);
+		g2.drawRect((int)xcenter - 25, (int)ycenter - 30, 50, 5);
+		//g2.drawString("HP" + this.hp, (int)xcenter, (int)ycenter);
+		g2.setColor(color);
 		for (Weapon w : myWeapons){
 			w.draw(g2);
 		}
@@ -144,5 +153,9 @@ public class Tank implements Drawable, Collidable {
 	
 	public void setHp(int hp){
 		this.hp = hp;
+	}
+	
+	public void setColor(Color c){
+		color = c;
 	}
 }

@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -14,17 +15,23 @@ import util.Drawable;
 import weapon.Projectile;
 
 public class Block implements Drawable, Collidable {
+	private Color color;
 	private Area blockShape;
 	private boolean destructible;
 
-	public Block(Shape s, boolean b){
+	
+	public Block(Shape s, boolean b, Color c){
+		color = c;
 		blockShape = new Area(s);
 		destructible = b;
 	}
 	
+	public Block(Shape s, boolean b){
+		this(s,b,Color.black);
+	}
+	
 	public Block(Shape s) {
-		blockShape = new Area(s);
-		destructible = true;
+		this(s,true);
 	}
 
 	public Block() {
@@ -38,6 +45,7 @@ public class Block implements Drawable, Collidable {
 
 	@Override
 	public void draw(Graphics2D g2) {
+		g2.setColor(color);
 		g2.fill(blockShape);
 	}
 

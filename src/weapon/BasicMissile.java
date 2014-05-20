@@ -63,11 +63,19 @@ public class BasicMissile extends Projectile{
 		int[] xarr = new int[sides];
 		int[] yarr = new int[sides];
 		for (int i = 0;i<sides;i++){
-			xarr[i] = (int)(((Math.random()*4)+4)*Math.cos(Math.toRadians(i*360/sides)) + this.center.getX() + deltax/20);
-			yarr[i] = (int)(((Math.random()*4)+4)*Math.sin(Math.toRadians(i*360/sides)) + this.center.getY() + deltay/20);
+			xarr[i] = (int)(((Math.random()*6)+4)*Math.cos(Math.toRadians(i*360/sides)) + this.center.getX() + deltax/20);
+			yarr[i] = (int)(((Math.random()*6)+4)*Math.sin(Math.toRadians(i*360/sides)) + this.center.getY() + deltay/20);
 		}
 		Polygon destroyed = new Polygon(xarr, yarr, sides);
 		return destroyed;
+//		int sides = 20;
+//		int[] xarr = new int[sides];
+//		int[] yarr = new int[sides];
+//		for(int i = 0; i < sides; i++){
+//			xarr[i] = (int)(this.center.getX() + 10 * Math.cos(Math.PI/10 * i));
+//			yarr[i] = (int)(this.center.getY() + 10 * Math.sin(Math.PI/10 * i));
+//		}
+//		return new Polygon(xarr, yarr, sides);
 	}
 
 	@Override
