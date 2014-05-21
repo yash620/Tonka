@@ -69,25 +69,23 @@ public class ClientFrame {
 	public class Listener implements KeyListener, ActionListener,
 			MouseListener, MouseMotionListener {
 		
-		private KeyInput inputs;
-		
-		public Listener() {
-			inputs = new KeyInput(0,0,new Point(), false);
-		}
+		private int down, right;
+		private Point clickPoint;
+		private boolean shoot;
 
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			if (arg0.getKeyCode() == KeyEvent.VK_W) {
-				inputs.setDown(-1);
+				down = -1;
 			}
 			if (arg0.getKeyCode() == KeyEvent.VK_S) {
-				inputs.setDown(1);
+				down = 1;
 			}
 			if (arg0.getKeyCode() == KeyEvent.VK_D) {
-				inputs.setRight(1);
+				right = 1;
 			}
 			if (arg0.getKeyCode() == KeyEvent.VK_A) {
-				inputs.setRight(-1);
+				right = -1;
 			}
 			if (arg0.getKeyCode() == KeyEvent.VK_P) {
 				if (ti.isRunning()) {
@@ -102,11 +100,11 @@ public class ClientFrame {
 		public void keyReleased(KeyEvent arg0) {
 			if (arg0.getKeyCode() == KeyEvent.VK_A
 					|| arg0.getKeyCode() == KeyEvent.VK_D) {
-				inputs.setRight(0);
+				right = 0;
 			}
 			if (arg0.getKeyCode() == KeyEvent.VK_W
 					|| arg0.getKeyCode() == KeyEvent.VK_S) {
-				inputs.setDown(0);
+				down = 0;
 			}
 		}
 
@@ -119,7 +117,7 @@ public class ClientFrame {
 		public void actionPerformed(ActionEvent arg0) {
 //			game.update(down, right, clickpoint);
 			drawables = client.getGame();
-			client.sendInputs(inputs);
+			client.sendInputs(new KeyInput(down, right, clickPoint, shoot));
 			frame.repaint();
 		}
 
@@ -142,12 +140,12 @@ public class ClientFrame {
 
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			inputs.setShoot(true);
+			shoot = true;
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
-			inputs.setShoot(false);
+			shoot = false;
 		}
 
 		@Override
@@ -157,7 +155,7 @@ public class ClientFrame {
 
 		@Override
 		public void mouseMoved(MouseEvent arg0) {
-			inputs.setClickPoint(arg0.getPoint());
+			clickPoint = arg0.getPoint();
 		}
 
 	}
