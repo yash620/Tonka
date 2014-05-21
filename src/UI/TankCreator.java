@@ -16,8 +16,14 @@ public class TankCreator extends JFrame{
 	JColorChooser jcc;
 	Tank tank;
 
+	public void main(String[] args){
+		
+	}
+	
 	public TankCreator(){
 		this.setSize(800,600);
+		this.setVisible(true);
+		
 		jcc = new JColorChooser();
 		tank = new Tank(200,200,new ArrayList<Weapon>(), null);		//Need a pointer to game Glynn
 	}

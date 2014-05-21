@@ -3,6 +3,7 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -68,6 +69,7 @@ public class Game implements Drawable {
 		g2.setColor(Color.black);
 		for (Drawable d : drawables){
 			d.draw(g2);
+//			if(d instanceof Block)
 		}
 		if (test != null){
 			g2.draw(test);
