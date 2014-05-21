@@ -1,5 +1,7 @@
 package weapon;
 
+import game.Game;
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
@@ -16,13 +18,15 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 	protected final double theta;
 	protected Point2D.Double center;
 	private Weapon weapon;
+	protected Game game;
 
-	public Projectile(Shape s, int xstart, int ystart, double velocity, double damage, double theta){
+	public Projectile(Shape s, int xstart, int ystart, double velocity, double damage, double theta, Game game){
 		this.setProjectileShape(s);
 		this.velocity = velocity;
 		this.damage = damage;
 		this.theta = theta;
 		this.center = new Point2D.Double(xstart, ystart);
+		this.game = game;
 	}
 	
 	//Update is called everytime the timer tics

@@ -6,41 +6,43 @@ import java.awt.Point;
 import java.awt.Shape;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import map.Map;
 
 import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
+import util.Packet;
 import util.Updatable;
 import weapon.BasicMissile;
 import weapon.BasicTurret;
 import weapon.Weapon;
 
 public class Game implements Drawable {
-	private static ArrayList<Collidable> collidables;
-	private ArrayList<Drawable> drawables;
-	private ArrayList<Updatable> updatables;
+	private HashSet<Collidable> collidables;
+	private HashSet<Drawable> drawables;
+	private HashSet<Updatable> updatables;
 	private Map map;
 	
 	/*
 	 * Tanks are special because their update method needs params
 	 */
-	private static ArrayList<Tank> allTanks;
+	private ArrayList<Tank> allTanks;
 	private ArrayList<Tank> playerTanks;
 	
 	//Prevent Concurrent Modification Errors
-	private static ArrayList<Object> removeQue;
-	private static ArrayList<Object> addQue;
+	private HashSet<Object> removeQue;
+	private HashSet<Object> addQue;
 	
 	public Game(int playerNum){
-		collidables = new ArrayList<Collidable>();
-		drawables = new ArrayList<Drawable>();
-		updatables = new ArrayList<Updatable>();
+		collidables = new HashSet<Collidable>();
+		drawables = new HashSet<Drawable>();
+		updatables = new HashSet<Updatable>();
 		allTanks = new ArrayList<Tank>();
 		playerTanks = new ArrayList<Tank>();
-		removeQue = new ArrayList<Object>();
-		addQue = new ArrayList<Object>();
+		removeQue = new HashSet<Object>();
+		addQue = new HashSet<Object>();
 		map = new Map();
 		map.basicMap();
 		for(Block b: map.showBlocks()){
@@ -50,18 +52,18 @@ public class Game implements Drawable {
 
 		for (int i = 0;i<playerNum;i++){
 			ArrayList<Weapon> weapon = new ArrayList<Weapon>();
-			Tank t = new Tank(100,100, weapon);
+			Tank t = new Tank(100,100, weapon, this);
 			weapon.add(new BasicTurret(t));
 			playerTanks.add(t);
 			addObject(t);
-			addObject(new Block());
-			addObject(new Tank(150,150, weapon));
+			addObject(new Block(this));
+			addObject(new Tank(150,150, weapon, this));
 		}
 	}
 	
 	// Test method, draw whatever you want on the panel
-	private static Shape test;
-	public static void setTestDraw(Shape s){
+	private Shape test;
+	public void setTestDraw(Shape s){
 		test = s;
 	}
 	
@@ -95,6 +97,13 @@ public class Game implements Drawable {
 	public void update(int down, int right, Point clickpoint, boolean shoot){
 		playerTanks.get(0).movement(down, right, clickpoint, shoot);
 		this.tick();
+		int count = 0;
+		for (Collidable c : collidables){
+			if (c instanceof Block){
+				count++;
+			}
+		}
+		System.out.println(count);
 	}
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
@@ -102,13 +111,23 @@ public class Game implements Drawable {
 		this.tick();
 	}
 	//Called by other collidables to see who is colliding with the frame
-	public static ArrayList<Collidable> getCollisions(Collidable init){
+	public ArrayList<Collidable> getCollisions(Collidable init){
 		ArrayList<Collidable> collisions = new ArrayList<Collidable>();
 		for (Collidable c : collidables){
 			if (c.isColliding(init)){
 				collisions.add(c);
 			}
+//			if (c instanceof Block){
+//				System.out.println(((Block) c).getBoundsArea());
+//			}
 		}
+//		System.out.println(collidables.size() + init.getClass().toString());
+//		System.out.println(collisions.size() + " " + collidables.size());
+//		if (collisions.size() > 50){
+//			System.out.println(init.getClass());
+//			Object o = null;
+//			o.toString();
+//		}
 		return collisions;
 	}
 	private void addObject(Object o){
@@ -140,14 +159,13 @@ public class Game implements Drawable {
 			allTanks.remove((Tank) o);
 		}
 	}
-	public static void addQueue(Object o){
+	public void addQueue(Object o){
 		addQue.add(o);
 	}
-	public static void removeQueue(Object o){
+	public void removeQueue(Object o){
 		removeQue.add(o);
 	}
-	public ArrayList<Drawable> getDrawables(){
-		ArrayList<Drawable> test = new ArrayList<Drawable>(drawables);
-		return test;
-	}
+//	public Packet getDrawables(){
+//		return new Packet(drawables);
+//	}
 }

@@ -85,7 +85,7 @@ public class BasicTurret extends Weapon {
 		if (canShoot()){
 			Random die = new Random();
 			return new BasicMissile(this.center,
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.spread + angle,this);
+					(die.nextInt(2)*2-1)*die.nextDouble()*this.spread + angle,this, this.getTank().getGame());
 		}
 		return null;
 	}

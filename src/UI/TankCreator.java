@@ -19,7 +19,7 @@ public class TankCreator extends JFrame{
 	public TankCreator(){
 		this.setSize(800,600);
 		jcc = new JColorChooser();
-		tank = new Tank(200,200,new ArrayList<Weapon>());
+		tank = new Tank(200,200,new ArrayList<Weapon>(), null);		//Need a pointer to game Glynn
 	}
 	
 	public void chooseColor(){

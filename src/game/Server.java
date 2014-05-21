@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import util.KeyInput;
@@ -36,11 +37,13 @@ public class Server implements ActionListener, Runnable {
 	private Game game;
 	private int serverindex = 0;
 	
+//	private JFrame frame;
+	
 	int test;
 	
 	public Server(){
 		allconnections = new ArrayList<Connection>();
-		ti = new Timer(170, this);
+		ti = new Timer(17, this);
 		serverThread = new Thread(this);
         try {
 			serversocket = new ServerSocket(serverport);

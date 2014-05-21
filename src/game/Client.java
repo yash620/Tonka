@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import util.Drawable;
 import util.KeyInput;
+import util.Packet;
 import weapon.BasicMissile;
 
 public class Client implements Runnable {
@@ -72,7 +73,8 @@ public class Client implements Runnable {
 	public void read(){
 		try {
 			Object o = clientIn.readUnshared();
-			drawables = (ArrayList<Drawable>) o;
+			drawables = ((Packet) o).drawables;
+			System.out.println("Recieved");
 			for (Drawable d : drawables){
 				if (d instanceof BasicMissile){
 					System.out.println(((BasicMissile)d).getVar());

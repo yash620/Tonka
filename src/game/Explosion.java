@@ -21,8 +21,9 @@ public class Explosion implements Drawable, Updatable, Serializable {
 	protected double xc, yc;
 	private double[][] places;
 	private double timelapse = .4;
+	private Game game;
 		
-	public Explosion(double x2, double y2, double size){
+	public Explosion(double x2, double y2, double size, Game game){
 		xc = x2;
 		yc = y2;
 		places = new double[2][32];
@@ -38,8 +39,9 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		isDone = false;
 		maxSize = size;
 		currSize = 0;
+		this.game = game;
 	}
-	public Explosion(double x2, double y2){
+	public Explosion(double x2, double y2, Game game){
 		xc = x2;
 		yc = y2;
 		places = new double[2][32];
@@ -55,8 +57,9 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		isDone = false;
 		maxSize = 30;
 		currSize = 0;
+		this.game = game;
 	}
-	public Explosion(Point2D center){
+	public Explosion(Point2D center, Game game){
 		xc = center.getX();
 		yc = center.getY();
 		places = new double[2][32];
@@ -72,12 +75,13 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		isDone = false;
 		maxSize = 30;
 		currSize = 0;
+		this.game = game;
 	}
 	@Override
 	public void update(){
 		timeSinceStart = ((double)System.currentTimeMillis())/1000 - timeAtStart;
 		if (isDone){
-			Game.removeQueue(this);
+			game.removeQueue(this);
 		}
 	}
 	

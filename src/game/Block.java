@@ -14,32 +14,35 @@ import java.util.ArrayList;
 import util.Collidable;
 import util.Drawable;
 import util.SerialArea;
+import util.Updatable;
 import weapon.Projectile;
 
-public class Block implements Drawable, Collidable, Serializable {
+public class Block implements Drawable, Collidable, Updatable, Serializable {
 	private Color color;
 	private SerialArea blockShape;
 	private boolean destructible;
+	private Game game;
 
-	public Block(Shape s, boolean b, Color c){
+	public Block(Shape s, boolean b, Color c, Game g){
 		color = c;
 		blockShape = new SerialArea(s);
 		destructible = b;
+		this.game = g;
 	}
 	
-	public Block(Shape s, boolean b){
-		this(s,b,Color.black);
+	public Block(Shape s, boolean b, Game g){
+		this(s,b,Color.black, g);
 	}
 	
-	public Block(Shape s) {
-		this(s,true);
+	public Block(Shape s, Game g) {
+		this(s,true, g);
 	}
 
-	public Block() {
-		this(new Rectangle(600, 300, 50, 200));
+	public Block(Game g) {
+		this(new Rectangle(600, 300, 50, 200), g);
 	}
 
-	private double getBoundsArea() {
+	public double getBoundsArea() {
 		return blockShape.getBounds().getHeight()
 				* blockShape.getBounds().getWidth();
 	}
@@ -48,6 +51,8 @@ public class Block implements Drawable, Collidable, Serializable {
 	public void draw(Graphics2D g2) {
 		g2.setColor(color);
 		g2.fill(blockShape);
+		g2.setColor(Color.yellow);
+		g2.draw(getBoundingBox());
 	}
 
 	public Shape getShape() {
@@ -60,16 +65,16 @@ public class Block implements Drawable, Collidable, Serializable {
 			s.collision(this);
 			if(destructible){
 				Area projectile = new Area(((Projectile) s).getDestroyed());
-				Game.setTestDraw(projectile);
+				game.setTestDraw(projectile);
 				blockShape.subtract(projectile);
 				if (!blockShape.isSingular()) {
-					Game.removeQueue(this);
 					for (Block b : splitBlock()) {
-						Game.addQueue(b);
+						game.addQueue(b);
 					}
+					game.removeQueue(this);
 				}
 				if (blockShape.isEmpty() || this.getBoundsArea() < 25) {
-					Game.removeQueue(this);
+					game.removeQueue(this);
 				}
 			}
 		}
@@ -129,18 +134,26 @@ public class Block implements Drawable, Collidable, Serializable {
 						yArr[i] = yCoords.get(i).intValue();
 					}
 					Block addBlock = new Block((Shape) new Polygon(xArr, yArr,
-							xCoords.size()));
-					if (addBlock.getBoundsArea() > 25) {
+							xCoords.size()), game);
+					if (addBlock.getBoundsArea() > 50) {
 						newBlocks.add(addBlock);
 					}
-					xCoords.clear();
-					yCoords.clear();
 				}
+				xCoords.clear();
+				yCoords.clear();
 			} else {
 				xCoords.add((int) p[1]);
 				yCoords.add((int) p[2]);
 			}
 		}
 		return newBlocks;
+	}
+
+	@Override
+	public void update() {
+//		System.out.println(getBoundsArea());
+		if (getBoundsArea() < 25){
+			game.removeQueue(this);
+		}
 	}
 }

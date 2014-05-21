@@ -19,12 +19,12 @@ public class BasicMissile extends Projectile{
 	private int timerDelay;
 	private final double deltax, deltay;
 	
-	public BasicMissile(Point2D center, double theta, Weapon weapon){
-		this((int)center.getX(), (int)center.getY(), 9, 10, theta, weapon);
+	public BasicMissile(Point2D center, double theta, Weapon weapon, Game game){
+		this((int)center.getX(), (int)center.getY(), 9, 10, theta, weapon, game);
 	}
 
-	public BasicMissile(int xstart, int ystart, double velocity, double damage, double theta, Weapon weapon){
-		super(new Polygon(), xstart, ystart, velocity, damage, theta);
+	public BasicMissile(int xstart, int ystart, double velocity, double damage, double theta, Weapon weapon, Game game){
+		super(new Polygon(), xstart, ystart, velocity, damage, theta, game);
 		int[] x = new int[3];
 		int[] y = new int[3];
 		x[0] = xstart+15;
@@ -46,7 +46,7 @@ public class BasicMissile extends Projectile{
 		double xcenter = center.getX() + deltax;
 		double ycenter = center.getY() + deltay;
 		center.setLocation(xcenter, ycenter);
-		for (Collidable c : Game.getCollisions(this)){
+		for (Collidable c : game.getCollisions(this)){
 			c.collision(this);
 		}
 	}
@@ -85,12 +85,12 @@ public class BasicMissile extends Projectile{
 				timerDelay = time;
 			}
 			if (timerDelay + 1 <= time){
-				Game.removeQueue(this);
+				game.removeQueue(this);
 			}
 		}
 		if (c instanceof Tank && !c.equals(this.getWeapon().getTank())){
 			((Tank) c).setHp((int) (((Tank)c).getHp()-this.damage));
-			Game.removeQueue(this);
+			game.removeQueue(this);
 		}
 	}
 

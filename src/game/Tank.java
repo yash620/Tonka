@@ -26,8 +26,9 @@ public class Tank implements Drawable, Collidable, Serializable {
 	private double xcenter;
 	private double ycenter;
 	private Color color;
+	private Game game;
 	
-	public Tank(double x, double y, ArrayList<Weapon> weapons){
+	public Tank(double x, double y, ArrayList<Weapon> weapons, Game game){
 		this.xcenter = x;
 		this.ycenter = y;
 		this.myWeapons = weapons;
@@ -36,6 +37,7 @@ public class Tank implements Drawable, Collidable, Serializable {
 		this.turnSpeed = 5;
 		setColor(Color.green);
 		tankShape = new Rectangle((int)x-20, (int)y-10, 35,20);
+		this.game = game;
 	}
 	
 	@Override
@@ -58,7 +60,7 @@ public class Tank implements Drawable, Collidable, Serializable {
 	public void shoot(Point shootPoint){
 		for (Weapon w : myWeapons){
 			if (w.canShoot()){
-				Game.addQueue(w.shoot());
+				game.addQueue(w.shoot());
 			}
 		}
 	}
@@ -78,7 +80,7 @@ public class Tank implements Drawable, Collidable, Serializable {
 		tankShape = Transform.transform(tankShape, xvel, yvel,
 				Math.toRadians(tgtTheta-getTheta()), xcenter, ycenter);
 		setTheta(tgtTheta);
-		ArrayList<Collidable> collisions = Game.getCollisions(this);
+		ArrayList<Collidable> collisions = game.getCollisions(this);
 		boolean blocked = false;
 		for (Collidable c : collisions){
 			c.collision(this);
@@ -124,8 +126,8 @@ public class Tank implements Drawable, Collidable, Serializable {
 			c.collision(this);
 		}
 		if(getHp() <= 0){
-			Game.removeQueue(this);
-			Game.addQueue(new Explosion(getCenter()));
+			game.removeQueue(this);
+			game.addQueue(new Explosion(getCenter(), game));
 		}
 	}
 
@@ -164,5 +166,9 @@ public class Tank implements Drawable, Collidable, Serializable {
 	
 	public void setColor(Color c){
 		color = c;
+	}
+	
+	public Game getGame(){
+		return game;
 	}
 }
