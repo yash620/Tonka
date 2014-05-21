@@ -51,8 +51,6 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 	public void draw(Graphics2D g2) {
 		g2.setColor(color);
 		g2.fill(blockShape);
-		g2.setColor(Color.yellow);
-		g2.draw(getBoundingBox());
 	}
 
 	public Shape getShape() {
@@ -65,17 +63,7 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 			s.collision(this);
 			if(destructible){
 				Area projectile = new Area(((Projectile) s).getDestroyed());
-				game.setTestDraw(projectile);
 				blockShape.subtract(projectile);
-				if (!blockShape.isSingular()) {
-					for (Block b : splitBlock()) {
-						game.addQueue(b);
-					}
-					game.removeQueue(this);
-				}
-				if (blockShape.isEmpty() || this.getBoundsArea() < 25) {
-					game.removeQueue(this);
-				}
 			}
 		}
 	}
@@ -151,8 +139,13 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 
 	@Override
 	public void update() {
-//		System.out.println(getBoundsArea());
-		if (getBoundsArea() < 25){
+		if (!blockShape.isSingular()) {
+			for (Block b : splitBlock()) {
+				game.addQueue(b);
+			}
+			game.removeQueue(this);
+		}
+		if (blockShape.isEmpty() || this.getBoundsArea() < 25) {
 			game.removeQueue(this);
 		}
 	}

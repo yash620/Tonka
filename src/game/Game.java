@@ -4,18 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Shape;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import map.Map;
-
 import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
-import util.Packet;
 import util.Updatable;
-import weapon.BasicMissile;
 import weapon.BasicTurret;
 import weapon.Weapon;
 
@@ -43,7 +39,7 @@ public class Game implements Drawable {
 		playerTanks = new ArrayList<Tank>();
 		removeQue = new HashSet<Object>();
 		addQue = new HashSet<Object>();
-		map = new Map();
+		map = new Map(this);
 		map.basicMap();
 		for(Block b: map.showBlocks()){
 			addObject(b);
@@ -97,13 +93,6 @@ public class Game implements Drawable {
 	public void update(int down, int right, Point clickpoint, boolean shoot){
 		playerTanks.get(0).movement(down, right, clickpoint, shoot);
 		this.tick();
-		int count = 0;
-		for (Collidable c : collidables){
-			if (c instanceof Block){
-				count++;
-			}
-		}
-		System.out.println(count);
 	}
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
@@ -117,17 +106,7 @@ public class Game implements Drawable {
 			if (c.isColliding(init)){
 				collisions.add(c);
 			}
-//			if (c instanceof Block){
-//				System.out.println(((Block) c).getBoundsArea());
-//			}
 		}
-//		System.out.println(collidables.size() + init.getClass().toString());
-//		System.out.println(collisions.size() + " " + collidables.size());
-//		if (collisions.size() > 50){
-//			System.out.println(init.getClass());
-//			Object o = null;
-//			o.toString();
-//		}
 		return collisions;
 	}
 	private void addObject(Object o){

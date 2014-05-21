@@ -3,8 +3,6 @@ package game;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -13,13 +11,10 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import util.KeyInput;
-import util.Sendable;
 
 public class Server implements ActionListener, Runnable {
 	
@@ -48,7 +43,6 @@ public class Server implements ActionListener, Runnable {
         try {
 			serversocket = new ServerSocket(serverport);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -158,11 +152,11 @@ class Connection implements Runnable {
 	}
 	
 	public void send(Game game){
-		try {
-			objectOut.writeUnshared(game.getDrawables());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			objectOut.writeUnshared(game.getDrawables());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public int getIndex(){

@@ -1,8 +1,5 @@
 package game;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,9 +7,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import util.Drawable;
 import util.KeyInput;

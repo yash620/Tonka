@@ -143,7 +143,7 @@ public class SinglePlayer {
 
 		@Override
 		public void mouseDragged(MouseEvent arg0) {
-
+			clickpoint = arg0.getPoint();
 		}
 
 		@Override

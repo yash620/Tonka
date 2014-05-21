@@ -19,7 +19,6 @@ import javax.swing.Timer;
 
 import util.Drawable;
 import util.KeyInput;
-import weapon.BasicMissile;
 
 public class ClientFrame {
 	public static void main(String[] args) {

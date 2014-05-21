@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import java.util.HashMap;
 
 import util.ColorList;
 import util.Drawable;
@@ -15,9 +14,9 @@ public class Explosion implements Drawable, Updatable, Serializable {
 	private double timeAtStart;
 	private double timeSinceStart;
 	private boolean isDone;
-	private boolean chained;
+//	private boolean chained;
 	private double maxSize;
-	private double currSize;
+//	private double currSize;
 	protected double xc, yc;
 	private double[][] places;
 	private double timelapse = .4;
@@ -35,10 +34,10 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		}
 		timeAtStart = ((double)System.currentTimeMillis())/1000;
 		timeSinceStart = 0;
-		chained = false;
+//		chained = false;
 		isDone = false;
 		maxSize = size;
-		currSize = 0;
+//		currSize = 0;
 		this.game = game;
 	}
 	public Explosion(double x2, double y2, Game game){
@@ -53,10 +52,10 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		}
 		timeAtStart = ((double)System.currentTimeMillis())/1000;
 		timeSinceStart = 0;
-		chained = false;
+//		chained = false;
 		isDone = false;
 		maxSize = 30;
-		currSize = 0;
+//		currSize = 0;
 		this.game = game;
 	}
 	public Explosion(Point2D center, Game game){
@@ -71,10 +70,10 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		}
 		timeAtStart = ((double)System.currentTimeMillis())/1000;
 		timeSinceStart = 0;
-		chained = false;
+//		chained = false;
 		isDone = false;
 		maxSize = 30;
-		currSize = 0;
+//		currSize = 0;
 		this.game = game;
 	}
 	@Override
