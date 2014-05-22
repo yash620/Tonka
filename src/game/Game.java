@@ -47,13 +47,14 @@ public class Game implements Drawable {
 		//addObject(map.showBlocks());
 
 		for (int i = 0;i<playerNum;i++){
-			ArrayList<Weapon> weapon = new ArrayList<Weapon>();
-			Tank t = new Tank(100,100, weapon, this);
-			weapon.add(new BasicTurret(t));
-			playerTanks.add(t);
+			Tank t = new Tank(100,100, this);
+			t.addWeapon(new BasicTurret(t));
 			addObject(t);
 			addObject(new Block(this));
-			addObject(new Tank(150,150, weapon, this));
+			Tank enemy = new Tank(150,150, this);
+			enemy.addWeapon(new BasicTurret(enemy));
+			enemy.addAI(new AI(enemy, this));
+			addObject(enemy);
 		}
 	}
 	
@@ -96,7 +97,7 @@ public class Game implements Drawable {
 	}
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
-		playerTanks.get(player).movement(i.getDown(), i.getRight(), i.getClickPoint(), i.isShoot());
+		playerTanks.get(player).movement(i);
 		this.tick();
 	}
 	//Called by other collidables to see who is colliding with the frame
@@ -121,6 +122,9 @@ public class Game implements Drawable {
 		}
 		if (o instanceof Tank){
 			allTanks.add((Tank) o);
+			if (!((Tank)o).isAI()){
+				playerTanks.add((Tank) o);
+			}
 		}
 	}
 	
@@ -136,6 +140,7 @@ public class Game implements Drawable {
 		}
 		if (o instanceof Tank){
 			allTanks.remove((Tank) o);
+			playerTanks.remove((Tank) o);
 		}
 	}
 	public void addQueue(Object o){
@@ -143,6 +148,10 @@ public class Game implements Drawable {
 	}
 	public void removeQueue(Object o){
 		removeQue.add(o);
+	}
+	
+	public ArrayList<Tank> getPlayerTanks(){
+		return new ArrayList<Tank>(playerTanks);
 	}
 //	public Packet getDrawables(){
 //		return new Packet(drawables);

@@ -9,23 +9,27 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
+
+import util.Timer;
+import util.Timer.Action;
 
 public class BasicTurret extends Weapon {
 	private AffineTransform old;
-			
+	private HashSet<Timer> allTimers;
 	public BasicTurret(Tank t){
-		this.setTank(t);
-		this.setAmmo(5);
-		this.setCenter(t.getCenter());
-		this.setTurnSpeed(3);
-		this.setSpread(2);
+		super(t, 3, t.getCenter(), 5, 10, 2);
+		this.setCanFire(true);
 		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
 		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
 		setWeaponShape(new Polygon(x, y, 9));
 		//Rotate it to its initial location
 		setWeaponShape(Transform.transform(getWeaponShape(), t.getCenter().getX(), t.getCenter().getY(), Math.toRadians(-90), t.getCenter().getX(), t.getCenter().getY()));
 		old = new AffineTransform();
+		allTimers = new HashSet<Timer>();
 	}
 
 	@Override
@@ -46,7 +50,23 @@ public class BasicTurret extends Weapon {
 	}
 	@Override
 	public void update(){
-		replenishAmmo();
+		Iterator<Timer> iter = allTimers.iterator();
+		while (iter.hasNext()){
+			Action a = iter.next().tick();
+			if (a == null){
+				continue;
+			}
+			if (a == Action.AMMO){
+				this.replenishAmmo();
+			}
+			if (a == Action.FIRE) {
+				this.setCanFire(true);
+			}
+			if (a == Action.SPREAD){
+				this.updateSpread();
+			}
+			iter.remove();
+		}
 		int diffangle = AngleMath.adjustAngle(getTgtAngle() - getAngle());
 //		double dtheta = 0;
 		if (diffangle > 0){
@@ -71,10 +91,6 @@ public class BasicTurret extends Weapon {
 		setWeaponShape(Transform.transform(getWeaponShape(), deltax, deltay, 0,
 				getCenter().getX(), getCenter().getY()));
 	}
-	
-	private void replenishAmmo(){
-		
-	}
 
 //	private Point getProjectileSpawn() {
 //		return new Point((int)(15 * Math.cos(Math.toRadians(angle+90)))+center.x, (int)(15*Math.sin(Math.toRadians(angle+90)))+center.y);
@@ -83,6 +99,8 @@ public class BasicTurret extends Weapon {
 	@Override
 	public Projectile shoot() {
 		if (canShoot()){
+			this.setCanFire(false);
+			allTimers.add(new Timer((int) this.getFirerate(), Action.FIRE));
 			Random die = new Random();
 			return new BasicMissile(this.getCenter(),
 					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(),this, this.getTank().getGame());
@@ -91,7 +109,12 @@ public class BasicTurret extends Weapon {
 	}
 
 	@Override
-	public boolean canShoot() {
-		return getAmmo() > 0;
+	public void replenishAmmo() {
+		this.setAmmo(5);
+	}
+
+	@Override
+	public void updateSpread() {
+		
 	}
 }
