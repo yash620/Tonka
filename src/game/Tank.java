@@ -164,11 +164,23 @@ public class Tank implements Drawable, Collidable, Serializable {
 		this.hp = hp;
 	}
 	
+	public Color getColor(){
+		return color;
+	}
+	
 	public void setColor(Color c){
 		color = c;
 	}
 	
 	public Game getGame(){
 		return game;
+	}
+	
+	public void addWeapon(Weapon w){
+		this.myWeapons.add(w);
+	}
+	
+	public void removeWeapon(Weapon w){
+		this.myWeapons.remove(w);
 	}
 }
