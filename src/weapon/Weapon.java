@@ -17,10 +17,23 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	private int angle;
 	private int tgtAngle;
 	private Tank t;
-	private Projectile projectile;
 	private int ammo;
 	private double firerate;
 	private double spread;
+	private boolean canFire;
+	
+	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
+			double spread){
+		this.t = t;
+		this.turnSpeed = turnSpeed;
+		this.center = center;
+		this.ammo = ammo;
+		this.firerate = firerate;
+		this.spread = spread;
+	}
+	
+	public abstract void replenishAmmo();
+	public abstract void updateSpread();
 
 	//Called whenever the timer tics
 	@Override
@@ -29,25 +42,25 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	//Sets the target angle of the weapon
 	public abstract void clickPoint(Point tgt);
 
-	//Returns the projectile that the weapon shoots
-	public Projectile shoot(){
-		return projectile;
-	}
+//	//Returns the projectile that the weapon shoots
+	public abstract Projectile shoot();
 	
 	//Returns if the weapon can shoot or not
-	public abstract boolean canShoot();
+	public boolean canShoot() {
+		return this.canFire;
+	}
 	public Tank getTank(){
 		return this.t;
 	}
 	public void setTank(Tank t) {
 		this.t = t;
 	}
-	public Projectile getProjectile() {
-		return projectile;
-	}
-	public void setProjectile(Projectile projectile) {
-		this.projectile = projectile;
-	}
+//	public Projectile getProjectile() {
+//		return projectile;
+//	}
+//	public void setProjectile(Projectile projectile) {
+//		this.projectile = projectile;
+//	}
 
 	public Shape getWeaponShape() {
 		return weaponShape;
@@ -111,5 +124,9 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 
 	public void setSpread(double spread) {
 		this.spread = spread;
+	}
+
+	public void setCanFire(boolean canFire) {
+		this.canFire = canFire;
 	}
 }

@@ -13,10 +13,12 @@ import java.util.ArrayList;
 
 import util.Collidable;
 import util.Drawable;
+import util.KeyInput;
+import util.Updatable;
 import weapon.Projectile;
 import weapon.Weapon;
 
-public class Tank implements Drawable, Collidable, Serializable {
+public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	private int hp;
 	private double speed;
 	private int turnSpeed;
@@ -26,7 +28,12 @@ public class Tank implements Drawable, Collidable, Serializable {
 	private double xcenter;
 	private double ycenter;
 	private Color color;
+	private AI ai;
 	private Game game;
+	
+	public Tank(double x, double y, Game game){
+		this(x,y,new ArrayList<Weapon>(), game);
+	}
 	
 	public Tank(double x, double y, ArrayList<Weapon> weapons, Game game){
 		this.xcenter = x;
@@ -57,12 +64,20 @@ public class Tank implements Drawable, Collidable, Serializable {
 		}
 	}
 	
+	public void addWeapon(Weapon w){
+		myWeapons.add(w);
+	}
+	
 	public void shoot(Point shootPoint){
 		for (Weapon w : myWeapons){
 			if (w.canShoot()){
 				game.addQueue(w.shoot());
 			}
 		}
+	}
+	
+	public void movement(KeyInput i){
+		this.movement(i.getDown(), i.getRight(), i.getClickPoint(), i.isShoot());
 	}
 	
 	public void movement(int down, int right, Point clickpoint, boolean shoot){
@@ -116,7 +131,7 @@ public class Tank implements Drawable, Collidable, Serializable {
 		return theta;
 	}
 
-	public void setTheta(int theta) {	
+	public void setTheta(int theta) {
 		this.theta = (int)AngleMath.adjustAngle(theta);
 	}
 
@@ -139,6 +154,14 @@ public class Tank implements Drawable, Collidable, Serializable {
 	@Override
 	public Shape getBoundingBox() {
 		return this.tankShape.getBounds();
+	}
+	
+	public void addAI(AI ai){
+		this.ai = ai;
+	}
+	
+	public boolean isAI(){
+		return ai != null;
 	}
 
 	@Override
@@ -175,12 +198,17 @@ public class Tank implements Drawable, Collidable, Serializable {
 	public Game getGame(){
 		return game;
 	}
-	
-	public void addWeapon(Weapon w){
-		this.myWeapons.add(w);
-	}
+
 	
 	public void removeWeapon(Weapon w){
 		this.myWeapons.remove(w);
 	}
+	
+	@Override
+	public void update() {
+		if (this.isAI()){
+			movement(ai.getInputs());
+		}
+	}
 }
+
