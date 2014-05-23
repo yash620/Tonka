@@ -152,11 +152,16 @@ public class Game implements Drawable {
 	public void removeQueue(Object o){
 		removeQue.add(o);
 	}
-	
-	public ArrayList<Tank> getPlayerTanks(){
-		return new ArrayList<Tank>(playerTanks);
+	public ArrayList<Tank> getTanks(){
+		return new ArrayList<Tank>(allTanks);
 	}
-//	public Packet getDrawables(){
-//		return new Packet(drawables);
-//	}
+	public ArrayList<Block> getBlocks(){
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		for (Collidable c : collidables){
+			if (c instanceof Block){
+				blocks.add((Block) c);
+			}
+		}
+		return blocks;
+	}
 }

@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -69,8 +70,12 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 	}
 
 	@Override
-	public Shape getBoundingBox() {
+	public Rectangle getBoundingBox() {
 		return blockShape.getBounds();
+	}
+	
+	public Point getCenter(){
+		return new Point((int)getBoundingBox().getCenterX(), (int) getBoundingBox().getCenterY());
 	}
 
 	@Override

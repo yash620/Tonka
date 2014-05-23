@@ -21,6 +21,7 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	private double firerate;
 	private double spread;
 	private boolean canFire;
+	private int cost;
 	
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
 			double spread){
@@ -47,7 +48,7 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	
 	//Returns if the weapon can shoot or not
 	public boolean canShoot() {
-		return this.canFire;
+		return this.canFire && this.ammo > 0;
 	}
 	public Tank getTank(){
 		return this.t;
@@ -128,5 +129,9 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 
 	public void setCanFire(boolean canFire) {
 		this.canFire = canFire;
+	}
+	
+	public int getCost(){
+		return cost;
 	}
 }

@@ -152,7 +152,7 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	}
 
 	@Override
-	public Shape getBoundingBox() {
+	public Rectangle getBoundingBox() {
 		return this.tankShape.getBounds();
 	}
 	
@@ -183,8 +183,8 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		return hp;
 	}
 	
-	public void setHp(int hp){
-		this.hp = hp;
+	public void takeDamage(int dmg){
+		this.hp -= dmg;
 	}
 	
 	public Color getColor(){

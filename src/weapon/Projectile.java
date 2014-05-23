@@ -3,6 +3,7 @@ package weapon;
 import game.Game;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
@@ -65,7 +66,7 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 
 	//The bounding box of the missile, used for collision checking
 	@Override
-	public Shape getBoundingBox(){
+	public Rectangle getBoundingBox(){
 		return this.projectileShape.getBounds();
 	}
 }
