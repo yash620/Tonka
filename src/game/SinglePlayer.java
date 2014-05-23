@@ -109,7 +109,11 @@ public class SinglePlayer {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			if (game.isFinished() == false){
 			game.update(down, right, clickpoint, shoot);
+			} else {
+				game = new Game(1);
+			}
 			frame.repaint();
 		}
 

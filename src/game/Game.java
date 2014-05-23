@@ -53,10 +53,12 @@ public class Game implements Drawable {
 			t.addWeapon(new BasicTurret(t));
 			addObject(t);
 			addObject(new Block(this));
-			Tank enemy = new Tank(150,150, this);
-			enemy.addWeapon(new BasicTurret(enemy));
-			enemy.addAI(new AI(enemy, this));
-			addObject(enemy);
+			for (int j = 0;j<5;j++){
+				Tank enemy = new Tank(1000,150 + 150*j, this);
+				enemy.addWeapon(new BasicTurret(enemy));
+				enemy.addAI(new AI(enemy, this));
+				addObject(enemy);
+			}
 		}
 	}
 	
@@ -71,7 +73,14 @@ public class Game implements Drawable {
 		g2.setColor(Color.black);
 		for (Drawable d : drawables){
 			d.draw(g2);
-//			if(d instanceof Block)
+//			if(d instanceof Block){
+//				Block b = (Block)d;
+//				g2.setColor(Color.red);
+//				if (allTanks.size() == 1){
+//					g2.drawString(Double.toString(AI.distToRect(b.getBoundingBox(),
+//							allTanks.get(1).getCenter())), (int)b.getCenter().getX(),(int)b.getCenter().getY());
+//				}
+//			}
 		}
 		if (test != null){
 			g2.draw(test);
@@ -92,10 +101,21 @@ public class Game implements Drawable {
 			removeObject(o);
 		}
 		removeQue.clear();
+		if (allTanks.size() < 5){
+			Tank enemy = new Tank(1000,(Math.random()*500) + 150, this);
+			enemy.addWeapon(new BasicTurret(enemy));
+			enemy.addAI(new AI(enemy, this));
+			addObject(enemy);
+		}
+	}
+	public boolean isFinished(){
+		return playerTanks.size() == 0;
 	}
 	//Single player update
 	public void update(int down, int right, Point clickpoint, boolean shoot){
-		playerTanks.get(0).movement(down, right, clickpoint, shoot);
+		if (isFinished() == false){
+			playerTanks.get(0).movement(down, right, clickpoint, shoot);
+		}
 		this.tick();
 	}
 	//MultiPlayer update

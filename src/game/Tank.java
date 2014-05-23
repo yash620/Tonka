@@ -123,10 +123,6 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		return getTheta() + right * turnSpeed;
 	}
 
-	public Point2D.Double getCenter(){
-		return new Point2D.Double(xcenter, ycenter);
-	}
-
 	public int getTheta() {
 		return theta;
 	}
@@ -162,6 +158,10 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	
 	public boolean isAI(){
 		return ai != null;
+	}
+
+	public Point2D.Double getCenter(){
+		return new Point2D.Double(xcenter, ycenter);
 	}
 
 	@Override
