@@ -54,8 +54,11 @@ public class SinglePlayer {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			game.draw(g2);
+			g2.drawString(cp.toString(), 100, 100);
 		}
 	}
+	
+	public Point cp = new Point();
 
 	public class Listener implements KeyListener, ActionListener,
 			MouseListener, MouseMotionListener {
@@ -87,6 +90,9 @@ public class SinglePlayer {
 				} else {
 					ti.start();
 				}
+			}
+			if (arg0.getKeyCode() == KeyEvent.VK_R){
+				game = new Game(1);
 			}
 		}
 
@@ -153,6 +159,7 @@ public class SinglePlayer {
 		@Override
 		public void mouseMoved(MouseEvent arg0) {
 			clickpoint = arg0.getPoint();
+			cp = arg0.getPoint();
 		}
 
 	}

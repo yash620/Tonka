@@ -52,12 +52,18 @@ public class Game implements Drawable {
 			Tank t = new Tank(100,100, this);
 			t.addWeapon(new BasicTurret(t));
 			addObject(t);
-			addObject(new Block(this));
-			for (int j = 0;j<5;j++){
-				Tank enemy = new Tank(1000,150 + 150*j, this);
+			Block b = new Block(this);
+			addObject(b);
+			for (int j = 3;j<13;j++){
+				for (int k = 1;k<13;k++){
+				Tank enemy = new Tank(k*100, 50*j, this);
 				enemy.addWeapon(new BasicTurret(enemy));
 				enemy.addAI(new AI(enemy, this));
-				addObject(enemy);
+				if (!enemy.isColliding(b) || !enemy.isColliding(t)){
+					addObject(enemy);
+
+				}
+				}
 			}
 		}
 	}
@@ -101,12 +107,12 @@ public class Game implements Drawable {
 			removeObject(o);
 		}
 		removeQue.clear();
-		if (allTanks.size() < 5){
-			Tank enemy = new Tank(1000,(Math.random()*500) + 150, this);
-			enemy.addWeapon(new BasicTurret(enemy));
-			enemy.addAI(new AI(enemy, this));
-			addObject(enemy);
-		}
+//		if (allTanks.size() < 5){
+//			Tank enemy = new Tank(1000,(Math.random()*500) + 150, this);
+//			enemy.addWeapon(new BasicTurret(enemy));
+//			enemy.addAI(new AI(enemy, this));
+//			addObject(enemy);
+//		}
 	}
 	public boolean isFinished(){
 		return playerTanks.size() == 0;

@@ -12,12 +12,15 @@ import java.util.Iterator;
 import util.KeyInput;
 
 public class AI {
-	private Tank t;
+	private Tank tank;
 	private Game game;
 	private int right;
+	private int down = 1;
+	private Point2D prevCenter;
 	public AI(Tank t, Game g){
-		this.t = t;
+		this.tank = t;
 		this.game = g;
+		this.prevCenter = tank.getCenter();
 	}
 	
 	public KeyInput getInputs(){
@@ -26,7 +29,7 @@ public class AI {
 		int minDist = Integer.MAX_VALUE;
 		for (Block b : blocks){
 			Rectangle bounds = b.getBoundingBox();
-			int dist = (int) AI.distToRect(bounds, t.getCenter());
+			int dist = (int) AI.distToRect(bounds, tank.getCenter());
 			if (dist < minDist){
 				minDist = dist;
 			}
@@ -40,7 +43,13 @@ public class AI {
 		} else if (minDist >= 100) {
 			right = 0;
 		}
-		return new KeyInput(1, right, new Point((int)players.get(0).getCenter().getX(), (int)players.get(0).getCenter().getY()), true);
+		if (down != 0 && this.prevCenter.equals(tank.getCenter())){
+			down *= -1;
+			right *= -1;
+		}
+		this.prevCenter = tank.getCenter();
+		return new KeyInput(down, right, new Point((int)players.get(0).getCenter().getX(),
+				(int)players.get(0).getCenter().getY()), false);
 	}
 	
 	public ArrayList<Block> getBlocks(){
@@ -53,6 +62,7 @@ public class AI {
 			}
 			
 		});
+		Collections.reverse(blocks);
 		return blocks;
 	}
 	
@@ -72,7 +82,28 @@ public class AI {
 			}
 			
 		});
+		Collections.reverse(enemies);
 		return enemies;
+	}
+	
+	public ArrayList<Tank> getFriendlyTanks(){
+		ArrayList<Tank> tanks = game.getTanks();
+		ArrayList<Tank> friendlies = new ArrayList<Tank>();
+		for (Tank t : tanks){
+			if (t.isAI() && t != this.tank){
+				friendlies.add(t);
+			}
+		}
+		Collections.sort(friendlies, new Comparator<Tank>(){
+			
+			@Override
+			public int compare(Tank o1, Tank o2) {
+				return (int) o1.getCenter().distanceSq(o2.getCenter());
+			}
+			
+		});
+		Collections.reverse(friendlies);
+		return friendlies;
 	}
 	
 	public static double distToRect(Rectangle rect, Point2D p2){

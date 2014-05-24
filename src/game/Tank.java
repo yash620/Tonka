@@ -210,5 +210,9 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 			movement(ai.getInputs());
 		}
 	}
+	@Override
+	public String toString(){
+		return this.getCenter().toString();
+	}
 }
 
