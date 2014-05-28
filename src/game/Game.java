@@ -47,24 +47,35 @@ public class Game implements Drawable {
 		}
 		//addObject(map.showBlocks());
 
+		Block b = new Block(this);
+		addObject(b);
+		
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
 			t.addWeapon(new BasicTurret(t));
 			addObject(t);
-			Block b = new Block(this);
-			addObject(b);
-			for (int j = 3;j<13;j++){
-				for (int k = 1;k<13;k++){
-				Tank enemy = new Tank(k*100, 50*j, this);
-				enemy.addWeapon(new BasicTurret(enemy));
-				enemy.addAI(new AI(enemy, this));
-				if (!enemy.isColliding(b) || !enemy.isColliding(t)){
-					addObject(enemy);
-
-				}
+//			for (int j = 3;j<13;j++){
+//				for (int k = 1;k<13;k++){
+//				Tank enemy = new Tank(k*100, 50*j, this);
+//				enemy.addWeapon(new BasicTurret(enemy));
+//				enemy.addAI(new AI(enemy, this));
+//				if (!enemy.isColliding(b) && !enemy.isColliding(t)){
+//					addObject(enemy);
+//				}
+//				}
+//			}
+		}
+		for (int i = 1;i<7;i++){
+			Tank enemy = new Tank(1000, 100*i, this);
+			enemy.addWeapon(new BasicTurret(enemy));
+			enemy.addAI(new AI(enemy, this));
+			for (Collidable c : collidables){
+				if (enemy.isColliding(c) || enemy.isColliding(c)){
+					continue;
 				}
 			}
+			this.addQueue(enemy);
 		}
 	}
 	
@@ -83,8 +94,8 @@ public class Game implements Drawable {
 //				Block b = (Block)d;
 //				g2.setColor(Color.red);
 //				if (allTanks.size() == 1){
-//					g2.drawString(Double.toString(AI.distToRect(b.getBoundingBox(),
-//							allTanks.get(1).getCenter())), (int)b.getCenter().getX(),(int)b.getCenter().getY());
+//					g2.drawString(Double.toString(AI.angleToRect(b.getBoundingBox(),
+//							allTanks.get(0).getCenter())), (int)b.getCenter().getX(),(int)b.getCenter().getY());
 //				}
 //			}
 		}
