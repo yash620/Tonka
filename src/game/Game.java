@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import map.Map;
@@ -14,6 +16,7 @@ import util.Drawable;
 import util.KeyInput;
 import util.Updatable;
 import weapon.BasicTurret;
+import weapon.Shotgun;
 import weapon.Weapon;
 
 public class Game implements Drawable {
@@ -53,7 +56,7 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-			t.addWeapon(new BasicTurret(t));
+			t.addWeapon(new Shotgun(t));
 			addObject(t);
 //			for (int j = 3;j<13;j++){
 //				for (int k = 1;k<13;k++){
@@ -184,7 +187,11 @@ public class Game implements Drawable {
 		}
 	}
 	public void addQueue(Object o){
-		addQue.add(o);
+		if (o instanceof Collection){
+			addQue.addAll((Collection<? extends Object>) o);
+		} else {
+			addQue.add(o);
+		}
 	}
 	public void removeQueue(Object o){
 		removeQue.add(o);
