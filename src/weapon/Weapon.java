@@ -21,6 +21,7 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	private double firerate;
 	private double spread;
 	private boolean canFire;
+	private int cost;
 	
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
 			double spread){
