@@ -35,7 +35,7 @@ public class Shotgun extends Weapon {
 			}
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>();
-			for (int i = -3;i<=3;i++){
+			for (int i = -2;i<=2;i++){
 				missiles.add(new BasicMissile(this.getCenter(),
 						(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle()+(i*5),this, this.getTank().getGame()));
 			}
@@ -46,7 +46,7 @@ public class Shotgun extends Weapon {
 	}
 	@Override
 	public void replenishAmmo() {
-		this.setAmmo(5);
+		this.setAmmo(2);
 	}
 	@Override
 	public void updateSpread() {
