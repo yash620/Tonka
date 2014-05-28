@@ -1,10 +1,12 @@
 package weapon;
 
 import game.Block;
+import game.Explosion;
 import game.Game;
 import game.Tank;
 import game.Transform;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
@@ -52,6 +54,7 @@ public class BasicMissile extends Projectile{
 	}
 	@Override
 	public void draw(Graphics2D g2) {
+		g2.setColor(Color.black);
 		g2.draw(getProjectileShape());
 //		g2.drawOval((int)this.center.getX()-5, (int)this.center.getY()-5, 10, 10);
 	}
@@ -84,11 +87,13 @@ public class BasicMissile extends Projectile{
 			}
 			if (timerDelay + 1 <= time){
 				game.removeQueue(this);
+				game.addQueue(new Explosion(this.center, game));
 			}
 		}
 		if (c instanceof Tank && !c.equals(this.getWeapon().getTank())){
-			((Tank) c).setHp((int) (((Tank)c).getHp()-this.damage));
+			((Tank) c).takeDamage((int) this.damage);
 			game.removeQueue(this);
+			game.addQueue(new Explosion(this.center, game));
 		}
 	}
 

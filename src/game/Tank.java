@@ -62,6 +62,7 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		for (Weapon w : myWeapons){
 			w.draw(g2);
 		}
+		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
 	}
 	
 	public void addWeapon(Weapon w){
@@ -123,10 +124,6 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		return getTheta() + right * turnSpeed;
 	}
 
-	public Point2D.Double getCenter(){
-		return new Point2D.Double(xcenter, ycenter);
-	}
-
 	public int getTheta() {
 		return theta;
 	}
@@ -152,7 +149,7 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	}
 
 	@Override
-	public Shape getBoundingBox() {
+	public Rectangle getBoundingBox() {
 		return this.tankShape.getBounds();
 	}
 	
@@ -162,6 +159,10 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	
 	public boolean isAI(){
 		return ai != null;
+	}
+
+	public Point2D.Double getCenter(){
+		return new Point2D.Double(xcenter, ycenter);
 	}
 
 	@Override
@@ -183,8 +184,8 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		return hp;
 	}
 	
-	public void setHp(int hp){
-		this.hp = hp;
+	public void takeDamage(int dmg){
+		this.hp -= dmg;
 	}
 	
 	public Color getColor(){
@@ -209,6 +210,10 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		if (this.isAI()){
 			movement(ai.getInputs());
 		}
+	}
+	@Override
+	public String toString(){
+		return this.getCenter().toString();
 	}
 }
 

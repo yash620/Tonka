@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import map.Map;
@@ -14,6 +16,7 @@ import util.Drawable;
 import util.KeyInput;
 import util.Updatable;
 import weapon.BasicTurret;
+import weapon.Shotgun;
 import weapon.Weapon;
 
 public class Game implements Drawable {
@@ -47,16 +50,35 @@ public class Game implements Drawable {
 		}
 		//addObject(map.showBlocks());
 
+		Block b = new Block(this);
+		addObject(b);
+		
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-			t.addWeapon(new BasicTurret(t));
+			t.addWeapon(new Shotgun(t));
 			addObject(t);
-			addObject(new Block(this));
-			Tank enemy = new Tank(150,150, this);
+//			for (int j = 3;j<13;j++){
+//				for (int k = 1;k<13;k++){
+//				Tank enemy = new Tank(k*100, 50*j, this);
+//				enemy.addWeapon(new BasicTurret(enemy));
+//				enemy.addAI(new AI(enemy, this));
+//				if (!enemy.isColliding(b) && !enemy.isColliding(t)){
+//					addObject(enemy);
+//				}
+//				}
+//			}
+		}
+		for (int i = 1;i<7;i++){
+			Tank enemy = new Tank(1000, 100*i, this);
 			enemy.addWeapon(new BasicTurret(enemy));
 			enemy.addAI(new AI(enemy, this));
-			addObject(enemy);
+			for (Collidable c : collidables){
+				if (enemy.isColliding(c) || enemy.isColliding(c)){
+					continue;
+				}
+			}
+			this.addQueue(enemy);
 		}
 	}
 	
@@ -71,7 +93,14 @@ public class Game implements Drawable {
 		g2.setColor(Color.black);
 		for (Drawable d : drawables){
 			d.draw(g2);
-//			if(d instanceof Block)
+//			if(d instanceof Block){
+//				Block b = (Block)d;
+//				g2.setColor(Color.red);
+//				if (allTanks.size() == 1){
+//					g2.drawString(Double.toString(AI.angleToRect(b.getBoundingBox(),
+//							allTanks.get(0).getCenter())), (int)b.getCenter().getX(),(int)b.getCenter().getY());
+//				}
+//			}
 		}
 		if (test != null){
 			g2.draw(test);
@@ -92,10 +121,21 @@ public class Game implements Drawable {
 			removeObject(o);
 		}
 		removeQue.clear();
+//		if (allTanks.size() < 5){
+//			Tank enemy = new Tank(1000,(Math.random()*500) + 150, this);
+//			enemy.addWeapon(new BasicTurret(enemy));
+//			enemy.addAI(new AI(enemy, this));
+//			addObject(enemy);
+//		}
+	}
+	public boolean isFinished(){
+		return playerTanks.size() == 0;
 	}
 	//Single player update
 	public void update(int down, int right, Point clickpoint, boolean shoot){
-		playerTanks.get(0).movement(down, right, clickpoint, shoot);
+		if (isFinished() == false){
+			playerTanks.get(0).movement(down, right, clickpoint, shoot);
+		}
 		this.tick();
 	}
 	//MultiPlayer update
@@ -147,16 +187,25 @@ public class Game implements Drawable {
 		}
 	}
 	public void addQueue(Object o){
-		addQue.add(o);
+		if (o instanceof Collection){
+			addQue.addAll((Collection<? extends Object>) o);
+		} else {
+			addQue.add(o);
+		}
 	}
 	public void removeQueue(Object o){
 		removeQue.add(o);
 	}
-	
-	public ArrayList<Tank> getPlayerTanks(){
-		return new ArrayList<Tank>(playerTanks);
+	public ArrayList<Tank> getTanks(){
+		return new ArrayList<Tank>(allTanks);
 	}
-//	public Packet getDrawables(){
-//		return new Packet(drawables);
-//	}
+	public ArrayList<Block> getBlocks(){
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		for (Collidable c : collidables){
+			if (c instanceof Block){
+				blocks.add((Block) c);
+			}
+		}
+		return blocks;
+	}
 }
