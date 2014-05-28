@@ -1,5 +1,6 @@
 package UI;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ import game.Tank;
 public class TankCreator extends JFrame{
 	
 	JColorChooser jcc = new JColorChooser();
+	Weapon holding;
 	Panel p;
 	Tank tank;
 	Listener l;
@@ -38,6 +40,7 @@ public class TankCreator extends JFrame{
 		this.setTitle("Tank Creator");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		p = new Panel();
+		holding = null;
 		tank = new Tank(200,200,new ArrayList<Weapon>(), null);		//Need a pointer to game Glynn
 		this.add(p);
 		l = new Listener();
@@ -45,7 +48,7 @@ public class TankCreator extends JFrame{
 		t.start();
 		this.addKeyListener(new Key());
 		this.addMouseListener(new Mouse());
-		ttlpts = 15;
+		ttlpts = 100;
 		wppts = 0;
 		spdpts = 0;
 		hppts = 0;
@@ -149,13 +152,25 @@ public class TankCreator extends JFrame{
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			if(arg0.getX() > 600){
+				if(arg0.getY() <= 200){
+					holding = new BasicTurret();
+				}
+				else if(arg0.getY() <= 400){
+					
+				}
+				else{
+					
+				}
+			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			if(holding != null){
+				
+			}
 		}
 		
 	}
