@@ -2,10 +2,13 @@ package weapon;
 
 import game.Game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 import util.Collidable;
@@ -21,13 +24,14 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 	private Weapon weapon;
 	protected Game game;
 
-	public Projectile(Shape s, int xstart, int ystart, double velocity, double damage, double theta, Game game){
+	public Projectile(Shape s, int xstart, int ystart, double velocity, double damage, double theta, Weapon weapon, Game game){
 		this.setProjectileShape(s);
 		this.velocity = velocity;
 		this.damage = damage;
 		this.theta = theta;
 		this.center = new Point2D.Double(xstart, ystart);
 		this.game = game;
+		this.weapon = weapon;
 	}
 	
 	//Update is called everytime the timer tics
@@ -35,7 +39,10 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 	public abstract void update();
 	//Draws the missile
 	@Override
-	public abstract void draw(Graphics2D g2);
+	public void draw(Graphics2D g2){
+		g2.setColor(Color.black);
+		g2.draw(getProjectileShape());
+	}
 	public Shape getShape(){
 		return getProjectileShape();
 	}
@@ -62,7 +69,19 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 
 	//If the missile is colliding
 	@Override
-	public abstract boolean isColliding(Collidable c);
+	public boolean isColliding(Collidable c) {
+		if (c.equals(this) || c.equals(getWeapon().getTank())) {
+			return false;
+		}
+		if (c.getBoundingBox().intersects((Rectangle2D) this.getBoundingBox())){
+			Area tankArea = new Area(this.getShape());
+			tankArea.intersect(new Area(c.getShape()));
+			if (!tankArea.isEmpty()){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	//The bounding box of the missile, used for collision checking
 	@Override

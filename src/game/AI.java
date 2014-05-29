@@ -42,7 +42,8 @@ public class AI {
 		}
 		if (minDist < 100 && right == 0){
 			right = AI.randomDirection(AI.TwoDir);
-		} else if (minDist >= 100) {
+		} else if (Math.abs(AI.angleToRect(minBlock.getBoundingBox(),
+				tank.getCenter()) - tank.getTheta()) > 135 || minDist >= 100) {
 			right = 0;
 		}
 		if (down != 0 && this.prevCenter.equals(tank.getCenter())){
@@ -50,8 +51,9 @@ public class AI {
 			right = AI.randomDirection(AI.ThreeDir);
 		}
 		this.prevCenter = tank.getCenter();
-		return new KeyInput(down, right, new Point((int)players.get(0).getCenter().getX(),
-				(int)players.get(0).getCenter().getY()), true);
+		Point target = new Point((int)players.get(0).getCenter().getX(),
+				(int)players.get(0).getCenter().getY());
+		return new KeyInput(down, right, target, true);
 	}
 	
 	public ArrayList<Block> getBlocks(){
@@ -169,6 +171,11 @@ public class AI {
 			return p.distance(p2);
 		}
 		return 0;
+	}
+	
+	public static double angleToPoint(Point2D start, Point2D end){
+		double tgtAng = Math.atan2(end.getY() - start.getY(), end.getX() - start.getX());
+		return AngleMath.adjustAngle(Math.toDegrees(tgtAng)+180);
 	}
 	
 	public static int randomDirection(int directions){

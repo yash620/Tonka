@@ -26,7 +26,7 @@ public class BasicMissile extends Projectile{
 	}
 
 	public BasicMissile(int xstart, int ystart, double velocity, double damage, double theta, Weapon weapon, Game game){
-		super(new Polygon(), xstart, ystart, velocity, damage, theta, game);
+		super(new Polygon(), xstart, ystart, velocity, damage, theta, weapon, game);
 		int[] x = new int[3];
 		int[] y = new int[3];
 		x[0] = xstart+15;
@@ -36,7 +36,6 @@ public class BasicMissile extends Projectile{
 		x[2] = xstart-5;
 		y[2] = ystart-3;
 		this.setProjectileShape(new Polygon(x,y,3));
-		this.setWeapon(weapon);
 		deltax = Math.cos(Math.toRadians(theta))*velocity;
 		deltay = Math.sin(Math.toRadians(theta))*velocity;
 		setProjectileShape(Transform.transform(getProjectileShape(), 0, 0, Math.toRadians(theta), xstart, ystart));
@@ -51,12 +50,6 @@ public class BasicMissile extends Projectile{
 		for (Collidable c : game.getCollisions(this)){
 			c.collision(this);
 		}
-	}
-	@Override
-	public void draw(Graphics2D g2) {
-		g2.setColor(Color.black);
-		g2.draw(getProjectileShape());
-//		g2.drawOval((int)this.center.getX()-5, (int)this.center.getY()-5, 10, 10);
 	}
 	public Shape getShape(){
 		return getProjectileShape();

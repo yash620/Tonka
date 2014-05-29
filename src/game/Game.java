@@ -16,6 +16,7 @@ import util.Drawable;
 import util.KeyInput;
 import util.Updatable;
 import weapon.BasicTurret;
+import weapon.Machinegun;
 import weapon.Shotgun;
 import weapon.Weapon;
 
@@ -56,7 +57,7 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-			t.addWeapon(new Shotgun(t));
+			t.addWeapon(new Machinegun(t));
 			addObject(t);
 //			for (int j = 3;j<13;j++){
 //				for (int k = 1;k<13;k++){
@@ -71,7 +72,7 @@ public class Game implements Drawable {
 		}
 		for (int i = 1;i<7;i++){
 			Tank enemy = new Tank(1000, 100*i, this);
-			enemy.addWeapon(new BasicTurret(enemy));
+			enemy.addWeapon(new Shotgun(enemy));
 			enemy.addAI(new AI(enemy, this));
 			for (Collidable c : collidables){
 				if (enemy.isColliding(c) || enemy.isColliding(c)){
