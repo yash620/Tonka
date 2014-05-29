@@ -19,10 +19,11 @@ import weapon.Projectile;
 import weapon.Weapon;
 
 public class Tank implements Drawable, Collidable, Serializable, Updatable {
-	private int hp;
+	private double hp;
 	private double speed;
-	private int turnSpeed;
-	private int theta;
+	private double turnSpeed;
+	private double theta;
+	private double prevtheta;
 	private ArrayList<Weapon> myWeapons;
 	private Shape tankShape;
 	private double xcenter;
@@ -36,6 +37,8 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	}
 	
 	public Tank(double x, double y, ArrayList<Weapon> weapons, Game game){
+		this.theta = 0;
+		this.prevtheta = 0;
 		this.xcenter = x;
 		this.ycenter = y;
 		this.myWeapons = weapons;
@@ -82,8 +85,9 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	}
 	
 	public void movement(int down, int right, Point clickpoint, boolean shoot){
-		int originalTheta = getTheta();
-		int tgtTheta = this.determineTheta(right);
+		prevtheta = getTheta();
+		double originalTheta = getTheta();
+		double tgtTheta = this.determineTheta(right);
 		double tempSpeed = speed;
 		if (down != 0 && right != 0){
 			tempSpeed = tempSpeed/Math.sqrt(2);
@@ -120,15 +124,19 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 			this.shoot(clickpoint);
 		}
 	}
-	private int determineTheta(int right){
+	private double determineTheta(int right){
 		return getTheta() + right * turnSpeed;
 	}
 
-	public int getTheta() {
+	public double getTheta() {
 		return theta;
 	}
+	
+	public double getPrevTheta(){
+		return prevtheta;
+	}
 
-	public void setTheta(int theta) {
+	public void setTheta(double theta) {
 		this.theta = (int)AngleMath.adjustAngle(theta);
 	}
 
@@ -180,7 +188,7 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		return false;
 	}
 	
-	public int getHp(){
+	public double getHp(){
 		return hp;
 	}
 	
