@@ -32,12 +32,14 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	private double spread;
 	private boolean canFire = true;
 	private int cost;
+	private double dtot;
+	private double atot;
 	private HashSet<Timer> allTimers;
 	private AffineTransform old;
 
 	
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
-			double spread){
+			double spread, double angletotank, double distancetotank){
 		this.t = t;
 		this.turnSpeed = turnSpeed;
 		this.center = center;
@@ -46,6 +48,12 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 		this.spread = spread;
 		allTimers = new HashSet<Timer>();
 		old = new AffineTransform();
+		atot = angletotank;
+		dtot = distancetotank;
+	}
+	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
+			double spread){
+		this(t,turnSpeed, center, ammo, firerate, spread, 0, 0);
 	}
 	
 	public abstract void replenishAmmo();
@@ -98,9 +106,17 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 				setAngle(getTgtAngle());
 			}
 		}
-		double deltax = getTank().getCenter().getX() - getCenter().getX();
-		double deltay = getTank().getCenter().getY() - getCenter().getY();
-		setCenter(getTank().getCenter());
+		double deltax = getTank().getCenter().getX() + (dtot * Math.cos(Math.toRadians(getTank().getTheta() + atot)) - getCenter().getX());
+		double deltay = getTank().getCenter().getY() + (dtot * Math.sin(Math.toRadians(getTank().getTheta() + atot)) - getCenter().getY());
+		setCenter(new Point2D.Double(getTank().getCenter().getX() + (dtot * Math.cos(Math.toRadians(getTank().getTheta() + atot))), getTank().getCenter().getY() + (dtot * Math.sin(Math.toRadians(getTank().getTheta() + atot)))));
+		setWeaponShape(Transform.transform(getWeaponShape(), deltax, deltay, 0,
+				getCenter().getX(), getCenter().getY()));
+	}
+	
+	public void moveTo(Point2D point){
+		double deltax = point.getX() - getCenter().getX();
+		double deltay = point.getY() - getCenter().getY();
+		setCenter(point);
 		setWeaponShape(Transform.transform(getWeaponShape(), deltax, deltay, 0,
 				getCenter().getX(), getCenter().getY()));
 	}
@@ -205,5 +221,11 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	
 	public int getCost(){
 		return cost;
+	}
+	
+	public void attachToTank(Tank tank){
+		t = tank;
+		dtot = Math.sqrt((this.getCenter().getX() - t.getCenter().getX())*(this.getCenter().getX() - t.getCenter().getX()) + (this.getCenter().getY() - t.getCenter().getY())*(this.getCenter().getY() - t.getCenter().getY()));
+		atot = Math.atan2(this.getCenter().getY() - t.getCenter().getY(), this.getCenter().getX() - t.getCenter().getX());
 	}
 }

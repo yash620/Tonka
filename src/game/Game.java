@@ -56,7 +56,7 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-			t.addWeapon(new Shotgun(t));
+			t.addWeapon(new BasicTurret(t, 0, 10));
 			addObject(t);
 //			for (int j = 3;j<13;j++){
 //				for (int k = 1;k<13;k++){
