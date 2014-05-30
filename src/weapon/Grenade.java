@@ -42,7 +42,7 @@ public class Grenade extends Projectile {
 	public void update() {
 		if (this.remove){
 			game.removeQueue(this);
-			game.addQueue(new Explosion(this.center, game));
+			game.addQueue(new Explosion(this.center.getX(), this.center.getY(), 60, game));
 		}
 		setProjectileShape(Transform.transform(getProjectileShape(), deltax, deltay, 0, this.center.getX(), this.center.getY()));
 //		projectileShape = translate.createTransformedShape(projectileShape);
@@ -72,17 +72,17 @@ public class Grenade extends Projectile {
 
 	@Override
 	public void collision(Collidable c) {
-		if (c instanceof Tank && !c.equals(this.getWeapon().getTank())){
-			if (this.remove){
+		if (c instanceof Tank && !c.equals(this.getWeapon().getTank())) {
+			if (this.center.distance(init) >= 30){
 				((Tank) c).takeDamage((int) this.damage);
-				game.addQueue(new Explosion(this.center, game));
+				game.addQueue(new Explosion(this.center.getX(), this.center.getY(), 60, game));
 			}
 			game.removeQueue(this);
 		}
 		if (c instanceof Block){
 			game.removeQueue(this);
 			if (this.remove){
-				game.addQueue(new Explosion(this.center,game));
+				game.addQueue(new Explosion(this.center.getX(), this.center.getY(), 60, game));
 			}
 		}
 	}
