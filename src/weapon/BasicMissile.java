@@ -21,8 +21,8 @@ public class BasicMissile extends Projectile{
 	private int timerDelay;
 	private final double deltax, deltay;
 	
-	public BasicMissile(Point2D center, double theta, Weapon weapon, Game game){
-		this((int)center.getX(), (int)center.getY(), 9, 10, theta, weapon, game);
+	public BasicMissile(Point2D center, double theta, int damage, Weapon weapon, Game game){
+		this((int)center.getX(), (int)center.getY(), 9, damage, theta, weapon, game);
 	}
 
 	public BasicMissile(int xstart, int ystart, double velocity, double damage, double theta, Weapon weapon, Game game){
@@ -70,6 +70,8 @@ public class BasicMissile extends Projectile{
 //		for(int i = 0; i < sides; i++){
 //			xarr[i] = (int)(this.center.getX() + 7 * Math.cos(Math.PI/(sides/2) * i));
 //			yarr[i] = (int)(this.center.getY() + 7 * Math.sin(Math.PI/(sides/2) * i));
+//		}
+//		return new Polygon(xarr,yarr,sides);
 	}
 
 	@Override

@@ -28,6 +28,9 @@ public class AI {
 	}
 	
 	public KeyInput getInputs(){
+		if (tank == null){
+			return new KeyInput(0,0,new Point(), false);
+		}
 		ArrayList<Tank> players = this.getEnemyTanks();
 		ArrayList<Block> blocks = this.getBlocks();
 		int minDist = Integer.MAX_VALUE;
@@ -138,6 +141,9 @@ public class AI {
 		}
 		if (side == (Rectangle.OUT_BOTTOM | Rectangle.OUT_LEFT)){
 			p = new Point2D.Double(rect.getMinX(), rect.getMaxY());
+		}
+		if (p == null){
+			return 0;
 		}
 		return AngleMath.adjustAngle(Math.toDegrees(Math.atan2(p.getY()-p2.getY(), p.getX()-p2.getX()))+180);
 	}

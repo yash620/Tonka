@@ -16,7 +16,7 @@ import util.Timer.Action;
 public class Shotgun extends Weapon {
 
 	public Shotgun(Tank t, double atot, double dtot){
-		super(t, 3, t.getCenter(), 5, 10, 2, atot, dtot);
+		super(t, 5, t.getCenter(), 2, 10, 0, atot, dtot);
 		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
 		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
 		setWeaponShape(new Polygon(x, y, 9));
@@ -35,22 +35,18 @@ public class Shotgun extends Weapon {
 			this.setAmmo(getAmmo()-1);
 			this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
 			if (getAmmo() == 1){
-				this.addTimer(new Timer(200, Action.AMMO));
+				this.addTimer(new Timer(150, Action.AMMO));
 			}
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>();
-			for (int i = -2;i<=2;i++){
+			for (int i = -3;i<=3;i++){
 				missiles.add(new BasicMissile(this.getCenter(),
-						(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle()+(i*9),this, this.getTank().getGame()));
+						(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle()+(i*4),5, this, this.getTank().getGame()));
 			}
 			return missiles;
 //			
 		}
 		return null;
-	}
-	@Override
-	public void replenishAmmo() {
-		this.setAmmo(2);
 	}
 	@Override
 	public void updateSpread() {

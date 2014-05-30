@@ -17,6 +17,7 @@ import util.KeyInput;
 import util.Updatable;
 import weapon.BasicMissile;
 import weapon.BasicTurret;
+import weapon.GrenadeLauncher;
 import weapon.Machinegun;
 import weapon.Shotgun;
 import weapon.Weapon;
@@ -50,15 +51,15 @@ public class Game implements Drawable {
 		for(Block b: map.showBlocks()){
 			addObject(b);
 		}
-		//addObject(map.showBlocks());
-
-		Block b = new Block(this);
-		addObject(b);
 		
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-			t.addWeapon(new Shotgun(t, 0, 10));
+//			t.addWeapon(new Machinegun(t, 0, -10));
+//			t.addWeapon(new Machinegun(t, 0,-5));
+			t.addWeapon(new GrenadeLauncher(t, 0,0));
+//			t.addWeapon(new Machinegun(t, 0,5));
+//			t.addWeapon(new Machinegun(t, 0,10));
 			addObject(t);
 //			for (int j = 3;j<13;j++){
 //				for (int k = 1;k<13;k++){

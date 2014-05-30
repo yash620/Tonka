@@ -36,6 +36,7 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	private double atot;
 	private HashSet<Timer> allTimers;
 	private AffineTransform old;
+	private final int MAXAMMO;
 
 	
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
@@ -50,13 +51,16 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 		old = new AffineTransform();
 		atot = angletotank;
 		dtot = distancetotank;
+		this.MAXAMMO = ammo;
 	}
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
 			double spread){
 		this(t,turnSpeed, center, ammo, firerate, spread, 0, 0);
 	}
 	
-	public abstract void replenishAmmo();
+	public void replenishAmmo() {
+		this.setAmmo(MAXAMMO);
+	}
 	public abstract void updateSpread();
 	
 	@Override
@@ -67,6 +71,7 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 		g2.fill(getWeaponShape());
 		g2.setTransform(old);
 		g2.drawOval((int)center.getX()-2, (int)center.getY()-2, 4, 4);
+		g2.drawString(Integer.toString(ammo), (int)center.getX(), (int)center.getY()-10);
 	}
 
 	//Called whenever the timer tics
@@ -228,5 +233,8 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 		t = tank;
 		dtot = Math.sqrt((this.getCenter().getX() - t.getCenter().getX())*(this.getCenter().getX() - t.getCenter().getX()) + (this.getCenter().getY() - t.getCenter().getY())*(this.getCenter().getY() - t.getCenter().getY()));
 		atot = Math.atan2(this.getCenter().getY() - t.getCenter().getY(), this.getCenter().getX() - t.getCenter().getX());
+	}
+	public int getMAXAMMO() {
+		return MAXAMMO;
 	}
 }

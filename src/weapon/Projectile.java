@@ -70,7 +70,7 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 	//If the missile is colliding
 	@Override
 	public boolean isColliding(Collidable c) {
-		if (c.equals(this) || c.equals(getWeapon().getTank())) {
+		if (c.equals(this) || c.equals(getWeapon().getTank()) || c instanceof Projectile) {
 			return false;
 		}
 		if (c.getBoundingBox().intersects((Rectangle2D) this.getBoundingBox())){
