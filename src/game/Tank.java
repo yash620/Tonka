@@ -145,10 +145,6 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		if (c instanceof Projectile){
 			c.collision(this);
 		}
-		if(getHp() <= 0){
-			game.removeQueue(this);
-			game.addQueue(new Explosion(getCenter(), game));
-		}
 	}
 
 	@Override
@@ -217,6 +213,10 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	public void update() {
 		if (this.isAI()){
 			movement(ai.getInputs());
+		}
+		if(getHp() <= 0){
+			game.removeQueue(this);
+			game.addQueue(new Explosion(getCenter(), game));
 		}
 	}
 	@Override
