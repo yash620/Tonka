@@ -1,6 +1,8 @@
 package util;
 
-public class Timer {
+import java.io.Serializable;
+
+public class Timer implements Serializable {
 	public enum Action{ AMMO, FIRE, SPREAD }
 	private final int delay;
 	private int time;

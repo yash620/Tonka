@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -29,7 +30,7 @@ public class ClientFrame {
 	private Timer ti;
 	private Dimension windowSize;
 	private Client client;
-	private ArrayList<Drawable> drawables;
+	private HashSet<Drawable> drawables;
 
 	public static final int TIMESTEP = 17;
 
@@ -61,6 +62,9 @@ public class ClientFrame {
 			if (drawables != null){
 				for (Drawable d : drawables){
 					d.draw(g2);
+					if (d instanceof Tank && ((Tank)d).isAI() == false){
+//						System.out.println(((Tank)d).getCenter());
+					}
 				}
 			}
 		}
@@ -128,13 +132,11 @@ public class ClientFrame {
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 

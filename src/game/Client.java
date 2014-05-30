@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import util.Drawable;
 import util.KeyInput;
@@ -22,7 +23,7 @@ public class Client implements Runnable {
 	private ObjectInputStream clientIn;
 	private ObjectOutputStream clientOut;
 	private Thread clientThread;		//Thread for reading
-	private ArrayList<Drawable> drawables;
+	private HashSet<Drawable> drawables;
 	
 	public Client(String hostname, int port){
 		this.hostName = hostname;
@@ -67,13 +68,7 @@ public class Client implements Runnable {
 	public void read(){
 		try {
 			Object o = clientIn.readUnshared();
-			drawables = ((Packet) o).drawables;
-			System.out.println("Recieved");
-			for (Drawable d : drawables){
-				if (d instanceof BasicMissile){
-					System.out.println(((BasicMissile)d).getVar());
-				}
-			}
+			drawables = (HashSet<Drawable>) o;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,7 +79,7 @@ public class Client implements Runnable {
 		clientThread.start();
 	}
 	
-	public ArrayList<Drawable> getGame() {
+	public HashSet<Drawable> getGame() {
 		return drawables;
 	}
 }
