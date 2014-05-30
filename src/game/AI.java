@@ -3,6 +3,7 @@ package game;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +12,7 @@ import java.util.Iterator;
 
 import util.KeyInput;
 
-public class AI {
+public class AI implements Serializable {
 	private Tank tank;
 	private Game game;
 	private int right;

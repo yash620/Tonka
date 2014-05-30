@@ -3,6 +3,8 @@ package game;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -11,9 +13,11 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.Timer;
 
+import util.Drawable;
 import util.KeyInput;
 
 public class Server implements ActionListener, Runnable {
@@ -152,14 +156,43 @@ class Connection implements Runnable {
 	}
 	
 	public void send(Game game){
-//		try {
-//			objectOut.writeUnshared(game.getDrawables());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			HashSet<Drawable> drawables = game.getDrawables();
+			objectOut.writeUnshared(drawables);
+			if (drawables != null){
+				for (Drawable d : drawables){
+					if (d instanceof Tank && ((Tank)d).isAI() == false){
+						System.out.println(((Tank)d).getCenter());
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//		this.writeToFile(game.getDrawables(), "test.txt");
+
 	}
 	
 	public int getIndex(){
 		return this.index;
+	}
+	
+	public void writeToFile(Object object, String filename){
+		FileOutputStream out = null;
+		ObjectOutputStream objectout = null;
+		try {
+			out = new FileOutputStream(filename);
+			objectout = new ObjectOutputStream(out);
+			objectout.writeObject(object);
+			objectout.flush();
+//			System.out.println("recorded");
+			objectout.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

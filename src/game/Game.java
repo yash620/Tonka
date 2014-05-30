@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +23,7 @@ import weapon.Machinegun;
 import weapon.Shotgun;
 import weapon.Weapon;
 
-public class Game implements Drawable {
+public class Game implements Drawable, Serializable {
 	private HashSet<Collidable> collidables;
 	private HashSet<Drawable> drawables;
 	private HashSet<Updatable> updatables;
@@ -210,5 +211,9 @@ public class Game implements Drawable {
 			}
 		}
 		return blocks;
+	}
+	
+	public HashSet<Drawable> getDrawables(){
+		return drawables;
 	}
 }
