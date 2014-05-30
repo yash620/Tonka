@@ -89,8 +89,8 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		Color initColor = g2.getColor();
 		// TODO Auto-generated method stub
 		double tc = 1 / timelapse;
-		draw(g2, timeSinceStart - 0.2, 1, maxSize - (maxSize - 24)/ 2);
-		draw(g2, timeSinceStart - 0.2, 2, maxSize - (maxSize - 24)/ 2);
+		draw(g2, timeSinceStart - 0.2, 1, maxSize - (maxSize / 6));
+		draw(g2, timeSinceStart - 0.2, 2, maxSize - (maxSize / 6));
 		 if(timeSinceStart <= timelapse){
 			//g2.setColor(Color.black);
 //			g2.setColor(new Color(255, (int)(255 - 250 * (timeSinceStart * tc/2)), 0));
@@ -117,9 +117,9 @@ public class Explosion implements Drawable, Updatable, Serializable {
 		// TODO Auto-generated method stub
 		double tc = 1 / timelapse;
 //		System.out.println(place + ": " + time);
-		if(size > 25){
-			draw(g2, time - 0.2, place*2 + 1, size - 2);
-			draw(g2, time - 0.2, place * 2 + 2, size - 2);
+		if(size > 2*maxSize/3){
+			draw(g2, time - 0.2, place*2 + 1, size - (maxSize/ 6));
+			draw(g2, time - 0.2, place * 2 + 2,  size - (maxSize / 6));
 		}
 		if(time <= 0){
 			

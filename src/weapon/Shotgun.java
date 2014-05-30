@@ -28,6 +28,18 @@ public class Shotgun extends Weapon {
 				xcenter, ycenter));
 	}
 	
+	public Shotgun(Point2D t, double atot, double dtot){
+		super(null, 5, t, 2, 10, 0, atot, dtot);
+		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
+		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
+		setWeaponShape(new Polygon(x, y, 9));
+		this.setCenter(new Point2D.Double(t.getX(), t.getY()));
+		//Rotate it to its initial location
+		setWeaponShape(Transform.transform(getWeaponShape(), t.getX(), t.getY(), Math.toRadians(-90),
+				t.getX(), t.getY()));
+
+	}
+	
 	@Override
 	public ArrayList<Projectile> shoot() {
 		if (canShoot()){

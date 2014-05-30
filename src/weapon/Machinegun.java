@@ -25,6 +25,18 @@ public class Machinegun extends Weapon {
 		setWeaponShape(Transform.transform(getWeaponShape(), xcenter, ycenter, Math.toRadians(-90),
 				xcenter, ycenter));
 	}
+	
+	public Machinegun(Point2D t, double atot, double dtot){
+		super(null, 3, t, 20, 2, 7, atot, dtot);
+		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
+		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
+		setWeaponShape(new Polygon(x, y, 9));
+		this.setCenter(new Point2D.Double(t.getX(), t.getY()));
+		//Rotate it to its initial location
+		setWeaponShape(Transform.transform(getWeaponShape(), t.getX(), t.getY(), Math.toRadians(-90),
+				t.getX(), t.getY()));
+
+	}
 	@Override
 	public void updateSpread() {
 

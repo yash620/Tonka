@@ -28,6 +28,16 @@ public class BasicTurret extends Weapon {
 		setWeaponShape(Transform.transform(getWeaponShape(), t.getCenter().getX(), t.getCenter().getY(), Math.toRadians(-90), t.getCenter().getX(), t.getCenter().getY()));
 	}
 	
+	public BasicTurret(Point2D t, double atot, double dtot){
+		super(null, 3, t, 5, 10, 2, atot, dtot);
+		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
+		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
+		setWeaponShape(new Polygon(x, y, 9));
+		this.setCenter(t);
+		setWeaponShape(Transform.transform(getWeaponShape(), t.getX(), t.getY(), Math.toRadians(-90),
+				t.getX(), t.getY()));
+	}
+	
 	public BasicTurret(Tank t, double atot, double dtot){
 		super(t, 3, t.getCenter(), 5, 10, 2, atot, dtot);
 		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};

@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.JColorChooser;
@@ -65,6 +66,9 @@ public class TankCreator extends JFrame{
 				tank.setColor(jcc.getColor());
 			}
 			repaint();
+			if(holding != null){
+				System.out.println(holding);
+			}
 		}
 		
 	}
@@ -154,13 +158,13 @@ public class TankCreator extends JFrame{
 			// TODO Auto-generated method stub
 			if(arg0.getX() > 600){
 				if(arg0.getY() <= 200){
-					holding = new BasicTurret();
+					holding = new BasicTurret(new Point2D.Double(arg0.getX(), arg0.getY()),0,0);
 				}
 				else if(arg0.getY() <= 400){
-					
+					holding = new Machinegun(new Point2D.Double(arg0.getX(), arg0.getY()),0,0);
 				}
 				else{
-					
+					holding = new Shotgun(new Point2D.Double(arg0.getX(), arg0.getY()),0,0);
 				}
 			}
 		}
@@ -168,9 +172,12 @@ public class TankCreator extends JFrame{
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			if(holding != null){
-				
+			if(tank.getShape().contains(new Point2D.Double(arg0.getX(), arg0.getY()))){
+				if(holding != null){
+					tank.addWeapon(holding);
+				}
 			}
+			holding = null;
 		}
 		
 	}
