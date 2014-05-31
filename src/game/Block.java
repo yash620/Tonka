@@ -14,12 +14,13 @@ import java.util.ArrayList;
 
 import util.Collidable;
 import util.Drawable;
+import util.Sendable;
 import util.Updatable;
 import weapon.Projectile;
 
-public class Block implements Drawable, Collidable, Updatable, Serializable {
+public class Block implements Drawable, Collidable, Updatable, Sendable {
 	private Color color;
-	private transient Area blockShape;
+	private Area blockShape;
 	private boolean destructible;
 	private Game game;
 
@@ -50,9 +51,7 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(color);
-		if (blockShape != null){
-			g2.fill(blockShape);
-		}
+		g2.fill(blockShape);
 	}
 
 	public Shape getShape() {
@@ -179,5 +178,23 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 			yArr[i] = yCoords.get(i).intValue();
 		}
 		return new Polygon(xArr, yArr, xCoords.size());
+	}
+	@Override
+	public Drawable getProxyClass() {
+		return new SerialBlock(this.getPolygon(), color);
+	}
+}
+
+class SerialBlock implements Serializable, Drawable {
+	private final Shape s;
+	private final Color color;
+	public SerialBlock(Shape s, Color c){
+		this.s = s;
+		this.color = c;
+	}
+	@Override
+	public void draw(Graphics2D g2) {
+		g2.setColor(color);
+		g2.fill(s);
 	}
 }

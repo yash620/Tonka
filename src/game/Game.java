@@ -15,6 +15,7 @@ import map.Map;
 import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
+import util.Sendable;
 import util.Updatable;
 import weapon.BasicMissile;
 import weapon.BasicTurret;
@@ -213,7 +214,13 @@ public class Game implements Drawable, Serializable {
 		return blocks;
 	}
 	
-	public HashSet<Drawable> getDrawables(){
-		return drawables;
+	public HashSet<Drawable> getSend(){
+		HashSet<Drawable> sends = new HashSet<Drawable>();
+		for (Drawable d : drawables){
+			if (d instanceof Sendable && d instanceof Explosion == false){
+				sends.add(((Sendable)d).getProxyClass());
+			}
+		}
+		return sends;
 	}
 }

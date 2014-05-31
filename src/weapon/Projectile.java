@@ -13,9 +13,10 @@ import java.io.Serializable;
 
 import util.Collidable;
 import util.Drawable;
+import util.Sendable;
 import util.Updatable;
 
-public abstract class Projectile implements Drawable, Collidable, Updatable, Serializable {
+public abstract class Projectile implements Drawable, Collidable, Updatable, Sendable {
 	private Shape projectileShape;
 	protected double damage;
 	protected double velocity;
@@ -88,4 +89,24 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Ser
 	public Rectangle getBoundingBox(){
 		return this.projectileShape.getBounds();
 	}
+
+	@Override
+	public Drawable getProxyClass() {
+		return new ProxyProjectile(this.getProjectileShape());
+	}
+}
+
+class ProxyProjectile implements Drawable, Serializable {
+	private final Shape shape;
+	
+	public ProxyProjectile(Shape s){
+		this.shape = s;
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		g2.setColor(Color.black);
+		g2.draw(shape);
+	}
+	
 }

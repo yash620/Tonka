@@ -36,6 +36,8 @@ public class Server implements ActionListener, Runnable {
 	private Game game;
 	private int serverindex = 0;
 	
+	private int time;
+	
 //	private JFrame frame;
 	
 	int test;
@@ -93,12 +95,23 @@ public class Server implements ActionListener, Runnable {
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		time++;
+		System.out.println(time);
+		if (time % 200 == 0){
+			time = 0;
+			this.resetALL();
+			System.out.println("Reset");
+		}
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
 		this.sendAll();
 	}
-
+	public void resetALL(){
+		for (Connection c : allconnections){
+			c.resetStream();
+		}
+	}
 }
 
 class Connection implements Runnable {
@@ -158,8 +171,8 @@ class Connection implements Runnable {
 	public void send(Game game){
 		try {
 			//For some reason, write unshared doesn't work, so we write object then reset it every time
-			objectOut.writeObject(game.getDrawables());
-			objectOut.reset();
+			objectOut.writeObject(game.getSend());
+//			objectOut.reset();
 //			HashSet<Drawable> drawables = new HashSet<Drawable>();
 //			drawables.addAll(game.getDrawables());
 //			objectOut.writeUnshared(drawables);
@@ -175,6 +188,15 @@ class Connection implements Runnable {
 		}
 //		this.writeToFile(game.getDrawables(), "test.txt");
 
+	}
+	
+	public void resetStream(){
+		try {
+			objectOut.reset();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public int getIndex(){
