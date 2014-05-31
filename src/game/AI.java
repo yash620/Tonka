@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 import util.KeyInput;
 
-public class AI implements Serializable {
+public class AI {
 	private Tank tank;
 	private Game game;
 	private int right;

@@ -1,13 +1,11 @@
-package map;
+package game;
 
-import game.Block;
-import game.Game;
 
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Map implements Serializable {
+public class Map {
 	
 	private ArrayList<Block> blocks;
 	private Game game;

@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import util.Drawable;
@@ -38,11 +41,24 @@ public class Server implements ActionListener, Runnable {
 	
 	private int time;
 	
-//	private JFrame frame;
-	
-	int test;
-	
+	private JFrame frame;
+		
 	public Server(){
+		frame = new JFrame();
+		JButton button = new JButton();
+		button.setText("PLAY");
+		frame.add(button);
+		button.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startGame();
+			}
+			
+		});
+		button.setPreferredSize(new Dimension(50,50));
+		frame.pack();
+		frame.setVisible(true);
 		allconnections = new ArrayList<Connection>();
 		ti = new Timer(17, this);
 		serverThread = new Thread(this);
@@ -64,19 +80,15 @@ public class Server implements ActionListener, Runnable {
 	
 	public void waitForConnection(){
 		try {
-			System.out.println("waiting for connection on port: " + serverport);
+			System.out.println("Waiting");
 			sock = serversocket.accept();
+			System.out.println("Connected");
 			OutputStream out = sock.getOutputStream();
 			InputStream in = sock.getInputStream();
-//			JOptionPane.showMessageDialog(null, "Connection Recieved");
-			System.out.println("Connection Recieved");
-//			Connection connection = new Connection(null, sock, fr, playerindex);
-			System.out.println("Create Connection");
 			Connection connection = new Connection(in, out, serverindex);
 			serverindex++;
 			allconnections.add(connection);
 			connection.startThread();
-			this.startGame();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

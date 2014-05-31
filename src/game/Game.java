@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import map.Map;
 import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
@@ -24,7 +23,7 @@ import weapon.Machinegun;
 import weapon.Shotgun;
 import weapon.Weapon;
 
-public class Game implements Drawable, Serializable {
+public class Game implements Drawable {
 	private HashSet<Collidable> collidables;
 	private HashSet<Drawable> drawables;
 	private HashSet<Updatable> updatables;

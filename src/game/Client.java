@@ -11,7 +11,6 @@ import java.util.HashSet;
 
 import util.Drawable;
 import util.KeyInput;
-import util.Packet;
 import weapon.BasicMissile;
 
 public class Client implements Runnable {

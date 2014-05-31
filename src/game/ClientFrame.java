@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -35,7 +36,8 @@ public class ClientFrame {
 	public static final int TIMESTEP = 17;
 
 	public ClientFrame() {
-		client = new Client("localhost", 34556);
+		String ip = JOptionPane.showInputDialog("IP?");
+		client = new Client(ip, 34556);
 		client.startThread();
 		
 		frame = new JFrame();
