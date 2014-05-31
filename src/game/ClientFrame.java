@@ -40,13 +40,14 @@ public class ClientFrame {
 		
 		frame = new JFrame();
 		windowSize = new Dimension(1280, 720);
-		frame.setSize(windowSize);
 		Listener li = new Listener();
 		frame.addKeyListener(li);
 		JPanel mainDraw = new MainDraw();
+		mainDraw.setPreferredSize(windowSize);
 		frame.add(mainDraw);
 		mainDraw.addMouseListener(li);
 		mainDraw.addMouseMotionListener(li);
+		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ti = new Timer(TIMESTEP, li);

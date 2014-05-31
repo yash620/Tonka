@@ -32,7 +32,6 @@ public class SinglePlayer {
 		game = new Game(1);
 		frame = new JFrame();
 		windowSize = new Dimension(1280, 720);
-		frame.setSize(windowSize);
 		Listener li = new Listener();
 		frame.addKeyListener(li);
 		JPanel mainDraw = new MainDraw();

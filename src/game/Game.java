@@ -92,7 +92,6 @@ public class Game implements Drawable, Serializable {
 	public void setTestDraw(Shape s){
 		test = s;
 	}
-	
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.black);
@@ -214,7 +213,7 @@ public class Game implements Drawable, Serializable {
 		return blocks;
 	}
 	
-	public HashSet<Drawable> getSend(){
+	public HashSet<Drawable> getSend() {
 		HashSet<Drawable> sends = new HashSet<Drawable>();
 		for (Drawable d : drawables){
 			if (d instanceof Sendable && d instanceof Explosion == false){

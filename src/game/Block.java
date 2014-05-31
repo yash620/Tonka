@@ -154,8 +154,12 @@ public class Block implements Drawable, Collidable, Updatable, Sendable {
 			game.removeQueue(this);
 		}
 	}
-	
-	public Polygon getPolygon() {
+	/*
+	 * Works in a similar way as the splitBlock method, but with polygons
+	 * Need to return an arrayList incase the block is split when this method is called
+	 */
+	public ArrayList<Polygon> getPolygon() {
+		ArrayList<Polygon> allPolygons = new ArrayList<Polygon>(1);
 		PathIterator path = blockShape.getPathIterator(null);
 		ArrayList<double[]> points = new ArrayList<double[]>();
 		double[] coords = new double[6];
@@ -168,8 +172,22 @@ public class Block implements Drawable, Collidable, Updatable, Sendable {
 		ArrayList<Integer> xCoords = new ArrayList<Integer>();
 		ArrayList<Integer> yCoords = new ArrayList<Integer>();
 		for (double[] p : points){
-			xCoords.add((int) p[1]);
-			yCoords.add((int) p[2]);
+			if (p[0] == PathIterator.SEG_CLOSE) {
+				if (!xCoords.isEmpty()) {
+					int[] xArr = new int[xCoords.size()];
+					int[] yArr = new int[yCoords.size()];
+					for (int i = 0; i < xCoords.size(); i++) {
+						xArr[i] = xCoords.get(i).intValue();
+						yArr[i] = yCoords.get(i).intValue();
+					}
+					allPolygons.add(new Polygon(xArr, yArr, xCoords.size()));
+				}
+				xCoords.clear();
+				yCoords.clear();
+			} else {
+				xCoords.add((int) p[1]);
+				yCoords.add((int) p[2]);
+			}
 		}
 		int[] xArr = new int[xCoords.size()];
 		int[] yArr = new int[yCoords.size()];
@@ -177,7 +195,7 @@ public class Block implements Drawable, Collidable, Updatable, Sendable {
 			xArr[i] = xCoords.get(i).intValue();
 			yArr[i] = yCoords.get(i).intValue();
 		}
-		return new Polygon(xArr, yArr, xCoords.size());
+		return allPolygons;
 	}
 	@Override
 	public Drawable getProxyClass() {
@@ -186,15 +204,18 @@ public class Block implements Drawable, Collidable, Updatable, Sendable {
 }
 
 class SerialBlock implements Serializable, Drawable {
-	private final Shape s;
+	private final ArrayList<Polygon> shapes;
 	private final Color color;
-	public SerialBlock(Shape s, Color c){
-		this.s = s;
+	public SerialBlock(ArrayList<Polygon> arrayList, Color c){
+		this.shapes = arrayList;
 		this.color = c;
 	}
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(color);
-		g2.fill(s);
+		for (Shape s : shapes){
+			g2.fill(s);
+
+		}
 	}
 }

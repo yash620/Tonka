@@ -96,18 +96,19 @@ public class Server implements ActionListener, Runnable {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		time++;
-		System.out.println(time);
-		if (time % 200 == 0){
+		if (time % 100 == 0){
 			time = 0;
-			this.resetALL();
+			this.resetAll();
 			System.out.println("Reset");
 		}
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
-		this.sendAll();
+		if (time % 2 == 0) {
+			this.sendAll();
+		}
 	}
-	public void resetALL(){
+	public void resetAll(){
 		for (Connection c : allconnections){
 			c.resetStream();
 		}
@@ -169,23 +170,15 @@ class Connection implements Runnable {
 	}
 	
 	public void send(Game game){
+		long start = System.currentTimeMillis();
 		try {
 			//For some reason, write unshared doesn't work, so we write object then reset it every time
 			objectOut.writeObject(game.getSend());
-//			objectOut.reset();
-//			HashSet<Drawable> drawables = new HashSet<Drawable>();
-//			drawables.addAll(game.getDrawables());
-//			objectOut.writeUnshared(drawables);
-//			if (drawables != null){
-//				for (Drawable d : drawables){
-//					if (d instanceof Tank && ((Tank)d).isAI() == false){
-//						System.out.println(((Tank)d).getCenter());
-//					}
-//				}
-//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		long end = System.currentTimeMillis();
+		System.out.println(end-start);
 //		this.writeToFile(game.getDrawables(), "test.txt");
 
 	}
