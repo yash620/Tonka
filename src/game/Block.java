@@ -14,19 +14,18 @@ import java.util.ArrayList;
 
 import util.Collidable;
 import util.Drawable;
-import util.SerialArea;
 import util.Updatable;
 import weapon.Projectile;
 
 public class Block implements Drawable, Collidable, Updatable, Serializable {
 	private Color color;
-	private SerialArea blockShape;
+	private transient Area blockShape;
 	private boolean destructible;
 	private Game game;
 
 	public Block(Shape s, boolean b, Color c, Game g){
 		color = c;
-		blockShape = new SerialArea(s);
+		blockShape = new Area(s);
 		destructible = b;
 		this.game = g;
 	}
@@ -51,7 +50,9 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(color);
-		g2.fill(blockShape);
+		if (blockShape != null){
+			g2.fill(blockShape);
+		}
 	}
 
 	public Shape getShape() {
@@ -153,5 +154,30 @@ public class Block implements Drawable, Collidable, Updatable, Serializable {
 		if (blockShape.isEmpty() || this.getBoundsArea() < 25) {
 			game.removeQueue(this);
 		}
+	}
+	
+	public Polygon getPolygon() {
+		PathIterator path = blockShape.getPathIterator(null);
+		ArrayList<double[]> points = new ArrayList<double[]>();
+		double[] coords = new double[6];
+		while (!path.isDone()) {
+			int pathType = path.currentSegment(coords);
+			double[] pointArr = { pathType, coords[0], coords[1] };
+			points.add(pointArr);
+			path.next();
+		}
+		ArrayList<Integer> xCoords = new ArrayList<Integer>();
+		ArrayList<Integer> yCoords = new ArrayList<Integer>();
+		for (double[] p : points){
+			xCoords.add((int) p[1]);
+			yCoords.add((int) p[2]);
+		}
+		int[] xArr = new int[xCoords.size()];
+		int[] yArr = new int[yCoords.size()];
+		for (int i = 0; i < xCoords.size(); i++) {
+			xArr[i] = xCoords.get(i).intValue();
+			yArr[i] = yCoords.get(i).intValue();
+		}
+		return new Polygon(xArr, yArr, xCoords.size());
 	}
 }

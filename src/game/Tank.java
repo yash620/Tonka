@@ -223,5 +223,8 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	public String toString(){
 		return this.getCenter().toString();
 	}
+	public ArrayList<Weapon> getWeapons(){
+		return this.myWeapons;
+	}
 }
 

@@ -27,6 +27,7 @@ public class Client implements Runnable {
 	
 	public Client(String hostname, int port){
 		this.hostName = hostname;
+		drawables = new HashSet<Drawable>();
 //		this.port = port;
 		//Socketing
 		InetAddress hostIP = null;
@@ -67,8 +68,10 @@ public class Client implements Runnable {
 	
 	public void read(){
 		try {
-			Object o = clientIn.readUnshared();
+			Object o = clientIn.readObject();
+//			System.out.println(((Tank)o).getWeapons().size());
 			drawables = (HashSet<Drawable>) o;
+//			drawables = (HashSet<Drawable>) o;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

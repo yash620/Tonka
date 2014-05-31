@@ -58,7 +58,7 @@ public class Game implements Drawable, Serializable {
 			Tank t = new Tank(100,100, this);
 //			t.addWeapon(new Machinegun(t, 0, -10));
 //			t.addWeapon(new Machinegun(t, 0,-5));
-			t.addWeapon(new GrenadeLauncher(t, 0,0));
+			t.addWeapon(new Shotgun(t, 0,0));
 //			t.addWeapon(new Machinegun(t, 0,5));
 //			t.addWeapon(new Machinegun(t, 0,10));
 			addObject(t);
@@ -74,7 +74,7 @@ public class Game implements Drawable, Serializable {
 //			}
 		}
 		for (int i = 1;i<7;i++){
-			Tank enemy = new Tank(1000, 100*i, this);
+			Tank enemy = new Tank(1200, 100*i, this);
 			enemy.addWeapon(new Machinegun(enemy, 0, 10));
 			enemy.addAI(new AI(enemy, this));
 			for (Collidable c : collidables){

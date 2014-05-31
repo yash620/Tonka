@@ -39,6 +39,8 @@ public class Map implements Serializable {
 		addBlock(new Block(new Rectangle(0,700,1280,20), false, game));
 		addBlock(new Block(new Rectangle(0,0,20,720), false, game));
 		addBlock(new Block(new Rectangle(1260,0,20,720), false, game));
-		addBlock(new Block(new Rectangle(300, 200, 50, 300), true, game));
+		addBlock(new Block(new Rectangle(300, 200, 75, 350), true, game));
+		addBlock(new Block(new Rectangle(800, 200, 75, 350), true, game));
+
 	}
 }

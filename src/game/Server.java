@@ -157,15 +157,19 @@ class Connection implements Runnable {
 	
 	public void send(Game game){
 		try {
-			HashSet<Drawable> drawables = game.getDrawables();
-			objectOut.writeUnshared(drawables);
-			if (drawables != null){
-				for (Drawable d : drawables){
-					if (d instanceof Tank && ((Tank)d).isAI() == false){
-						System.out.println(((Tank)d).getCenter());
-					}
-				}
-			}
+			//For some reason, write unshared doesn't work, so we write object then reset it every time
+			objectOut.writeObject(game.getDrawables());
+			objectOut.reset();
+//			HashSet<Drawable> drawables = new HashSet<Drawable>();
+//			drawables.addAll(game.getDrawables());
+//			objectOut.writeUnshared(drawables);
+//			if (drawables != null){
+//				for (Drawable d : drawables){
+//					if (d instanceof Tank && ((Tank)d).isAI() == false){
+//						System.out.println(((Tank)d).getCenter());
+//					}
+//				}
+//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
