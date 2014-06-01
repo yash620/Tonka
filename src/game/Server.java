@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -108,7 +110,7 @@ public class Server implements ActionListener, Runnable {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		time++;
-		if (time % 100 == 0){
+		if (time % 500 == 0){
 			time = 0;
 			this.resetAll();
 			System.out.println("Reset");
@@ -116,9 +118,7 @@ public class Server implements ActionListener, Runnable {
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
-		if (time % 2 == 0) {
-			this.sendAll();
-		}
+		this.sendAll();
 	}
 	public void resetAll(){
 		for (Connection c : allconnections){
@@ -145,9 +145,9 @@ class Connection implements Runnable {
 		//Created the streams
 		try {
 			System.out.println("Streams Created");
-			this.objectOut = new ObjectOutputStream(out);
+			this.objectOut = new ObjectOutputStream(new BufferedOutputStream(out));
 			objectOut.flush();
-			this.objectIn = new ObjectInputStream(in);
+			this.objectIn = new ObjectInputStream(new BufferedInputStream(in));
 			System.out.println("input Created");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -169,7 +169,7 @@ class Connection implements Runnable {
 	
 	public void read(){
 		try {
-			Object o = objectIn.readUnshared();
+			Object o = objectIn.readObject();
 			input = ((KeyInput)o);
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
@@ -181,16 +181,22 @@ class Connection implements Runnable {
 		return input;
 	}
 	
+	int maxtime;
 	public void send(Game game){
+		HashSet<Drawable> sends = game.getSend();
 		long start = System.currentTimeMillis();
 		try {
-			//For some reason, write unshared doesn't work, so we write object then reset it every time
-			objectOut.writeObject(game.getSend());
+			objectOut.writeObject(sends);
+			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		long end = System.currentTimeMillis();
-		System.out.println(end-start);
+		int time = (int) (end-start);
+		if (time > maxtime){
+			maxtime = time;
+		}
+		System.out.println(time + " " + maxtime  + " " + sends.size());
 //		this.writeToFile(game.getDrawables(), "test.txt");
 
 	}

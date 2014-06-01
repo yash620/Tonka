@@ -23,8 +23,10 @@ public class SinglePlayer {
 
 	private JFrame frame;
 	private Timer ti;
-	private Dimension windowSize;
+	public static Dimension windowSize;
 	private Game game;
+	
+	int frameMS;
 
 	public static final int TIMESTEP = 17;
 
@@ -53,9 +55,10 @@ public class SinglePlayer {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			game.draw(g2);
-//			g2.drawString(cp.toString(), 100, 100);
-			g2.drawString(Double.toString(AI.angleToPoint(game.getTanks().get(0).getCenter(),
-					cp)), 100,100);
+			g2.drawString(cp.toString(), 100, 100);
+			g2.drawString(Integer.toString(frameMS), 1100,100);
+//			g2.drawString(Double.toString(AI.angleToPoint(game.getTanks().get(0).getCenter(),
+//					cp)), 100,100);
 
 		}
 	}
@@ -117,12 +120,15 @@ public class SinglePlayer {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			long start = System.currentTimeMillis();
 			if (game.isFinished() == false){
 			game.update(down, right, clickpoint, shoot);
 			} else {
 				game = new Game(1);
 			}
 			frame.repaint();
+			long end = System.currentTimeMillis();
+			frameMS = (int)(end - start);
 		}
 
 		@Override

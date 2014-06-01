@@ -28,6 +28,7 @@ public class Game implements Drawable {
 	private HashSet<Drawable> drawables;
 	private HashSet<Updatable> updatables;
 	private Map map;
+	private CollisionMap collisions;
 	
 	/*
 	 * Tanks are special because their update method needs params
@@ -47,6 +48,7 @@ public class Game implements Drawable {
 		playerTanks = new ArrayList<Tank>();
 		removeQue = new HashSet<Object>();
 		addQue = new HashSet<Object>();
+		collisions = new CollisionMap();
 		map = new Map(this);
 		map.basicMap();
 		for(Block b: map.showBlocks()){
@@ -56,11 +58,8 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-//			t.addWeapon(new Machinegun(t, 0, -10));
-//			t.addWeapon(new Machinegun(t, 0,-5));
+			t.takeDamage(-100000);
 			t.addWeapon(new Shotgun(t, 0,0));
-//			t.addWeapon(new Machinegun(t, 0,5));
-//			t.addWeapon(new Machinegun(t, 0,10));
 			addObject(t);
 //			for (int j = 3;j<13;j++){
 //				for (int k = 1;k<13;k++){
@@ -73,16 +72,22 @@ public class Game implements Drawable {
 //				}
 //			}
 		}
-		for (int i = 1;i<7;i++){
-			Tank enemy = new Tank(1200, 100*i, this);
-			enemy.addWeapon(new Machinegun(enemy, 0, 10));
-			enemy.addAI(new AI(enemy, this));
-			for (Collidable c : collidables){
-				if (enemy.isColliding(c) || enemy.isColliding(c)){
-					continue;
+		for (int i = 3;i<13;i++){
+			for (int j = 1;j<13;j++){
+				Tank enemy = new Tank(j*100, 50*i, this);
+				enemy.addWeapon(new Machinegun(enemy, 0, 10));
+				enemy.addAI(new AI(enemy, this));
+				boolean colliding = false;
+				for (Collidable c : collidables){
+					if (enemy.isColliding(c) || enemy.isColliding(c)){
+						colliding = true;
+						break;
+					}
+				}
+				if (colliding == false){
+					this.addQueue(enemy);
 				}
 			}
-			this.addQueue(enemy);
 		}
 	}
 	
@@ -114,7 +119,6 @@ public class Game implements Drawable {
 		for (Updatable u : updatables){
 			u.update();
 		}
-		
 		//Adding and removing
 		for (Object o : addQue){
 			addObject(o);
@@ -124,12 +128,7 @@ public class Game implements Drawable {
 			removeObject(o);
 		}
 		removeQue.clear();
-//		if (allTanks.size() < 5){
-//			Tank enemy = new Tank(1000,(Math.random()*500) + 150, this);
-//			enemy.addWeapon(new BasicTurret(enemy));
-//			enemy.addAI(new AI(enemy, this));
-//			addObject(enemy);
-//		}
+		collisions.updateCollidables(collidables);
 	}
 	public boolean isFinished(){
 		return playerTanks.size() == 0;
@@ -147,14 +146,15 @@ public class Game implements Drawable {
 		this.tick();
 	}
 	//Called by other collidables to see who is colliding with the frame
-	public ArrayList<Collidable> getCollisions(Collidable init){
-		ArrayList<Collidable> collisions = new ArrayList<Collidable>();
-		for (Collidable c : collidables){
-			if (c.isColliding(init)){
-				collisions.add(c);
-			}
-		}
-		return collisions;
+	public HashSet<Collidable> getCollisions(Collidable init){
+		return collisions.getCollisions(init);
+//		HashSet<Collidable> collisions = new HashSet<Collidable>();
+//		for (Collidable c : collidables){
+//			if (c.isColliding(init)){
+//				collisions.add(c);
+//			}
+//		}
+//		return collisions;
 	}
 	private void addObject(Object o){
 		if (o instanceof Collidable){

@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import util.Collidable;
 import util.Drawable;
@@ -101,7 +102,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		tankShape = Transform.transform(tankShape, xvel, yvel,
 				Math.toRadians(tgtTheta-getTheta()), xcenter, ycenter);
 		setTheta(tgtTheta);
-		ArrayList<Collidable> collisions = game.getCollisions(this);
+		HashSet<Collidable> collisions = game.getCollisions(this);
 		boolean blocked = false;
 		for (Collidable c : collisions){
 			c.collision(this);

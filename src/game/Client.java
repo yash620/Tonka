@@ -1,5 +1,7 @@
 package game;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -35,11 +37,11 @@ public class Client implements Runnable {
 			System.out.println("Creating socket");
 			socket = new Socket(hostIP, port);
 			System.out.println("Creating output");
-			clientOut = new ObjectOutputStream(socket.getOutputStream());
+			clientOut = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 			clientOut.flush();
 			System.out.println(clientOut);
 			System.out.println("creating input");
-			clientIn = new ObjectInputStream(socket.getInputStream());
+			clientIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 			System.out.println("Created everything");	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -58,7 +60,8 @@ public class Client implements Runnable {
 	
 	public void sendInputs(KeyInput keyinputs){
 		try {
-			clientOut.writeUnshared(keyinputs);
+			clientOut.writeObject(keyinputs);
+			clientOut.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,9 +71,7 @@ public class Client implements Runnable {
 	public void read(){
 		try {
 			Object o = clientIn.readObject();
-//			System.out.println(((Tank)o).getWeapons().size());
 			drawables = (HashSet<Drawable>) o;
-//			drawables = (HashSet<Drawable>) o;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
