@@ -19,7 +19,7 @@ public class ThreadHandler {
 	private ExecutorService threadPool;
 	
 	public ThreadHandler() {
-		threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		threadPool = Executors.newCachedThreadPool();
 	}
 	public void update(Set<Updatable> updates) {
 		Set<Callable<Object>> callables = new HashSet<Callable<Object>>();

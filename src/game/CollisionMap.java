@@ -1,10 +1,7 @@
 package game;
 
-import java.awt.Frame;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 import util.Collidable;
 
@@ -20,10 +17,10 @@ public class CollisionMap {
 		}
 	}
 	
-	public void updateCollidables(Set<Collidable> collidables) {
+	public void updateCollidables(HashSet<Collidable> c) {
 		for (int i = 0;i<collisionArr.length;i++){
 			for (int j = 0;j<collisionArr[0].length;j++){
-				collisionArr[i][j].updateCollidable(collidables);
+				collisionArr[i][j].updateCollidable(c);
 			}
 		}
 	}
@@ -57,9 +54,9 @@ class CollisionCell {
 		}
 		return collisions;
 	}
-	public void updateCollidable(Set<Collidable> collidables2) {
+	public void updateCollidable(HashSet<Collidable> collides) {
 		collidables.clear();
-		for (Collidable c : collidables2){
+		for (Collidable c : collides){
 			if (bounds.intersects(c.getBoundingBox())) {
 				collidables.add(c);
 			}

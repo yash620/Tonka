@@ -49,7 +49,7 @@ public class Machinegun extends Weapon {
 			this.setAmmo(getAmmo()-1);
 			this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
 			if (getAmmo() == this.getMAXAMMO()-1){
-				this.addTimer(new Timer(0, Action.AMMO));
+				this.addTimer(new Timer(250, Action.AMMO));
 			}
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
