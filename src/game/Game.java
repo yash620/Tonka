@@ -59,7 +59,7 @@ public class Game implements Drawable {
 		
 		for (int i = 0;i<playerNum;i++){
 
-			Tank t = new Tank(100,100, this);
+			Tank t = new Tank(100,100 + 50*i, this);
 			t.addWeapon(new Machinegun(t, 0,0));
 			addObject(t);
 //			for (int j = 0;j<6;j++){
@@ -83,7 +83,7 @@ public class Game implements Drawable {
 		for (int i = 9;i<13;i++){
 			for (int j = 6;j<13;j++){
 				Tank enemy = new Tank(j*100, 50*i, this);
-				enemy.addWeapon(new Shotgun(enemy, 0, 10));
+				enemy.addWeapon(new BasicTurret(enemy, 0, 10));
 				enemy.addAI(new AI(enemy, this));
 				boolean colliding = false;
 				for (Collidable c : collidables){

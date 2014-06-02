@@ -184,19 +184,19 @@ class Connection implements Runnable {
 	int maxtime;
 	public void send(Game game){
 		HashSet<Drawable> sends = game.getSend();
-		long start = System.currentTimeMillis();
+//		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
 			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		long end = System.currentTimeMillis();
-		int time = (int) (end-start);
-		if (time > maxtime){
-			maxtime = time;
-		}
-		System.out.println(time + " " + maxtime  + " " + sends.size());
+//		long end = System.currentTimeMillis();
+//		int time = (int) (end-start);
+//		if (time > maxtime){
+//			maxtime = time;
+//		}
+//		System.out.println(time + " " + maxtime  + " " + sends.size());
 //		this.writeToFile(game.getDrawables(), "test.txt");
 
 	}
