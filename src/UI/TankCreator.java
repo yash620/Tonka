@@ -68,6 +68,9 @@ public class TankCreator extends JFrame{
 			repaint();
 			if(holding != null){
 				System.out.println(holding);
+				System.out.println(getMousePosition().getX() + ", " + getMousePosition().getY());
+				System.out.println(holding.getCenter().getX() + ", " + holding.getCenter().getY());
+				holding.moveTo(new Point2D.Double(getMousePosition().getX() - 8, getMousePosition().getY() - 30));
 			}
 		}
 		
@@ -79,6 +82,9 @@ public class TankCreator extends JFrame{
 		public void paintComponent(Graphics g){
 			Graphics2D g2 = (Graphics2D)g;
 			tank.draw(g2);
+			if(holding != null){
+				holding.draw(g2);
+			}
 		}
 	}
 	
@@ -172,9 +178,10 @@ public class TankCreator extends JFrame{
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			if(tank.getShape().contains(new Point2D.Double(arg0.getX(), arg0.getY()))){
+			if(tank.getShape().contains(holding.getCenter())){
 				if(holding != null){
 					tank.addWeapon(holding);
+					System.out.println("added to tank");
 				}
 			}
 			holding = null;
