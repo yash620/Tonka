@@ -10,15 +10,17 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
+import util.Sendable;
 import util.Updatable;
 import weapon.Projectile;
 import weapon.Weapon;
 
-public class Tank implements Drawable, Collidable, Serializable, Updatable {
+public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	private double hp;
 	private double speed;
 	private double turnSpeed;
@@ -80,7 +82,11 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		}
 	}
 	
+	//If keyinput is a null, then it is an AI tank
 	public void movement(KeyInput i){
+		if (i == null) {
+			i = ai.getInputs();
+		}
 		this.movement(i.getDown(), i.getRight(), i.getClickPoint(), i.isShoot());
 	}
 	
@@ -100,7 +106,7 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		tankShape = Transform.transform(tankShape, xvel, yvel,
 				Math.toRadians(tgtTheta-getTheta()), xcenter, ycenter);
 		setTheta(tgtTheta);
-		ArrayList<Collidable> collisions = game.getCollisions(this);
+		HashSet<Collidable> collisions = game.getCollisions(this);
 		boolean blocked = false;
 		for (Collidable c : collisions){
 			c.collision(this);
@@ -145,10 +151,6 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		if (c instanceof Projectile){
 			c.collision(this);
 		}
-		if(getHp() <= 0){
-			game.removeQueue(this);
-			game.addQueue(new Explosion(getCenter(), game));
-		}
 	}
 
 	@Override
@@ -192,7 +194,7 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 		return hp;
 	}
 	
-	public void takeDamage(int dmg){
+	public void takeDamage(double dmg){
 		this.hp -= dmg;
 	}
 	
@@ -215,13 +217,61 @@ public class Tank implements Drawable, Collidable, Serializable, Updatable {
 	
 	@Override
 	public void update() {
-		if (this.isAI()){
-			movement(ai.getInputs());
+		if(getHp() <= 0){
+			game.removeQueue(this);
+			game.addQueue(new Explosion(getCenter(), game));
 		}
 	}
 	@Override
 	public String toString(){
 		return this.getCenter().toString();
 	}
+	public ArrayList<Weapon> getWeapons(){
+		return this.myWeapons;
+	}
+
+	@Override
+	public Drawable getProxyClass() {
+		return new TankProxy(this.getColor(), this.getShape(),
+				this.xcenter, this.ycenter, this.getHp(), this.getWeapons());
+	}
 }
 
+class TankProxy implements Serializable, Drawable {
+	public final Color color;
+	public final Shape tankShape;
+	public final double xcenter;
+	public final double ycenter;
+	public final double hp;
+	public final ArrayList<Drawable> myWeapons;
+	
+	public TankProxy(Color c, Shape s, double x, double y, double hp, ArrayList<Weapon> weps){
+		this.color = c;
+		this.tankShape = s;
+		this.xcenter = x;
+		this.ycenter = y;
+		this.hp = hp;
+		myWeapons = new ArrayList<Drawable>();
+		for (Weapon w : weps){
+			myWeapons.add(w.getProxyClass());
+		}
+	}
+
+	@Override
+	public void draw(Graphics2D g2) {
+		g2.setColor(color);
+		g2.fill(tankShape);
+		g2.setColor(Color.black);
+		g2.draw(tankShape);
+		g2.setColor(Color.red);
+		g2.fillRect((int)xcenter - 25, (int)ycenter - 30, (int)(((double)this.hp)/100 * 50), 5);
+		g2.setColor(Color.black);
+		g2.drawRect((int)xcenter - 25, (int)ycenter - 30, 50, 5);
+		//g2.drawString("HP" + this.hp, (int)xcenter, (int)ycenter);
+		g2.setColor(color);
+		for (Drawable d : myWeapons){
+			d.draw(g2);
+		}
+	}
+	
+}

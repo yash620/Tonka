@@ -16,11 +16,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import util.Drawable;
+import util.Sendable;
 import util.Timer;
 import util.Updatable;
 import util.Timer.Action;
 
-public abstract class Weapon implements Drawable, Updatable, Serializable {
+public abstract class Weapon implements Drawable, Updatable, Sendable {
 	private Shape weaponShape;
 	private double turnSpeed;
 	private Point2D center;
@@ -237,4 +238,37 @@ public abstract class Weapon implements Drawable, Updatable, Serializable {
 	public int getMAXAMMO() {
 		return MAXAMMO;
 	}
+	@Override
+	public Drawable getProxyClass() {
+		return new WeaponProxy(this.getAngle(), this.getCenter().getX(),
+				this.getCenter().getY(), this.getWeaponShape(), this.getAmmo());
+	}
+}
+
+class WeaponProxy implements Serializable, Drawable {
+	private final double theta;
+	private final double xcenter;
+	private final double ycenter;
+	private final Shape shape;
+	private final int ammo;
+	
+	public WeaponProxy(double theta, double xcenter, double ycenter, Shape s, int ammo){
+		this.theta = theta;
+		this.xcenter = xcenter;
+		this.ycenter = ycenter;
+		this.shape = s;
+		this.ammo = ammo;
+	}
+
+	@Override
+	public void draw(Graphics2D g2) {
+		AffineTransform old = g2.getTransform();
+		g2.rotate(Math.toRadians(theta), xcenter, ycenter);
+		g2.setColor(Color.black);
+		g2.fill(shape);
+		g2.setTransform(old);
+		g2.drawOval((int)xcenter-2, (int)ycenter-2, 4, 4);
+		g2.drawString(Integer.toString(ammo), (int)xcenter, (int)ycenter-10);
+	}
+	
 }

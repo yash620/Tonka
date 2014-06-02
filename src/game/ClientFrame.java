@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -35,18 +36,20 @@ public class ClientFrame {
 	public static final int TIMESTEP = 17;
 
 	public ClientFrame() {
-		client = new Client("localhost", 34556);
+		String ip = JOptionPane.showInputDialog("IP?");
+		client = new Client(ip, 34556);
 		client.startThread();
 		
 		frame = new JFrame();
 		windowSize = new Dimension(1280, 720);
-		frame.setSize(windowSize);
 		Listener li = new Listener();
 		frame.addKeyListener(li);
 		JPanel mainDraw = new MainDraw();
+		mainDraw.setPreferredSize(windowSize);
 		frame.add(mainDraw);
 		mainDraw.addMouseListener(li);
 		mainDraw.addMouseMotionListener(li);
+		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ti = new Timer(TIMESTEP, li);

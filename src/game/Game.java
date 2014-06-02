@@ -11,10 +11,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
-import map.Map;
 import util.Collidable;
 import util.Drawable;
 import util.KeyInput;
+import util.Sendable;
 import util.Updatable;
 import weapon.BasicMissile;
 import weapon.BasicTurret;
@@ -23,11 +23,13 @@ import weapon.Machinegun;
 import weapon.Shotgun;
 import weapon.Weapon;
 
-public class Game implements Drawable, Serializable {
+public class Game implements Drawable {
 	private HashSet<Collidable> collidables;
 	private HashSet<Drawable> drawables;
 	private HashSet<Updatable> updatables;
 	private Map map;
+	private CollisionMap collisions;
+	private ThreadHandler thHand;
 	
 	/*
 	 * Tanks are special because their update method needs params
@@ -47,6 +49,8 @@ public class Game implements Drawable, Serializable {
 		playerTanks = new ArrayList<Tank>();
 		removeQue = new HashSet<Object>();
 		addQue = new HashSet<Object>();
+		collisions = new CollisionMap();
+		thHand = new ThreadHandler();
 		map = new Map(this);
 		map.basicMap();
 		for(Block b: map.showBlocks()){
@@ -56,33 +60,42 @@ public class Game implements Drawable, Serializable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-//			t.addWeapon(new Machinegun(t, 0, -10));
-//			t.addWeapon(new Machinegun(t, 0,-5));
-			t.addWeapon(new GrenadeLauncher(t, 0,0));
-//			t.addWeapon(new Machinegun(t, 0,5));
-//			t.addWeapon(new Machinegun(t, 0,10));
+			t.addWeapon(new Machinegun(t, 0,0));
 			addObject(t);
-//			for (int j = 3;j<13;j++){
-//				for (int k = 1;k<13;k++){
-//				Tank enemy = new Tank(k*100, 50*j, this);
-//				enemy.addWeapon(new BasicTurret(enemy));
+//			for (int j = 0;j<6;j++){
+//				Tank enemy = new Tank(1000, 100*j + 100, this);
+//				enemy.addWeapon(new Shotgun(enemy, 0, 10));
 //				enemy.addAI(new AI(enemy, this));
-//				if (!enemy.isColliding(b) && !enemy.isColliding(t)){
-//					addObject(enemy);
+//				boolean colliding = false;
+//				for (Collidable c : collidables){
+//					if (enemy.isColliding(c) || enemy.isColliding(c)){
+//						colliding = true;
+//						break;
+//					}
 //				}
+//				if (colliding == false){
+//					this.addQueue(enemy);
 //				}
 //			}
 		}
-		for (int i = 1;i<7;i++){
-			Tank enemy = new Tank(1000, 100*i, this);
-			enemy.addWeapon(new Machinegun(enemy, 0, 10));
-			enemy.addAI(new AI(enemy, this));
-			for (Collidable c : collidables){
-				if (enemy.isColliding(c) || enemy.isColliding(c)){
-					continue;
+		
+		//Stress testing
+		for (int i = 9;i<13;i++){
+			for (int j = 6;j<13;j++){
+				Tank enemy = new Tank(j*100, 50*i, this);
+				enemy.addWeapon(new Machinegun(enemy, 0, 10));
+				enemy.addAI(new AI(enemy, this));
+				boolean colliding = false;
+				for (Collidable c : collidables){
+					if (enemy.isColliding(c) || enemy.isColliding(c)){
+						colliding = true;
+						break;
+					}
+				}
+				if (colliding == false){
+					this.addQueue(enemy);
 				}
 			}
-			this.addQueue(enemy);
 		}
 	}
 	
@@ -91,7 +104,6 @@ public class Game implements Drawable, Serializable {
 	public void setTestDraw(Shape s){
 		test = s;
 	}
-	
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.black);
@@ -110,12 +122,22 @@ public class Game implements Drawable, Serializable {
 			g2.draw(test);
 		}
 	}
-	
+	int avg;
+	int count;
 	private void tick(){
-		for (Updatable u : updatables){
-			u.update();
+//		long start = System.currentTimeMillis();
+//		for (Updatable u : updatables) {
+//			u.update();
+//		}
+		//Updates everything with the thread Handler. This part is multithreaded
+		thHand.update(updatables);
+		//Updates all AI tanks
+		for (Tank t : allTanks){
+//			t.takeDamage(t.getHp()-100);
+			if (t.isAI()){
+				t.movement(null);
+			}
 		}
-		
 		//Adding and removing
 		for (Object o : addQue){
 			addObject(o);
@@ -125,12 +147,12 @@ public class Game implements Drawable, Serializable {
 			removeObject(o);
 		}
 		removeQue.clear();
-//		if (allTanks.size() < 5){
-//			Tank enemy = new Tank(1000,(Math.random()*500) + 150, this);
-//			enemy.addWeapon(new BasicTurret(enemy));
-//			enemy.addAI(new AI(enemy, this));
-//			addObject(enemy);
-//		}
+		collisions.updateCollidables(collidables);
+//		long end = System.currentTimeMillis();
+
+//		avg = ((int)(end - start) + count*avg) / (count + 1);
+//		count++;
+//		System.out.println(avg);
 	}
 	public boolean isFinished(){
 		return playerTanks.size() == 0;
@@ -148,14 +170,15 @@ public class Game implements Drawable, Serializable {
 		this.tick();
 	}
 	//Called by other collidables to see who is colliding with the frame
-	public ArrayList<Collidable> getCollisions(Collidable init){
-		ArrayList<Collidable> collisions = new ArrayList<Collidable>();
-		for (Collidable c : collidables){
-			if (c.isColliding(init)){
-				collisions.add(c);
-			}
-		}
-		return collisions;
+	public HashSet<Collidable> getCollisions(Collidable init){
+		return collisions.getCollisions(init);
+//		HashSet<Collidable> collisions = new HashSet<Collidable>();
+//		for (Collidable c : collidables){
+//			if (c.isColliding(init)){
+//				collisions.add(c);
+//			}
+//		}
+//		return collisions;
 	}
 	private void addObject(Object o){
 		if (o instanceof Collidable){
@@ -213,7 +236,17 @@ public class Game implements Drawable, Serializable {
 		return blocks;
 	}
 	
-	public HashSet<Drawable> getDrawables(){
-		return drawables;
+	public HashSet<Drawable> getSend() {
+		HashSet<Drawable> sends = new HashSet<Drawable>();
+		for (Drawable d : drawables){
+			if (d instanceof Sendable && d instanceof Explosion == false){
+				sends.add(((Sendable)d).getProxyClass());
+			}
+		}
+		return sends;
+	}
+	
+	public int getSize(){
+		return updatables.size();
 	}
 }

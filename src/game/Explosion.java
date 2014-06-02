@@ -7,9 +7,10 @@ import java.io.Serializable;
 
 import util.ColorList;
 import util.Drawable;
+import util.Sendable;
 import util.Updatable;
 
-public class Explosion implements Drawable, Updatable, Serializable {
+public class Explosion implements Drawable, Updatable, Serializable, Sendable {
 
 	private double timeAtStart;
 	private double timeSinceStart;
@@ -20,7 +21,7 @@ public class Explosion implements Drawable, Updatable, Serializable {
 	protected double xc, yc;
 	private double[][] places;
 	private double timelapse = .4;
-	private Game game;
+	private Game game;	//Explosions are strange, not going to do a proxy class for these
 		
 	public Explosion(double x2, double y2, double size, Game game){
 		xc = x2;
@@ -167,6 +168,10 @@ public class Explosion implements Drawable, Updatable, Serializable {
 	*/
 	public boolean done(){
 		return isDone;
+	}
+	@Override
+	public Drawable getProxyClass() {
+		return this;
 	}
 
 }

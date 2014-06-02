@@ -1,8 +1,11 @@
 package game;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +18,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import util.Drawable;
@@ -36,11 +41,26 @@ public class Server implements ActionListener, Runnable {
 	private Game game;
 	private int serverindex = 0;
 	
-//	private JFrame frame;
+	private int time;
 	
-	int test;
-	
+	private JFrame frame;
+		
 	public Server(){
+		frame = new JFrame();
+		JButton button = new JButton();
+		button.setText("PLAY");
+		frame.add(button);
+		button.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startGame();
+			}
+			
+		});
+		button.setPreferredSize(new Dimension(50,50));
+		frame.pack();
+		frame.setVisible(true);
 		allconnections = new ArrayList<Connection>();
 		ti = new Timer(17, this);
 		serverThread = new Thread(this);
@@ -62,19 +82,15 @@ public class Server implements ActionListener, Runnable {
 	
 	public void waitForConnection(){
 		try {
-			System.out.println("waiting for connection on port: " + serverport);
+			System.out.println("Waiting");
 			sock = serversocket.accept();
+			System.out.println("Connected");
 			OutputStream out = sock.getOutputStream();
 			InputStream in = sock.getInputStream();
-//			JOptionPane.showMessageDialog(null, "Connection Recieved");
-			System.out.println("Connection Recieved");
-//			Connection connection = new Connection(null, sock, fr, playerindex);
-			System.out.println("Create Connection");
 			Connection connection = new Connection(in, out, serverindex);
 			serverindex++;
 			allconnections.add(connection);
 			connection.startThread();
-			this.startGame();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -93,12 +109,22 @@ public class Server implements ActionListener, Runnable {
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		time++;
+		if (time % 500 == 0){
+			time = 0;
+			this.resetAll();
+			System.out.println("Reset");
+		}
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
 		this.sendAll();
 	}
-
+	public void resetAll(){
+		for (Connection c : allconnections){
+			c.resetStream();
+		}
+	}
 }
 
 class Connection implements Runnable {
@@ -119,9 +145,9 @@ class Connection implements Runnable {
 		//Created the streams
 		try {
 			System.out.println("Streams Created");
-			this.objectOut = new ObjectOutputStream(out);
+			this.objectOut = new ObjectOutputStream(new BufferedOutputStream(out));
 			objectOut.flush();
-			this.objectIn = new ObjectInputStream(in);
+			this.objectIn = new ObjectInputStream(new BufferedInputStream(in));
 			System.out.println("input Created");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -143,7 +169,7 @@ class Connection implements Runnable {
 	
 	public void read(){
 		try {
-			Object o = objectIn.readUnshared();
+			Object o = objectIn.readObject();
 			input = ((KeyInput)o);
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
@@ -155,22 +181,33 @@ class Connection implements Runnable {
 		return input;
 	}
 	
+	int maxtime;
 	public void send(Game game){
+		HashSet<Drawable> sends = game.getSend();
+		long start = System.currentTimeMillis();
 		try {
-			HashSet<Drawable> drawables = game.getDrawables();
-			objectOut.writeUnshared(drawables);
-			if (drawables != null){
-				for (Drawable d : drawables){
-					if (d instanceof Tank && ((Tank)d).isAI() == false){
-						System.out.println(((Tank)d).getCenter());
-					}
-				}
-			}
+			objectOut.writeObject(sends);
+			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		long end = System.currentTimeMillis();
+		int time = (int) (end-start);
+		if (time > maxtime){
+			maxtime = time;
+		}
+		System.out.println(time + " " + maxtime  + " " + sends.size());
 //		this.writeToFile(game.getDrawables(), "test.txt");
 
+	}
+	
+	public void resetStream(){
+		try {
+			objectOut.reset();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public int getIndex(){
