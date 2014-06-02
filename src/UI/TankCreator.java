@@ -41,14 +41,15 @@ public class TankCreator extends JFrame{
 		this.setTitle("Tank Creator");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		p = new Panel();
+		p.setPreferredSize(this.getSize());
 		holding = null;
 		tank = new Tank(200,200,new ArrayList<Weapon>(), null);		//Need a pointer to game Glynn
 		this.add(p);
 		l = new Listener();
 		t = new Timer(10, l);
 		t.start();
-		this.addKeyListener(new Key());
-		this.addMouseListener(new Mouse());
+		p.addKeyListener(new Key());
+		p.addMouseListener(new Mouse());
 		ttlpts = 100;
 		wppts = 0;
 		spdpts = 0;
@@ -68,9 +69,9 @@ public class TankCreator extends JFrame{
 			repaint();
 			if(holding != null){
 				System.out.println(holding);
-				System.out.println(getMousePosition().getX() + ", " + getMousePosition().getY());
+				System.out.println(p.getMousePosition().getX() + ", " + p.getMousePosition().getY());
 				System.out.println(holding.getCenter().getX() + ", " + holding.getCenter().getY());
-				holding.moveTo(new Point2D.Double(getMousePosition().getX() - 8, getMousePosition().getY() - 30));
+				holding.moveTo(new Point2D.Double(p.getMousePosition().getX(), p.getMousePosition().getY()));
 			}
 		}
 		
@@ -178,10 +179,12 @@ public class TankCreator extends JFrame{
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			if(tank.getShape().contains(holding.getCenter())){
-				if(holding != null){
-					tank.addWeapon(holding);
-					System.out.println("added to tank");
+			if(holding != null){
+				if(tank.getShape().contains(holding.getCenter())){
+					if(holding != null){
+						tank.addWeapon(holding);
+						System.out.println("added to tank");
+					}
 				}
 			}
 			holding = null;
