@@ -29,6 +29,7 @@ public class Game implements Drawable {
 	private HashSet<Updatable> updatables;
 	private Map map;
 	private CollisionMap collisions;
+	private ThreadHandler thHand;
 	
 	/*
 	 * Tanks are special because their update method needs params
@@ -49,6 +50,7 @@ public class Game implements Drawable {
 		removeQue = new HashSet<Object>();
 		addQue = new HashSet<Object>();
 		collisions = new CollisionMap();
+		thHand = new ThreadHandler();
 		map = new Map(this);
 		map.basicMap();
 		for(Block b: map.showBlocks()){
@@ -58,24 +60,11 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100, this);
-			t.takeDamage(-100000);
-			t.addWeapon(new Shotgun(t, 0,0));
+			t.addWeapon(new Machinegun(t, 0,0));
 			addObject(t);
-//			for (int j = 3;j<13;j++){
-//				for (int k = 1;k<13;k++){
-//				Tank enemy = new Tank(k*100, 50*j, this);
-//				enemy.addWeapon(new BasicTurret(enemy));
-//				enemy.addAI(new AI(enemy, this));
-//				if (!enemy.isColliding(b) && !enemy.isColliding(t)){
-//					addObject(enemy);
-//				}
-//				}
-//			}
-		}
-		for (int i = 3;i<13;i++){
-			for (int j = 1;j<13;j++){
-				Tank enemy = new Tank(j*100, 50*i, this);
-				enemy.addWeapon(new Machinegun(enemy, 0, 10));
+			for (int j = 0;j<6;j++){
+				Tank enemy = new Tank(1000, 100*j + 100, this);
+				enemy.addWeapon(new Shotgun(enemy, 0, 10));
 				enemy.addAI(new AI(enemy, this));
 				boolean colliding = false;
 				for (Collidable c : collidables){
@@ -89,6 +78,25 @@ public class Game implements Drawable {
 				}
 			}
 		}
+		
+		//Stress testing
+//		for (int i = 3;i<13;i++){
+//			for (int j = 1;j<13;j++){
+//				Tank enemy = new Tank(j*100, 50*i, this);
+//				enemy.addWeapon(new Machinegun(enemy, 0, 10));
+//				enemy.addAI(new AI(enemy, this));
+//				boolean colliding = false;
+//				for (Collidable c : collidables){
+//					if (enemy.isColliding(c) || enemy.isColliding(c)){
+//						colliding = true;
+//						break;
+//					}
+//				}
+//				if (colliding == false){
+//					this.addQueue(enemy);
+//				}
+//			}
+//		}
 	}
 	
 	// Test method, draw whatever you want on the panel
@@ -114,10 +122,25 @@ public class Game implements Drawable {
 			g2.draw(test);
 		}
 	}
-	
+	int avg;
+	int count;
 	private void tick(){
-		for (Updatable u : updatables){
-			u.update();
+		long start = System.currentTimeMillis();
+//		for (Updatable u : updatables) {
+//			u.update();
+//		}
+		//Updates everything with the thread Handler. This part is multithreaded
+		thHand.update(updatables);
+		long end = System.currentTimeMillis();
+		avg = ((int)(end - start) + count*avg) / (count + 1);
+		count++;
+		System.out.println(avg);
+		//Updates all AI tanks
+		for (Tank t : allTanks){
+			t.takeDamage(t.getHp()-100);
+			if (t.isAI()){
+				t.movement(null);
+			}
 		}
 		//Adding and removing
 		for (Object o : addQue){
@@ -220,5 +243,9 @@ public class Game implements Drawable {
 			}
 		}
 		return sends;
+	}
+	
+	public int getSize(){
+		return updatables.size();
 	}
 }

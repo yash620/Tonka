@@ -82,7 +82,11 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		}
 	}
 	
+	//If keyinput is a null, then it is an AI tank
 	public void movement(KeyInput i){
+		if (i == null) {
+			i = ai.getInputs();
+		}
 		this.movement(i.getDown(), i.getRight(), i.getClickPoint(), i.isShoot());
 	}
 	
@@ -190,7 +194,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		return hp;
 	}
 	
-	public void takeDamage(int dmg){
+	public void takeDamage(double dmg){
 		this.hp -= dmg;
 	}
 	
@@ -213,9 +217,6 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	
 	@Override
 	public void update() {
-		if (this.isAI()){
-			movement(ai.getInputs());
-		}
 		if(getHp() <= 0){
 			game.removeQueue(this);
 			game.addQueue(new Explosion(getCenter(), game));

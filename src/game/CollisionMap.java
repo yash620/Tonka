@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import util.Collidable;
 
@@ -19,10 +20,10 @@ public class CollisionMap {
 		}
 	}
 	
-	public void updateCollidables(HashSet<Collidable> c) {
+	public void updateCollidables(Set<Collidable> collidables) {
 		for (int i = 0;i<collisionArr.length;i++){
 			for (int j = 0;j<collisionArr[0].length;j++){
-				collisionArr[i][j].updateCollidable(c);
+				collisionArr[i][j].updateCollidable(collidables);
 			}
 		}
 	}
@@ -56,9 +57,9 @@ class CollisionCell {
 		}
 		return collisions;
 	}
-	public void updateCollidable(HashSet<Collidable> collides) {
+	public void updateCollidable(Set<Collidable> collidables2) {
 		collidables.clear();
-		for (Collidable c : collides){
+		for (Collidable c : collidables2){
 			if (bounds.intersects(c.getBoundingBox())) {
 				collidables.add(c);
 			}

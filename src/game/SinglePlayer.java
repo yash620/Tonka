@@ -56,7 +56,7 @@ public class SinglePlayer {
 			Graphics2D g2 = (Graphics2D) g;
 			game.draw(g2);
 			g2.drawString(cp.toString(), 100, 100);
-			g2.drawString(Integer.toString(frameMS), 1100,100);
+			g2.drawString(Integer.toString(frameMS) + "   " + Integer.toString(game.getSize()), 1100,100);
 //			g2.drawString(Double.toString(AI.angleToPoint(game.getTanks().get(0).getCenter(),
 //					cp)), 100,100);
 

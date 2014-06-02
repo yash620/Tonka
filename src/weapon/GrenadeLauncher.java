@@ -30,7 +30,7 @@ public class GrenadeLauncher extends Weapon {
 	}
 
 	public GrenadeLauncher(Tank t, double dtot, double atot) {
-		this(t,3,t.getCenter(), 4, 40, 0, dtot, atot);
+		this(t,3,t.getCenter(), 1, 5, 0, dtot, atot);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class GrenadeLauncher extends Weapon {
 			this.setAmmo(getAmmo()-1);
 			this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
 			if (getAmmo() == this.getMAXAMMO()-1){
-				this.addTimer(new Timer(150, Action.AMMO));
+				this.addTimer(new Timer(75, Action.AMMO));
 			}
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
 			missiles.add(new Grenade(this.getCenter(), distance, 30, this.getAngle(),

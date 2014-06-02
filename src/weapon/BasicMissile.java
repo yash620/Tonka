@@ -21,7 +21,7 @@ public class BasicMissile extends Projectile{
 	private int timerDelay;
 	private final double deltax, deltay;
 	
-	public BasicMissile(Point2D center, double theta, int damage, Weapon weapon, Game game){
+	public BasicMissile(Point2D center, double theta, double damage, Weapon weapon, Game game){
 		this((int)center.getX(), (int)center.getY(), 9, damage, theta, weapon, game);
 	}
 
