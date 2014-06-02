@@ -118,7 +118,9 @@ public class Server implements ActionListener, Runnable {
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
-		this.sendAll();
+		if (time % 2 == 0){
+			this.sendAll();
+		}
 	}
 	public void resetAll(){
 		for (Connection c : allconnections){
