@@ -37,11 +37,11 @@ public class Client implements Runnable {
 			System.out.println("Creating socket");
 			socket = new Socket(hostIP, port);
 			System.out.println("Creating output");
-			clientOut = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+			clientOut = new ObjectOutputStream(socket.getOutputStream());
 			clientOut.flush();
 			System.out.println(clientOut);
 			System.out.println("creating input");
-			clientIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+			clientIn = new ObjectInputStream(socket.getInputStream());
 			System.out.println("Created everything");	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

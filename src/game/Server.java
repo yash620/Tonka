@@ -147,9 +147,9 @@ class Connection implements Runnable {
 		//Created the streams
 		try {
 			System.out.println("Streams Created");
-			this.objectOut = new ObjectOutputStream(new BufferedOutputStream(out));
+			this.objectOut = new ObjectOutputStream(out);
 			objectOut.flush();
-			this.objectIn = new ObjectInputStream(new BufferedInputStream(in));
+			this.objectIn = new ObjectInputStream(in);
 			System.out.println("input Created");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -189,7 +189,8 @@ class Connection implements Runnable {
 //		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
-			objectOut.flush();
+//			this.writeToFile(sends, "sends.txt");
+//			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

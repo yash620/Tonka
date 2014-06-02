@@ -53,21 +53,26 @@ public class Grenade extends Projectile {
 			c.collision(this);
 		}
 		if (this.init.distance(this.center) > distance){
-			int sides = 10;
-			int[] xarr = new int[sides];
-			int[] yarr = new int[sides];
-			for(int i = 0; i < sides; i++){
-				xarr[i] = (int)(this.center.getX() + 50 * Math.cos(Math.PI/(sides/2) * i));
-				yarr[i] = (int)(this.center.getY() + 50 * Math.sin(Math.PI/(sides/2) * i));
-			}
-			this.setProjectileShape(new Polygon(xarr,yarr,sides));
+			this.setProjectileShape(this.getExploded());
 			this.remove = true;
 		}
 	}
 
 	@Override
 	public Shape getDestroyed() {
-		return new Rectangle();
+		this.setProjectileShape(this.getExploded());
+		return this.getProjectileShape();
+	}
+	
+	public Shape getExploded() {
+		int sides = 10;
+		int[] xarr = new int[sides];
+		int[] yarr = new int[sides];
+		for(int i = 0; i < sides; i++){
+			xarr[i] = (int)(this.center.getX() + 50 * Math.cos(Math.PI/(sides/2) * i));
+			yarr[i] = (int)(this.center.getY() + 50 * Math.sin(Math.PI/(sides/2) * i));
+		}
+		return new Polygon(xarr,yarr,sides);
 	}
 
 	@Override
@@ -81,9 +86,7 @@ public class Grenade extends Projectile {
 		}
 		if (c instanceof Block){
 			game.removeQueue(this);
-			if (this.remove){
-				game.addQueue(new Explosion(this.center.getX(), this.center.getY(), 60, game));
-			}
+			game.addQueue(new Explosion(this.center.getX(), this.center.getY(), 60, game));
 		}
 	}
 
