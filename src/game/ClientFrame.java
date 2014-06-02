@@ -77,7 +77,7 @@ public class ClientFrame {
 			MouseListener, MouseMotionListener {
 		
 		private int down, right;
-		private Point clickPoint;
+		private Point clickPoint = new Point();
 		private boolean shoot;
 
 		@Override

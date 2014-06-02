@@ -21,7 +21,7 @@ public class Explosion implements Drawable, Updatable, Serializable, Sendable {
 	protected double xc, yc;
 	private double[][] places;
 	private double timelapse = .4;
-	private Game game;	//Explosions are strange, not going to do a proxy class for these
+	private Game game;
 		
 	public Explosion(double x2, double y2, double size, Game game){
 		xc = x2;

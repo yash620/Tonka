@@ -118,7 +118,9 @@ public class Server implements ActionListener, Runnable {
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
-		this.sendAll();
+		if (time % 2 == 0){
+			this.sendAll();
+		}
 	}
 	public void resetAll(){
 		for (Connection c : allconnections){
@@ -184,19 +186,19 @@ class Connection implements Runnable {
 	int maxtime;
 	public void send(Game game){
 		HashSet<Drawable> sends = game.getSend();
-		long start = System.currentTimeMillis();
+//		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
 			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		long end = System.currentTimeMillis();
-		int time = (int) (end-start);
-		if (time > maxtime){
-			maxtime = time;
-		}
-		System.out.println(time + " " + maxtime  + " " + sends.size());
+//		long end = System.currentTimeMillis();
+//		int time = (int) (end-start);
+//		if (time > maxtime){
+//			maxtime = time;
+//		}
+//		System.out.println(time + " " + maxtime  + " " + sends.size());
 //		this.writeToFile(game.getDrawables(), "test.txt");
 
 	}
