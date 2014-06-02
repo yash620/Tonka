@@ -47,7 +47,6 @@ public class SinglePlayer {
 		ti = new Timer(TIMESTEP, li);
 		ti.start();
 	}
-
 	@SuppressWarnings("serial")
 	public class MainDraw extends JPanel {
 		@Override
@@ -59,7 +58,6 @@ public class SinglePlayer {
 			g2.drawString(Integer.toString(frameMS) + "   " + Integer.toString(game.getSize()), 1100,100);
 //			g2.drawString(Double.toString(AI.angleToPoint(game.getTanks().get(0).getCenter(),
 //					cp)), 100,100);
-
 		}
 	}
 	
@@ -127,8 +125,10 @@ public class SinglePlayer {
 				game = new Game(1);
 			}
 			frame.repaint();
+
 			long end = System.currentTimeMillis();
 			frameMS = (int)(end - start);
+
 		}
 
 		@Override
