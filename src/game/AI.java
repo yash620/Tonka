@@ -46,7 +46,7 @@ public class AI {
 		}
 		if (minDist < 100 && right == 0){
 			right = AI.randomDirection(AI.TwoDir);
-		} else if (Math.abs(AI.angleToRect(minBlock.getBoundingBox(),
+		} else if (minBlock != null && Math.abs(AI.angleToRect(minBlock.getBoundingBox(),
 				tank.getCenter()) - tank.getTheta()) > 135 || minDist >= 100) {
 			right = 0;
 		}
@@ -57,7 +57,7 @@ public class AI {
 		this.prevCenter = tank.getCenter();
 		Point target = new Point((int)players.get(0).getCenter().getX(),
 				(int)players.get(0).getCenter().getY());
-		return new KeyInput(down, right, target, false);
+		return new KeyInput(down, right, target, true);
 	}
 	
 	public ArrayList<Block> getBlocks(){
