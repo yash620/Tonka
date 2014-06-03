@@ -54,7 +54,8 @@ public class Machinegun extends Weapon {
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
 			missiles.add(new BasicMissile(this.getCenter(),
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(), 2.5, this, this.getTank().getGame()));
+					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(),
+					2.5, this, this.getTank().getGame()));
 			return missiles;
 		}
 		return null;

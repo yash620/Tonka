@@ -57,7 +57,7 @@ public class AI {
 		this.prevCenter = tank.getCenter();
 		Point target = new Point((int)players.get(0).getCenter().getX(),
 				(int)players.get(0).getCenter().getY());
-		return new KeyInput(down, right, target, true);
+		return new KeyInput(down, right, target, false);
 	}
 	
 	public ArrayList<Block> getBlocks(){

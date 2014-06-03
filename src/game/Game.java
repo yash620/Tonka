@@ -29,7 +29,7 @@ public class Game implements Drawable {
 	private HashSet<Updatable> updatables;
 	private Map map;
 	private CollisionMap collisions;
-	private ThreadHandler thHand;
+//	private ThreadHandler thHand;
 	
 	/*
 	 * Tanks are special because their update method needs params
@@ -50,7 +50,7 @@ public class Game implements Drawable {
 		removeQue = new HashSet<Object>();
 		addQue = new HashSet<Object>();
 		collisions = new CollisionMap();
-		thHand = new ThreadHandler();
+//		thHand = new ThreadHandler();
 		map = new Map(this);
 		map.basicMap();
 		for(Block b: map.showBlocks()){
@@ -60,10 +60,10 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100 + 50*i, this);
-			t.addWeapon(new GrenadeLauncher(t, 0,0));
+			t.addWeapon(new Shotgun(t, 0,0));
 			addObject(t);
 			for (int j = 0;j<6;j++){
-				Tank enemy = new Tank(1000, 100*j + 100, this);
+				Tank enemy = new Tank(900 + 100*i, 100*j + 100, this);
 				enemy.addWeapon(new Shotgun(enemy, 0, 10));
 				enemy.addAI(new AI(enemy, this));
 				boolean colliding = false;
@@ -122,25 +122,22 @@ public class Game implements Drawable {
 			g2.draw(test);
 		}
 	}
-	int avg;
-	int count;
-	private void tick(){
+	public void tick(){
 //		long start = System.currentTimeMillis();
 
-//		for (Updatable u : updatables) {
-//			u.update();
-//		}
+		for (Updatable u : updatables) {
+			u.update();
+		}
 		//Updates everything with the thread Handler. This part is multithreaded
-		thHand.update(updatables);
+//		thHand.update(updatables);
 //		long end = System.currentTimeMillis();
 		//Updates all AI tanks
 		for (Tank t : allTanks){
-//			t.takeDamage(t.getHp()-100);
 			if (t.isAI()){
+//				System.out.println(t.getCenter());
 				t.movement(null);
 			}
 		}
-	
 		//Adding and removing
 		for (Object o : addQue){
 			addObject(o);
@@ -165,7 +162,6 @@ public class Game implements Drawable {
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
 		playerTanks.get(player).movement(i);
-		this.tick();
 	}
 	//Called by other collidables to see who is colliding with the frame
 	public HashSet<Collidable> getCollisions(Collidable init){

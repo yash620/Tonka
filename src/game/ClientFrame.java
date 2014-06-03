@@ -155,7 +155,7 @@ public class ClientFrame {
 
 		@Override
 		public void mouseDragged(MouseEvent arg0) {
-
+			clickPoint = arg0.getPoint();
 		}
 
 		@Override

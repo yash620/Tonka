@@ -36,12 +36,14 @@ public class Client implements Runnable {
 			hostIP = InetAddress.getByName(hostName);
 			System.out.println("Creating socket");
 			socket = new Socket(hostIP, port);
+			socket.setTcpNoDelay(true);
+			socket.setPerformancePreferences(0, 1, 0);
 			System.out.println("Creating output");
-			clientOut = new ObjectOutputStream(socket.getOutputStream());
+			clientOut = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 			clientOut.flush();
 			System.out.println(clientOut);
 			System.out.println("creating input");
-			clientIn = new ObjectInputStream(socket.getInputStream());
+			clientIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 			System.out.println("Created everything");	
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

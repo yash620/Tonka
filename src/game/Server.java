@@ -84,6 +84,8 @@ public class Server implements ActionListener, Runnable {
 		try {
 			System.out.println("Waiting");
 			sock = serversocket.accept();
+			sock.setTcpNoDelay(true);
+			sock.setPerformancePreferences(0, 1, 0);
 			System.out.println("Connected");
 			OutputStream out = sock.getOutputStream();
 			InputStream in = sock.getInputStream();
@@ -110,7 +112,7 @@ public class Server implements ActionListener, Runnable {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		time++;
-		if (time % 500 == 0){
+		if (time % 500 == 0) {
 			time = 0;
 			this.resetAll();
 			System.out.println("Reset");
@@ -118,6 +120,7 @@ public class Server implements ActionListener, Runnable {
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
+		game.tick();
 		if (time % 2 == 0){
 			this.sendAll();
 		}
@@ -147,9 +150,9 @@ class Connection implements Runnable {
 		//Created the streams
 		try {
 			System.out.println("Streams Created");
-			this.objectOut = new ObjectOutputStream(out);
+			this.objectOut = new ObjectOutputStream(new BufferedOutputStream(out));
 			objectOut.flush();
-			this.objectIn = new ObjectInputStream(in);
+			this.objectIn = new ObjectInputStream(new BufferedInputStream(in));
 			System.out.println("input Created");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -189,8 +192,8 @@ class Connection implements Runnable {
 //		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
-//			this.writeToFile(sends, "sends.txt");
-//			objectOut.flush();
+			this.writeToFile(sends, "sends.txt");
+			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
