@@ -243,4 +243,8 @@ public class Game implements Drawable {
 	public int getSize(){
 		return updatables.size();
 	}
+	
+	public int getNumPlayers() {
+		return playerTanks.size();
+	}
 }
