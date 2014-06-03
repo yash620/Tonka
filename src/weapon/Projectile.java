@@ -49,6 +49,7 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Sen
 	}
 	//Returns the same of the destroyed missile, used to create the block destruction patters
 	public abstract Shape getDestroyed();
+	
 	public Weapon getWeapon() {
 		return weapon;
 	}
@@ -62,7 +63,8 @@ public abstract class Projectile implements Drawable, Collidable, Updatable, Sen
 		this.projectileShape = projectileShape;
 	}
 
-	/*This is called by the other collidable when it collides with the missile
+	/*
+	 * This is called by the other collidable when it collides with the missile
 	 * The missiles should call the other collidables collision method
 	 */
 	@Override

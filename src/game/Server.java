@@ -117,10 +117,14 @@ public class Server implements ActionListener, Runnable {
 			this.resetAll();
 			System.out.println("Reset");
 		}
-		for (Connection c : allconnections){
-			game.update(c.getInputs(), c.getIndex());
+		if (game.isFinished() == false) {
+			for (Connection c : allconnections){
+				game.update(c.getInputs(), c.getIndex());
+			}
+			game.tick();
+		} else {
+			this.startGame();
 		}
-		game.tick();
 		if (time % 2 == 0){
 			this.sendAll();
 		}

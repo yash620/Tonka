@@ -57,7 +57,12 @@ public class AI {
 		this.prevCenter = tank.getCenter();
 		Point target = new Point((int)players.get(0).getCenter().getX(),
 				(int)players.get(0).getCenter().getY());
-		return new KeyInput(down, right, target, true);
+		boolean fire = false;
+		if (Math.abs(AI.angleToRect(players.get(0).getBoundingBox(), tank.getCenter()) -
+				tank.getWeapons().get(0).getAngle()) > 90){
+			fire = true;
+		}
+		return new KeyInput(down, right, target, fire);
 	}
 	
 	public ArrayList<Block> getBlocks(){
