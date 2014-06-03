@@ -119,14 +119,10 @@ public class Server implements ActionListener, Runnable {
 		}
 		System.out.println(game.getNumPlayers());
 		System.out.println(allconnections.size());
-		if (game.getNumPlayers() == allconnections.size()) {
-			for (Connection c : allconnections){
-				game.update(c.getInputs(), c.getIndex());
-			}
-			game.tick();
-		} else {
-			this.startGame();
+		for (Connection c : allconnections){
+			game.update(c.getInputs(), c.getIndex());
 		}
+		game.tick();
 		if (time % 2 == 0){
 			this.sendAll();
 		}

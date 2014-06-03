@@ -161,7 +161,9 @@ public class Game implements Drawable {
 	}
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
-		playerTanks.get(player).movement(i);
+		if (player < playerTanks.size()) {
+			playerTanks.get(player).movement(i);
+		}
 	}
 	//Called by other collidables to see who is colliding with the frame
 	public HashSet<Collidable> getCollisions(Collidable init){
