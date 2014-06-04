@@ -1,6 +1,7 @@
 package weapon;
 
 import game.Game;
+import game.Tank;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

@@ -33,16 +33,18 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	private Color color;
 	private AI ai;
 	private Game game;
+	private final int team;
 	
-	public Tank(double x, double y, Game game){
-		this(x,y,new ArrayList<Weapon>(), game);
+	public Tank(double x, double y, int team, Game game){
+		this(x,y,new ArrayList<Weapon>(), team, game);
 	}
 	
-	public Tank(double x, double y, ArrayList<Weapon> weapons, Game game){
+	public Tank(double x, double y, ArrayList<Weapon> weapons, int team, Game game){
 		this.theta = 0;
 		this.prevtheta = 0;
 		this.xcenter = x;
 		this.ycenter = y;
+		this.team = team;
 		this.myWeapons = weapons;
 		this.hp = 100;
 		this.speed = 3;
@@ -231,6 +233,10 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	public ArrayList<Weapon> getWeapons(){
 		return this.myWeapons;
 	}
+	
+	public int getTeam() {
+		return team;
+	}
 
 	@Override
 	public Drawable getProxyClass() {
@@ -275,5 +281,4 @@ class TankProxy implements Serializable, Drawable {
 			d.draw(g2);
 		}
 	}
-	
 }
