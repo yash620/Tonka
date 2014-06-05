@@ -86,7 +86,9 @@ public class BasicMissile extends Projectile{
 			}
 		}
 		if (c instanceof Tank && !c.equals(this.getWeapon().getTank())){
-			((Tank) c).takeDamage((int) this.damage);
+			if (((Tank) c).getTeam() != this.getWeapon().getTank().getTeam()) {
+				((Tank) c).takeDamage((int) this.damage);
+			}
 			game.removeQueue(this);
 //			game.addQueue(new Explosion(this.center, game));
 		}

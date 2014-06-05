@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,21 +12,22 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import util.KeyInput;
+import weapon.Weapon;
 
 public class AI {
 	private Tank tank;
 	private Game game;
 	private int right;
 	private int down = 1;
+	private boolean fire;
+	
 	private Point2D prevCenter;
-	private Rectangle previousRect;
 	private static final int ThreeDir = 3;
 	private static final int TwoDir = 2;
 	public AI(Tank t, Game g){
 		this.tank = t;
 		this.game = g;
 		this.prevCenter = tank.getCenter();
-		this.previousRect = tank.getBoundingBox();
 	}
 	
 	public KeyInput getInputs(){
@@ -57,25 +59,38 @@ public class AI {
 		this.prevCenter = tank.getCenter();
 		Point target = new Point((int)players.get(0).getCenter().getX(),
 				(int)players.get(0).getCenter().getY());
-		boolean fire = false;
-		if (Math.abs(AI.angleToRect(players.get(0).getBoundingBox(), tank.getCenter()) -
-				tank.getWeapons().get(0).getAngle()) > 90){
-			fire = true;
+		boolean hasAmmo = false;
+		double weaponAngle = 0;
+		for (Weapon w : tank.getWeapons()) {
+			if (w.getAmmo() > 0) {
+				hasAmmo = true;
+			}
+			weaponAngle = w.getAngle();
+		}
+		if (hasAmmo && fire == false) {
+			double targetDist = tank.getCenter().distance(target);
+			Line2D fireLine = new Line2D.Double(tank.getCenter().getX(), tank.getCenter().getY(),
+					tank.getCenter().getX() + targetDist * Math.cos(Math.toRadians(weaponAngle)),
+					tank.getCenter().getY() + targetDist * Math.sin(Math.toRadians(weaponAngle)));
+			if (Math.abs(AI.angleToRect(players.get(0).getBoundingBox(), tank.getCenter()) -
+					tank.getWeapons().get(0).getAngle()) > 30){
+				fire = true;
+			}
+			for (Block b : game.getBlocks()) {
+				if (fireLine.intersects(b.getBoundingBox())) {
+					fire = false;
+					break;
+				}
+			}
+		}
+		if (hasAmmo == false) {
+			fire = false;
 		}
 		return new KeyInput(down, right, target, fire);
 	}
 	
 	public ArrayList<Block> getBlocks(){
 		ArrayList<Block> blocks = game.getBlocks();
-		Collections.sort(blocks, new Comparator<Block>(){
-
-			@Override
-			public int compare(Block o1, Block o2) {
-				return (int) o1.getCenter().distanceSq(o2.getCenter());
-			}
-			
-		});
-		Collections.reverse(blocks);
 		return blocks;
 	}
 	
@@ -84,18 +99,16 @@ public class AI {
 		ArrayList<Tank> enemies = new ArrayList<Tank>();
 		for (Tank t : tanks){
 			if (!t.isAI()){
-				enemies.add(t);
+				int index = enemies.size();
+				for (Tank e : enemies) {
+					if (tank.getCenter().distanceSq(e.getCenter()) >
+						tank.getCenter().distanceSq(t.getCenter())) {
+						index = enemies.indexOf(e);
+					}
+				}
+				enemies.add(index, t);
 			}
 		}
-		Collections.sort(enemies, new Comparator<Tank>(){
-			
-			@Override
-			public int compare(Tank o1, Tank o2) {
-				return (int) o1.getCenter().distanceSq(o2.getCenter());
-			}
-			
-		});
-		Collections.reverse(enemies);
 		return enemies;
 	}
 	
@@ -107,15 +120,6 @@ public class AI {
 				friendlies.add(t);
 			}
 		}
-		Collections.sort(friendlies, new Comparator<Tank>(){
-			
-			@Override
-			public int compare(Tank o1, Tank o2) {
-				return (int) o1.getCenter().distanceSq(o2.getCenter());
-			}
-			
-		});
-		Collections.reverse(friendlies);
 		return friendlies;
 	}
 	
