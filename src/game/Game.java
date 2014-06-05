@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import util.Collidable;
@@ -35,7 +36,7 @@ public class Game implements Drawable {
 	 * Tanks are special because their update method needs params
 	 */
 	private ArrayList<Tank> allTanks;
-	private ArrayList<Tank> playerTanks;
+	private HashMap<Integer, Tank> playerTanks;
 	
 	//Prevent Concurrent Modification Errors
 	private HashSet<Object> removeQue;
@@ -46,7 +47,7 @@ public class Game implements Drawable {
 		drawables = new HashSet<Drawable>();
 		updatables = new HashSet<Updatable>();
 		allTanks = new ArrayList<Tank>();
-		playerTanks = new ArrayList<Tank>();
+		playerTanks = new HashMap<Integer, Tank>();
 		removeQue = new HashSet<Object>();
 		addQue = new HashSet<Object>();
 		collisions = new CollisionMap();
@@ -58,8 +59,8 @@ public class Game implements Drawable {
 		}
 		
 		for (int i = 0;i<playerNum;i++){
-
-			Tank t = new Tank(100,100 + 50*i, playerNum + 1, this);
+			System.out.println(i);
+			Tank t = new Tank(100,100 + 50*i, i + 1, this);
 			t.addWeapon(new Machinegun(t, 0,0));
 			addObject(t);
 			for (int j = 0;j<7;j++){
@@ -154,15 +155,16 @@ public class Game implements Drawable {
 	}
 	//Single player update
 	public void update(int down, int right, Point clickpoint, boolean shoot){
+//		System.out.println(playerTanks);
 		if (isFinished() == false){
-			playerTanks.get(0).movement(down, right, clickpoint, shoot);
+			playerTanks.get(1).movement(down, right, clickpoint, shoot);
 		}
 		this.tick();
 	}
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
 		if (player < playerTanks.size()) {
-			playerTanks.get(player).movement(i);
+			playerTanks.get(player+1).movement(i);
 		}
 	}
 	//Called by other collidables to see who is colliding with the frame
@@ -189,7 +191,7 @@ public class Game implements Drawable {
 		if (o instanceof Tank){
 			allTanks.add((Tank) o);
 			if (!((Tank)o).isAI()){
-				playerTanks.add((Tank) o);
+				playerTanks.put(((Tank) o).getTeam(), (Tank)o);
 			}
 		}
 	}
