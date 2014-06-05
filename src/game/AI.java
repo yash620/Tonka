@@ -22,14 +22,12 @@ public class AI {
 	private boolean fire;
 	
 	private Point2D prevCenter;
-	private Rectangle previousRect;
 	private static final int ThreeDir = 3;
 	private static final int TwoDir = 2;
 	public AI(Tank t, Game g){
 		this.tank = t;
 		this.game = g;
 		this.prevCenter = tank.getCenter();
-		this.previousRect = tank.getBoundingBox();
 	}
 	
 	public KeyInput getInputs(){
@@ -93,15 +91,6 @@ public class AI {
 	
 	public ArrayList<Block> getBlocks(){
 		ArrayList<Block> blocks = game.getBlocks();
-		Collections.sort(blocks, new Comparator<Block>(){
-
-			@Override
-			public int compare(Block o1, Block o2) {
-				return (int) o1.getCenter().distanceSq(o2.getCenter());
-			}
-			
-		});
-		Collections.reverse(blocks);
 		return blocks;
 	}
 	
@@ -110,18 +99,16 @@ public class AI {
 		ArrayList<Tank> enemies = new ArrayList<Tank>();
 		for (Tank t : tanks){
 			if (!t.isAI()){
-				enemies.add(t);
+				int index = enemies.size();
+				for (Tank e : enemies) {
+					if (tank.getCenter().distanceSq(e.getCenter()) >
+						tank.getCenter().distanceSq(t.getCenter())) {
+						index = enemies.indexOf(e);
+					}
+				}
+				enemies.add(index, t);
 			}
 		}
-		Collections.sort(enemies, new Comparator<Tank>(){
-			
-			@Override
-			public int compare(Tank o1, Tank o2) {
-				return (int) o1.getCenter().distanceSq(o2.getCenter());
-			}
-			
-		});
-		Collections.reverse(enemies);
 		return enemies;
 	}
 	
@@ -133,15 +120,6 @@ public class AI {
 				friendlies.add(t);
 			}
 		}
-		Collections.sort(friendlies, new Comparator<Tank>(){
-			
-			@Override
-			public int compare(Tank o1, Tank o2) {
-				return (int) o1.getCenter().distanceSq(o2.getCenter());
-			}
-			
-		});
-		Collections.reverse(friendlies);
 		return friendlies;
 	}
 	

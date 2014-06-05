@@ -117,8 +117,6 @@ public class Server implements ActionListener, Runnable {
 			this.resetAll();
 			System.out.println("Reset");
 		}
-		System.out.println(game.getNumPlayers());
-		System.out.println(allconnections.size());
 		for (Connection c : allconnections){
 			game.update(c.getInputs(), c.getIndex());
 		}
