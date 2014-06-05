@@ -60,7 +60,7 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 
 			Tank t = new Tank(100,100 + 50*i, playerNum + 1, this);
-			t.addWeapon(new BasicTurret(t, 0,0));
+			t.addWeapon(new Machinegun(t, 0,0));
 			addObject(t);
 			for (int j = 0;j<7;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);
@@ -235,7 +235,7 @@ public class Game implements Drawable {
 	public HashSet<Drawable> getSend() {
 		HashSet<Drawable> sends = new HashSet<Drawable>();
 		for (Drawable d : drawables){
-			if (d instanceof Sendable && d instanceof Explosion == false){
+			if (d instanceof Sendable){
 				sends.add(((Sendable)d).getProxyClass());
 			}
 		}

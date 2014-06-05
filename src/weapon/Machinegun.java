@@ -14,7 +14,7 @@ import util.Timer.Action;
 public class Machinegun extends Weapon {
 
 	public Machinegun(Tank t, double atot, double dtot){
-		super(t, 2, t.getCenter(), 30, 1, 6, atot, dtot);
+		super(t, 2, t.getCenter(), 30, 1, 7, atot, dtot);
 		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
 		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
 		setWeaponShape(new Polygon(x, y, 9));

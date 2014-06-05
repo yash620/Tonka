@@ -10,7 +10,7 @@ import util.Drawable;
 import util.Sendable;
 import util.Updatable;
 
-public class Explosion implements Drawable, Updatable, Serializable, Sendable {
+public class Explosion implements Drawable, Updatable {
 
 	private double timeAtStart;
 	private double timeSinceStart;
@@ -21,7 +21,7 @@ public class Explosion implements Drawable, Updatable, Serializable, Sendable {
 	protected double xc, yc;
 	private double[][] places;
 	private double timelapse = .4;
-	private Game game;
+	private transient Game game;
 		
 	public Explosion(double x2, double y2, double size, Game game){
 		xc = x2;
@@ -171,7 +171,82 @@ public class Explosion implements Drawable, Updatable, Serializable, Sendable {
 	}
 	@Override
 	public Drawable getProxyClass() {
-		return this;
+		return null;
 	}
 
+}
+
+class ProxyExplosion implements Serializable, Drawable {
+	private final double timeAtStart;
+	private final double timeSinceStart;
+	private final boolean isDone;
+	private final double maxSize;
+	private final double xc;
+	private final double yc;
+	private final double[][] places;
+	private final double timelapse;
+	
+	public ProxyExplosion(double timeStart, double timeSince, boolean done, double maxSize,
+			double xc, double yc, double[][] places, double timelapse) {
+		this.timeAtStart = timeStart;
+		this.timeSinceStart = timeSince;
+		this.isDone = done;
+		this.maxSize = maxSize;
+		this.xc = xc;
+		this.yc = yc;
+		this.places = places;
+		this.timelapse = timelapse;
+	}
+	
+	@Override
+	public void draw(Graphics2D g2) {
+		Color initColor = g2.getColor();
+		// TODO Auto-generated method stub
+		double tc = 1 / timelapse;
+		draw(g2, timeSinceStart - 0.2, 1, maxSize - (maxSize / 6));
+		draw(g2, timeSinceStart - 0.2, 2, maxSize - (maxSize / 6));
+		 if(timeSinceStart <= timelapse){
+			g2.setColor(ColorList.getColor((int)(255 - 250 * (timeSinceStart * tc/2))));
+			g2.fillOval((int)xc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
+						(int)yc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
+						(int)(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize), 
+						(int)(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize));
+		}
+		else if(timeSinceStart <= timelapse * 2){
+			g2.setColor(ColorList.getColor((int)(255 - 250 * (timeSinceStart * tc/2))));
+			g2.fillOval((int)xc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
+						(int)yc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
+						(int)(maxSize - maxSize * (timeSinceStart - timelapse)), 
+						(int)(maxSize - maxSize * (timeSinceStart - timelapse)));
+		}
+		else if(timeSinceStart >= timelapse * 8){
+			isDone = true;
+		}
+		 g2.setColor(initColor);
+	}
+	public void draw(Graphics2D g2, double time, int place, double size) {
+		double tc = 1 / timelapse;
+		if(size > 2*maxSize/3){
+			draw(g2, time - 0.2, place*2 + 1, size - (maxSize/ 6));
+			draw(g2, time - 0.2, place * 2 + 2,  size - (maxSize / 6));
+		}
+		if(time <= 0){
+			
+		}
+		else if(time <= timelapse){
+			g2.setColor(ColorList.getColor((int)(255 - 255 * (time * tc))));
+			g2.fillOval((int)(places[0][place]) - (int)(.5*(Math.sqrt(Math.sqrt(time * tc)) * size)), 
+						(int)(places[1][place]) - (int)(.5*(Math.sqrt(Math.sqrt(time * tc)) * size)), 
+						(int)(Math.sqrt(Math.sqrt(time * tc)) * size), 
+						(int)(Math.sqrt(Math.sqrt(time * tc)) * size));
+		}
+		else if(time <= timelapse * 2){
+			g2.setColor(ColorList.getColor((int)(255 - 255 * (time/2 * tc))));
+			g2.fillOval((int)(places[0][place]) - (int)(.5*(size - size * (time - timelapse))), 
+						(int)(places[1][place]) - (int)(.5*(size - size * (time - timelapse))), 
+						(int)(size - size * (time - timelapse)), 
+						(int)(size - size * (time - timelapse)));
+		}
+	}
+	
 }
