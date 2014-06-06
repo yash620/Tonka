@@ -43,7 +43,7 @@ public class TankCreator extends JFrame{
 		p = new Panel();
 		p.setPreferredSize(this.getSize());
 		holding = null;
-		tank = new Tank(200,200,new ArrayList<Weapon>(), null);		//Need a pointer to game Glynn
+		tank = new Tank(200,200,new ArrayList<Weapon>(),0, null);		//Need a pointer to game Glynn
 		this.add(p);
 		l = new Listener();
 		t = new Timer(10, l);
