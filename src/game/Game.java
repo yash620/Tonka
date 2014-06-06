@@ -208,7 +208,7 @@ public class Game implements Drawable {
 		}
 		if (o instanceof Tank){
 			allTanks.remove((Tank) o);
-			playerTanks.remove((Tank) o);
+			playerTanks.remove(((Tank) o).getTeam());
 		}
 	}
 	public void addQueue(Object o){

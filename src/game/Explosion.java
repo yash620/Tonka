@@ -10,7 +10,7 @@ import util.Drawable;
 import util.Sendable;
 import util.Updatable;
 
-public class Explosion implements Drawable, Updatable {
+public class Explosion implements Drawable, Updatable, Sendable {
 
 	private double timeAtStart;
 	private double timeSinceStart;
@@ -171,20 +171,20 @@ public class Explosion implements Drawable, Updatable {
 	}
 	@Override
 	public Drawable getProxyClass() {
-		return null;
+		return new ProxyExplosion(timeAtStart, timeSinceStart, isDone, maxSize, xc, yc, places, timelapse);
 	}
 
 }
 
 class ProxyExplosion implements Serializable, Drawable {
-	private final double timeAtStart;
-	private final double timeSinceStart;
-	private final boolean isDone;
-	private final double maxSize;
-	private final double xc;
-	private final double yc;
-	private final double[][] places;
-	private final double timelapse;
+	private double timeAtStart;
+	private double timeSinceStart;
+	private boolean isDone;
+	private double maxSize;
+	private double xc;
+	private double yc;
+	private double[][] places;
+	private double timelapse;
 	
 	public ProxyExplosion(double timeStart, double timeSince, boolean done, double maxSize,
 			double xc, double yc, double[][] places, double timelapse) {
