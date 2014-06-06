@@ -173,7 +173,6 @@ public class Explosion implements Drawable, Updatable, Sendable {
 	public Drawable getProxyClass() {
 		return new ProxyExplosion(timeAtStart, timeSinceStart, isDone, maxSize, xc, yc, places, timelapse);
 	}
-
 }
 
 class ProxyExplosion implements Serializable, Drawable {

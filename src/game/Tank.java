@@ -22,6 +22,7 @@ import weapon.Weapon;
 
 public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	private double hp;
+	private double maxHP;
 	private double speed;
 	private double turnSpeed;
 	private double theta;
@@ -46,7 +47,8 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		this.ycenter = y;
 		this.team = team;
 		this.myWeapons = weapons;
-		this.hp = 100;
+		this.maxHP = 100;
+		hp = maxHP;
 		this.speed = 3;
 		this.turnSpeed = 5;
 		setColor(Color.green);
@@ -63,7 +65,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		g2.setColor(Color.black);
 		g2.draw(tankShape);
 		g2.setColor(Color.red);
-		g2.fillRect((int)xcenter - 25, (int)ycenter - 30, (int)(((double)this.hp)/100 * 50), 5);
+		g2.fillRect((int)xcenter - 25, (int)ycenter - 30, (int)(this.hp/this.maxHP * 50), 5);
 		g2.setColor(Color.black);
 		g2.drawRect((int)xcenter - 25, (int)ycenter - 30, 50, 5);
 		//g2.drawString("HP" + this.hp, (int)xcenter, (int)ycenter);
@@ -221,9 +223,12 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	
 	@Override
 	public void update() {
+		if(getHp() <= maxHP/3){
+			game.addQueue(new Explosion(getCenter(), game));
+		}
 		if(getHp() <= 0){
 			game.removeQueue(this);
-			game.addQueue(new Explosion(getCenter(), game));
+			game.addQueue(new Explosion(getCenter().getX(), getCenter().getY(), 60, game));
 		}
 	}
 	@Override

@@ -48,7 +48,7 @@ public class TankCreator extends JFrame{
 		l = new Listener();
 		t = new Timer(10, l);
 		t.start();
-		p.addKeyListener(new Key());
+		this.addKeyListener(new Key());
 		p.addMouseListener(new Mouse());
 		ttlpts = 100;
 		wppts = 0;
