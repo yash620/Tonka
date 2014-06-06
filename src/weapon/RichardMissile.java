@@ -11,15 +11,17 @@ public class RichardMissile extends BasicMissile{
 
 	public RichardMissile(Point2D center, double theta, double damage,
 			Weapon weapon, Game game) {
-		super((int)(center.getX()), (int)(center.getY()), theta, 3, damage, weapon, game);
+		super((int)(center.getX()), (int)(center.getY()), 1, damage, theta, weapon, game);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void update(){
-		damage = damage + .1;
+		damage = damage * 1.01;
 		//I'm not changing this
-		deltax = deltax * 1.06;
-		deltay = deltay * 1.06;
+		if (deltax < 50)
+			deltax = deltax * 1.04;
+		if (deltay < 50)
+			deltay = deltay * 1.04;
 		super.update();
 	}
 }
