@@ -6,7 +6,7 @@ import java.util.HashSet;
 import util.Collidable;
 
 public class CollisionMap {
-	CollisionCell[][] collisionArr;
+	private CollisionCell[][] collisionArr;
 
 	public CollisionMap() {
 		collisionArr = new CollisionCell[5][4];

@@ -176,7 +176,7 @@ public class Explosion implements Drawable, Updatable, Sendable {
 }
 
 class ProxyExplosion implements Serializable, Drawable {
-	private double timeAtStart;
+//	private double timeAtStart;
 	private double timeSinceStart;
 	private boolean isDone;
 	private double maxSize;
@@ -187,7 +187,7 @@ class ProxyExplosion implements Serializable, Drawable {
 	
 	public ProxyExplosion(double timeStart, double timeSince, boolean done, double maxSize,
 			double xc, double yc, double[][] places, double timelapse) {
-		this.timeAtStart = timeStart;
+//		this.timeAtStart = timeStart;
 		this.timeSinceStart = timeSince;
 		this.isDone = done;
 		this.maxSize = maxSize;
