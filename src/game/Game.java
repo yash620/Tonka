@@ -61,15 +61,29 @@ public class Game implements Drawable {
 		for (int i = 0;i<playerNum;i++){
 			System.out.println(i);
 			Tank t = new Tank(100,100 + 50*i, i + 1, this);
-			t.addWeapon(new Machinegun(t, 0,0));
-			t.addWeapon(new Machinegun(t, 0,1));
-			t.addWeapon(new Machinegun(t, 0,-1));
-			t.addWeapon(new Machinegun(t, 90,1));
-			t.addWeapon(new Machinegun(t, 90,-1));
+			double r = Math.random();
+			if(r<.3) {
+				t.addWeapon(new Machinegun(t, 0, 10));
+			} else if(r<.6) {
+				t.addWeapon(new GrenadeLauncher(t, 0, 10));
+			} else if(r<.9) {
+				t.addWeapon(new Shotgun(t, 0, 10));
+			} else if(r<1) {
+				t.addWeapon(new BasicTurret(t, 0, 10));
+			}
 			addObject(t);
 			for (int j = 0;j<7;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);
-				enemy.addWeapon(new Machinegun(enemy, 0, 10));
+				r = Math.random();
+				if(r<.2) {
+					enemy.addWeapon(new Machinegun(enemy, 0, 10));
+				} else if(r<.3) {
+					enemy.addWeapon(new GrenadeLauncher(enemy, 0, 10));
+				} else if(r<.65) {
+					enemy.addWeapon(new Shotgun(enemy, 0, 10));
+				} else if(r<1) {
+					enemy.addWeapon(new BasicTurret(enemy, 0, 10));
+				}
 				enemy.addAI(new AI(enemy, this));
 				boolean colliding = false;
 				for (Collidable c : collidables){

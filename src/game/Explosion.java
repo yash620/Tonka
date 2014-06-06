@@ -95,19 +95,21 @@ public class Explosion implements Drawable, Updatable, Sendable {
 		 if(timeSinceStart <= timelapse){
 			//g2.setColor(Color.black);
 //			g2.setColor(new Color(255, (int)(255 - 250 * (timeSinceStart * tc/2)), 0));
+			double bleh =Math.sqrt(Math.sqrt(timeSinceStart * tc));
 			g2.setColor(ColorList.getColor((int)(255 - 250 * (timeSinceStart * tc/2))));
-			g2.fillOval((int)xc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
-						(int)yc - (int)(.5*(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize)), 
-						(int)(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize), 
-						(int)(Math.sqrt(Math.sqrt(timeSinceStart * tc)) * maxSize));
+			g2.fillOval((int)xc - (int)(.5*bleh * maxSize), 
+						(int)yc - (int)(.5*bleh * maxSize), 
+						(int)(bleh * maxSize), 
+						(int)(bleh * maxSize));
 		}
 		else if(timeSinceStart <= timelapse * 2){
 //			g2.setColor(new Color(255, (int)(255 - 250 * (timeSinceStart * tc/2)), 0));
 			g2.setColor(ColorList.getColor((int)(255 - 250 * (timeSinceStart * tc/2))));
-			g2.fillOval((int)xc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
-						(int)yc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
-						(int)(maxSize - maxSize * (timeSinceStart - timelapse)), 
-						(int)(maxSize - maxSize * (timeSinceStart - timelapse)));
+			double curr = maxSize - maxSize * (timeSinceStart - timelapse);
+			g2.fillOval((int)xc - (int)(.5*curr), 
+						(int)yc - (int)(.5*curr), 
+						(int)(curr), 
+						(int)(curr));
 		}
 		else if(timeSinceStart >= timelapse * 8){
 			isDone = true;
