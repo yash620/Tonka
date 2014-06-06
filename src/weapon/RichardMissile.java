@@ -21,6 +21,7 @@ public class RichardMissile extends BasicMissile{
 		if ((int)this.getBoundingBox().getCenterX() > (int)SinglePlayer.windowSize.width || (int)this.getBoundingBox().getCenterX() < 0 && this.getBoundingBox().getCenterY() > (int)SinglePlayer.windowSize.height || this.getBoundingBox().getCenterY() < 0){
 			game.removeQueue(this);
 			numOfRockets--;
+			return;
 		}
 		damage = damage * 1.01;
 		//I'm not changing this
