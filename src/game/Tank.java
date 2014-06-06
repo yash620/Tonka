@@ -223,9 +223,12 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	
 	@Override
 	public void update() {
+		if(getHp() <= maxHP/3){
+			game.addQueue(new Explosion(getCenter(), game));
+		}
 		if(getHp() <= 0){
 			game.removeQueue(this);
-			game.addQueue(new Explosion(getCenter(), game));
+			game.addQueue(new Explosion(getCenter().getX(), getCenter().getY(), 60, game));
 		}
 	}
 	@Override

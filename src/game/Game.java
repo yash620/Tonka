@@ -62,6 +62,10 @@ public class Game implements Drawable {
 			System.out.println(i);
 			Tank t = new Tank(100,100 + 50*i, i + 1, this);
 			t.addWeapon(new Machinegun(t, 0,0));
+			t.addWeapon(new Machinegun(t, 0,1));
+			t.addWeapon(new Machinegun(t, 0,-1));
+			t.addWeapon(new Machinegun(t, 90,1));
+			t.addWeapon(new Machinegun(t, 90,-1));
 			addObject(t);
 			for (int j = 0;j<7;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);

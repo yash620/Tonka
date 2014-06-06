@@ -169,17 +169,17 @@ public class Explosion implements Drawable, Updatable {
 	public boolean done(){
 		return isDone;
 	}
-	@Override
-	public Drawable getProxyClass() {
-		return null;
-	}
+//	@Override
+//	public Drawable getProxyClass() {
+//		return null;
+//	}
 
 }
 
 class ProxyExplosion implements Serializable, Drawable {
 	private final double timeAtStart;
 	private final double timeSinceStart;
-	private final boolean isDone;
+	private boolean isDone;
 	private final double maxSize;
 	private final double xc;
 	private final double yc;
