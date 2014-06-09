@@ -17,9 +17,9 @@ public class GrenadeLauncher extends Weapon {
 	public GrenadeLauncher(Tank t, double turnSpeed, Point2D center, int ammo,
 			double firerate, double spread, double dtot, double atot) {
 		super(t, turnSpeed, center, ammo, firerate, spread);
-		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x, y, 9));
+		int[] x = { 0,  6, 6, 3, 5,  3,  1, -1, -3, -5, -3, -6, -6};
+		int[] y = {-8, -5, 2, 4, 7, 12, 11, 11, 12,  7,  4,  2, -5};
+		setWeaponShape(new Polygon(x, y, 13));
 		double xcenter = t.getCenter().getX() + dtot * Math.cos(Math.toRadians(t.getTheta() + atot));
 		double ycenter = t.getCenter().getY() + dtot * Math.sin(Math.toRadians(t.getTheta() + atot));
 		this.setCenter(new Point2D.Double(xcenter, ycenter));

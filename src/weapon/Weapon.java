@@ -70,7 +70,7 @@ public abstract class Weapon implements Drawable, Updatable, Sendable {
 		g2.setColor(Color.black);
 		g2.fill(getWeaponShape());
 		g2.setTransform(old);
-		g2.drawOval((int)center.getX()-2, (int)center.getY()-2, 4, 4);
+		//g2.drawOval((int)center.getX()-2, (int)center.getY()-2, 4, 4);
 		g2.drawString(Integer.toString(ammo), (int)center.getX(), (int)center.getY()-10);
 	}
 

@@ -24,9 +24,9 @@ public class AutoTurret extends Weapon {
 	public AutoTurret(Tank t, Point2D center, double atot, double dtot) {
 //		super(t, 3, center, 5, 17, 2, atot, dtot);
 		super(t, 3, center, 20, 3, 0, atot, dtot);
-		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x, y, 9));
+		int[] x = { 1,  4,  6,  6,  4,  1, 1, -1, -1, -4, -6, -6, -4, -1};
+		int[] y = {-2, -3, -5, -3, -1,  0, 7,  7,  0, -1, -3, -5, -3, -2};
+		setWeaponShape(new Polygon(x, y, 14));
 		double xcenter = t.getCenter().getX() + dtot * Math.cos(Math.toRadians(t.getTheta() + atot));
 		double ycenter = t.getCenter().getY() + dtot * Math.sin(Math.toRadians(t.getTheta() + atot));
 		this.setCenter(new Point2D.Double(xcenter, ycenter));

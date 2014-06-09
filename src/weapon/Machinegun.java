@@ -15,9 +15,9 @@ public class Machinegun extends Weapon {
 
 	public Machinegun(Tank t, double atot, double dtot){
 		super(t, 2, t.getCenter(), 30, 1, 7, atot, dtot);
-		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x, y, 9));
+		int[] x = {0, 6, 6, 2,  2,  0, 0};
+		int[] y = {-4, -4, 4, 4, 20, 20, 4};
+		setWeaponShape(new Polygon(x, y, 7));
 		double xcenter = t.getCenter().getX() + dtot * Math.cos(Math.toRadians(t.getTheta() + atot));
 		double ycenter = t.getCenter().getY() + dtot * Math.sin(Math.toRadians(t.getTheta() + atot));
 		this.setCenter(new Point2D.Double(xcenter, ycenter));
