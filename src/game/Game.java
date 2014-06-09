@@ -19,6 +19,7 @@ import util.KeyInput;
 import util.Sendable;
 import util.Updatable;
 import weapon.*;
+import weapon.Weapon.WeaponList;
 
 public class Game implements Drawable {
 	private HashSet<Collidable> collidables;
@@ -109,18 +110,24 @@ public class Game implements Drawable {
 //		}
 	}
 	public void addRandomWeapon(Tank t, int x, int y) {
-		double r = Math.random();
-		if(r<.25) {
-			t.addWeapon(new Machinegun(t, x, y));
-		} else if(r<.40) {
-			t.addWeapon(new GrenadeLauncher(t, x, y));
-		} else if(r<.65) {
-			t.addWeapon(new Shotgun(t, x, y));
-		} else if(r<.8) {
-			t.addWeapon(new AutoTurret(t, x, y));
-		} else if(r<1) {
-			t.addWeapon(new BasicTurret(t, x, y));
-		}
+		HashMap<Double,WeaponList> randomWeapon = new HashMap<Double, WeaponList>();
+		randomWeapon.put(.25, WeaponList.Machinegun);
+		randomWeapon.put(.15, WeaponList.GrenadeLauncher);
+		randomWeapon.put(.15, WeaponList.Shotgun);
+		randomWeapon.put(.15, WeaponList.AutoTurret);
+		randomWeapon.put(.2, WeaponList.BasicTurret);
+		double num = Math.random();
+//		if(r<.25) {
+//			t.addWeapon(new Machinegun(t, x, y));
+//		} else if(r<.40) {
+//			t.addWeapon(new GrenadeLauncher(t, x, y));
+//		} else if(r<.65) {
+//			t.addWeapon(new Shotgun(t, x, y));
+//		} else if(r<.8) {
+//			t.addWeapon(new AutoTurret(t, x, y));
+//		} else if(r<1) {
+//			t.addWeapon(new BasicTurret(t, x, y));
+//		}
 	}
 	// Test method, draw whatever you want on the panel
 	private Shape test;

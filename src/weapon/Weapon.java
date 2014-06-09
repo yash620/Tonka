@@ -38,8 +38,30 @@ public abstract class Weapon implements Drawable, Updatable, Sendable {
 	private AffineTransform old;
 	private final int MAXAMMO;
 	
-	public static enum WeaponList {AutoTurret, BasicTurret, GrenadeLaucher,
-		Machinegun, RichardWeapon, Shotgun};
+	public static enum WeaponList {AutoTurret, BasicTurret, GrenadeLauncher,
+		Machinegun, RichardWeapon, Shotgun;
+		public static Weapon getWeapon(WeaponList w, Tank t, double atot, double dtot) {
+			if (w == AutoTurret) {
+				return new AutoTurret(t, atot, dtot);
+			}
+			if (w == BasicTurret) {
+				return new BasicTurret(t, atot, dtot);
+			}
+			if (w == GrenadeLauncher) {
+				return new GrenadeLauncher(t, atot, dtot);
+			}
+			if (w == Machinegun) {
+				return new Machinegun(t, atot, dtot);
+			}
+			if (w == RichardWeapon) {
+				return new RichardWeapon(t, atot, dtot);
+			}
+			if (w == Shotgun) {
+				return new Shotgun(t, atot, dtot);
+			}
+			return null;
+		}
+	};
 	
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
 			double spread, double angletotank, double distancetotank){

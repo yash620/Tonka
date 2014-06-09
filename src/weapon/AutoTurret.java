@@ -44,11 +44,11 @@ public class AutoTurret extends Weapon {
 		g2.drawOval((int)this.getCenter().getX()-diameter/2, (int)this.getCenter().getY()-diameter/2,
 				diameter, diameter);
 		if (mouseHeld || this.getTank().isAI()) {
-			g2.setColor(Color.green);
+			g2.setColor(Color.blue);
 		} else {
 			g2.setColor(Color.red);
 		}
-		g2.fillOval((int)this.getCenter().getX()-4, (int)this.getCenter().getY()-4, 8, 8);
+		g2.fillOval((int)this.getCenter().getX()-2, (int)this.getCenter().getY()-2, 4, 4);
 		g2.setColor(Color.black);
 	}
 
