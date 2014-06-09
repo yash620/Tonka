@@ -52,7 +52,9 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		this.speed = 3;
 		this.turnSpeed = 5;
 		setColor(Color.green);
-		tankShape = new Rectangle((int)x-20, (int)y-10, 35,20);
+		int width = 15+(int)(Math.random()*10);
+		int height = 30+(int)(Math.random()*10);
+		tankShape = new Rectangle((int)x-height/2, (int)y-width/2, height,width);
 		this.game = game;
 		this.tankShape = Transform.transform(getShape(), 0, 0, Math.toRadians(180), xcenter, ycenter);
 		this.setTheta(getTheta()+180);
