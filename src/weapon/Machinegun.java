@@ -13,8 +13,8 @@ import util.Timer.Action;
 
 public class Machinegun extends Weapon {
 
-	public Machinegun(Tank t, double atot, double dtot){
-		super(t, 2, t.getCenter(), 30, 1, 7, atot, dtot);
+	public Machinegun(Tank t, Point2D center, double atot, double dtot){
+		super(t, 2, center, 30, 1, 7, atot, dtot);
 		int[] x = {0, 6, 6, 2,  2,  0, 0};
 		int[] y = {-4, -4, 4, 4, 20, 20, 4};
 		setWeaponShape(new Polygon(x, y, 7));
@@ -26,16 +26,12 @@ public class Machinegun extends Weapon {
 				xcenter, ycenter));
 	}
 	
+	public Machinegun(Tank t, double atot, double dtot) {
+		this(t, t.getCenter(), atot, dtot);
+	}
+	
 	public Machinegun(Point2D t, double atot, double dtot){
-		super(null, 3, t, 20, 2, 7, atot, dtot);
-		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x, y, 9));
-		this.setCenter(new Point2D.Double(t.getX(), t.getY()));
-		//Rotate it to its initial location
-		setWeaponShape(Transform.transform(getWeaponShape(), t.getX(), t.getY(), Math.toRadians(-90),
-				t.getX(), t.getY()));
-
+		this(null, t, atot, dtot);
 	}
 	@Override
 	public void updateSpread() {

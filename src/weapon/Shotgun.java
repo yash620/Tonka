@@ -15,7 +15,7 @@ import util.Timer.Action;
 
 public class Shotgun extends Weapon {
 
-	public Shotgun(Tank t, double atot, double dtot){
+	public Shotgun(Tank t, Point2D center, double atot, double dtot) {
 		super(t, 5, t.getCenter(), 2, 10, 0, atot, dtot);
 		int[] x = {0,   6, 6, 3, 3,   1, 1, -1, -1, -3, -3, -6, -6};
 		int[] y = {-8, -5, 2, 4, 15, 15, 4,  4, 15, 15,  4,  2, -5};
@@ -28,16 +28,12 @@ public class Shotgun extends Weapon {
 				xcenter, ycenter));
 	}
 	
+	public Shotgun(Tank t, double atot, double dtot) {
+		this(t, t.getCenter(), atot, dtot);
+	}
+	
 	public Shotgun(Point2D t, double atot, double dtot){
-		super(null, 5, t, 2, 10, 0, atot, dtot);
-		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x, y, 9));
-		this.setCenter(new Point2D.Double(t.getX(), t.getY()));
-		//Rotate it to its initial location
-		setWeaponShape(Transform.transform(getWeaponShape(), t.getX(), t.getY(), Math.toRadians(-90),
-				t.getX(), t.getY()));
-
+		this(null, t, atot, atot);
 	}
 	
 	@Override

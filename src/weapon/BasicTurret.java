@@ -20,8 +20,8 @@ import util.Timer.Action;
 
 public class BasicTurret extends Weapon {
 	
-	public BasicTurret(Tank t, double atot, double dtot){
-		super(t, 3, t.getCenter(), 5, 17, 2, atot, dtot);
+	public BasicTurret(Tank t, Point2D center, double atot, double dtot){
+		super(t, 3, center, 5, 17, 2, atot, dtot);
 		int[] x = { 0,  6, 6, 3,  2, -2, -3, -6, -6};
 		int[] y = {-8, -5, 2, 4, 15, 15,  4,  2, -5};
 		setWeaponShape(new Polygon(x, y, 9));
@@ -33,28 +33,16 @@ public class BasicTurret extends Weapon {
 				xcenter, ycenter));
 	}
 	
-	public BasicTurret(Tank t){
-		this(t, 0,0);
+	public BasicTurret(Tank t, double atot, double dtot){
+		this(t, t.getCenter(), atot, dtot);
 	}
 	
 	public BasicTurret(Point2D t, double atot, double dtot){
-		super(null, 3, t, 5, 10, 2, atot, dtot);
-		int[] x = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x, y, 9));
-		this.setCenter(t);
-		setWeaponShape(Transform.transform(getWeaponShape(), t.getX(), t.getY(), Math.toRadians(-90),
-				t.getX(), t.getY()));
+		this(null, t, atot, dtot);
 	}
 	
 	public BasicTurret(double x, double y){
-		super(null, 3, new Point2D.Double(x,y), 5, 10, 2);
-		this.setCanFire(true);
-		int[] x2 = {0,	6,	6,	3,	2, -2,	-3,	-6,	-6};
-		int[] y2 = {-3,	-3,	2,	2,	15,	15,	2,	2,	-3};
-		setWeaponShape(new Polygon(x2, y2, 9));
-		//Rotate it to its initial location
-		setWeaponShape(Transform.transform(getWeaponShape(), x, y, Math.toRadians(-90), x, y));
+		this(null, new Point2D.Double(x, y), 0, 0);
 	}
 	
 	@Override

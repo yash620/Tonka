@@ -43,7 +43,7 @@ public class AutoTurret extends Weapon {
 		super.draw(g2);
 		g2.drawOval((int)this.getCenter().getX()-diameter/2, (int)this.getCenter().getY()-diameter/2,
 				diameter, diameter);
-		if (mouseHeld) {
+		if (mouseHeld || this.getTank().isAI()) {
 			g2.setColor(Color.green);
 		} else {
 			g2.setColor(Color.red);
@@ -104,7 +104,7 @@ public class AutoTurret extends Weapon {
 
 	@Override
 	public boolean canShoot() {
-		return fire && super.canShoot() && mouseHeld;
+		return fire && super.canShoot() && (mouseHeld || this.getTank().isAI());
 	}
 
 	@Override
