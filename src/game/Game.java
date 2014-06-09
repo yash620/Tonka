@@ -67,17 +67,12 @@ public class Game implements Drawable {
 //			}
 			t.addWeapon(new AutoTurret(t, 0, 0));
 			addObject(t);
-			for (int j = 0;j<7;j++){
+			for (int j = 0;j<6;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);
-				r = Math.random();
-				if(r<.2) {
-					enemy.addWeapon(new Machinegun(enemy, 0, 10));
-				} else if(r<.3) {
-					enemy.addWeapon(new GrenadeLauncher(enemy, 0, 10));
-				} else if(r<.65) {
-					enemy.addWeapon(new Shotgun(enemy, 0, 10));
-				} else if(r<1) {
-					enemy.addWeapon(new BasicTurret(enemy, 0, 10));
+				addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2);
+				int asdf2 = 0;
+				while(Math.random()<.03) {
+					addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2-(++asdf2)*8);
 				}
 				enemy.addAI(new AI(enemy, this));
 				boolean colliding = false;
@@ -112,7 +107,20 @@ public class Game implements Drawable {
 //			}
 //		}
 	}
-	
+	public void addRandomWeapon(Tank t, int x, int y) {
+		double r = Math.random();
+		if(r<.25) {
+			t.addWeapon(new Machinegun(t, x, y));
+		} else if(r<.40) {
+			t.addWeapon(new GrenadeLauncher(t, x, y));
+		} else if(r<.65) {
+			t.addWeapon(new Shotgun(t, x, y));
+		} else if(r<.8) {
+			t.addWeapon(new AutoTurret(t, x, y));
+		} else if(r<1) {
+			t.addWeapon(new BasicTurret(t, x, y));
+		}
+	}
 	// Test method, draw whatever you want on the panel
 	private Shape test;
 	public void setTestDraw(Shape s){
