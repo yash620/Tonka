@@ -14,13 +14,18 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.Timer;
 
 import util.Drawable;
 import util.KeyInput;
+import weapon.*;
+import weapon.Weapon.WeaponList;
 
 public class ClientFrame {
 	public static void main(String[] args) {
@@ -45,7 +50,6 @@ public class ClientFrame {
 		Listener li = new Listener();
 		frame.addKeyListener(li);
 		JPanel mainDraw = new MainDraw();
-		mainDraw.setPreferredSize(windowSize);
 		frame.add(mainDraw);
 		mainDraw.addMouseListener(li);
 		mainDraw.addMouseMotionListener(li);
@@ -54,11 +58,13 @@ public class ClientFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ti = new Timer(TIMESTEP, li);
 		ti.start();
-		JOptionPane.showMessageDialog(frame, "Connected");
 	}
 
 	@SuppressWarnings("serial")
 	public class MainDraw extends JPanel {
+		public MainDraw() {
+			this.setPreferredSize(windowSize);
+		}
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -70,6 +76,19 @@ public class ClientFrame {
 //						System.out.println(((Tank)d).getCenter());
 					}
 				}
+			}
+		}
+	}
+	
+	public class SelectPanel extends JPanel {
+		public SelectPanel() {
+			this.setPreferredSize(windowSize);
+			this.setVisible(true);
+			ButtonGroup bg = new ButtonGroup();
+			for (WeaponList wl : Weapon.WeaponList.values()) {
+				JRadioButton jrb = new JRadioButton(wl.name());
+				bg.add(jrb);
+				this.add(jrb);
 			}
 		}
 	}

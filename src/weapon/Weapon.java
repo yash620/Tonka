@@ -37,7 +37,9 @@ public abstract class Weapon implements Drawable, Updatable, Sendable {
 	private HashSet<Timer> allTimers;
 	private AffineTransform old;
 	private final int MAXAMMO;
-
+	
+	public static enum WeaponList {AutoTurret, BasicTurret, GrenadeLaucher,
+		Machinegun, RichardWeapon, Shotgun};
 	
 	public Weapon(Tank t, double turnSpeed, Point2D center, int ammo, double firerate,
 			double spread, double angletotank, double distancetotank){

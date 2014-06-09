@@ -225,6 +225,9 @@ public class Game implements Drawable {
 		}
 	}
 	public void addQueue(Object o){
+		if (o == null) {
+			return;
+		}
 		if (o instanceof Collection){
 			addQue.addAll((Collection<? extends Object>) o);
 		} else {
@@ -232,6 +235,9 @@ public class Game implements Drawable {
 		}
 	}
 	public void removeQueue(Object o){
+		if (o == null) {
+			return;
+		}
 		removeQue.add(o);
 	}
 	public ArrayList<Tank> getTanks(){
@@ -250,7 +256,7 @@ public class Game implements Drawable {
 	public HashSet<Drawable> getSend() {
 		HashSet<Drawable> sends = new HashSet<Drawable>();
 		for (Drawable d : drawables){
-			if (d instanceof Sendable){
+			if (d instanceof Sendable && d instanceof Explosion == false){
 				sends.add(((Sendable)d).getProxyClass());
 			}
 		}

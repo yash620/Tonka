@@ -44,7 +44,7 @@ public class Client implements Runnable {
 			System.out.println(clientOut);
 			System.out.println("creating input");
 			clientIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-			System.out.println("Created everything");	
+			System.out.println("Created everything");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
