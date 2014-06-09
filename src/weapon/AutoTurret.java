@@ -1,5 +1,6 @@
 package weapon;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -16,6 +17,8 @@ import game.Transform;
 public class AutoTurret extends Weapon {
 	private boolean fire;
 	private final int diameter = 500;
+	private boolean mouseHeld;
+	private int time = -1;
 
 	public AutoTurret(Tank t, double atot, double dtot) {
 		this(t, t.getCenter(), atot, dtot);
@@ -40,6 +43,13 @@ public class AutoTurret extends Weapon {
 		super.draw(g2);
 		g2.drawOval((int)this.getCenter().getX()-diameter/2, (int)this.getCenter().getY()-diameter/2,
 				diameter, diameter);
+		if (mouseHeld) {
+			g2.setColor(Color.green);
+		} else {
+			g2.setColor(Color.red);
+		}
+		g2.fillOval((int)this.getCenter().getX()-4, (int)this.getCenter().getY()-4, 8, 8);
+		g2.setColor(Color.black);
 	}
 
 	@Override
@@ -67,33 +77,44 @@ public class AutoTurret extends Weapon {
 
 	@Override
 	public ArrayList<Projectile> shoot() {
-		if (canShoot()){
-			this.setCanFire(false);
-			this.setAmmo(getAmmo()-1);
-			this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
-			if (getAmmo() == this.getMAXAMMO()-1){
-				this.addTimer(new Timer(350, Action.AMMO));
-			}
-			Random die = new Random();
-			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
-			missiles.add(new BasicMissile(this.getCenter(),
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(),
-					5, this, this.getTank().getGame()));
-			return missiles;
+		if (time == -1) {
+			mouseHeld = !mouseHeld;
+			time = 0;
+		}
+		if (time > 10) {
+			time = -1;
 		}
 		return null;
+	}
+	
+	private ArrayList<Projectile> missile() {
+		this.setCanFire(false);
+		this.setAmmo(getAmmo()-1);
+		this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
+		if (getAmmo() == this.getMAXAMMO()-1){
+			this.addTimer(new Timer(350, Action.AMMO));
+		}
+		Random die = new Random();
+		ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
+		missiles.add(new BasicMissile(this.getCenter(),
+				(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(),
+				5, this, this.getTank().getGame()));
+		return missiles;
 	}
 
 	@Override
 	public boolean canShoot() {
-		return fire && super.canShoot();
+		return fire && super.canShoot() && mouseHeld;
 	}
 
 	@Override
 	public void update() {
+		if (time != -1){
+			time++;
+		}
 		super.update();
 		if (canShoot()) {
-			this.getTank().getGame().addQueue(this.shoot());
+			this.getTank().getGame().addQueue(this.missile());
 		}
 	}
 

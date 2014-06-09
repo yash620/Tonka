@@ -82,9 +82,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	
 	public void shoot(Point shootPoint){
 		for (Weapon w : myWeapons){
-			if (w.canShoot()){
-				game.addQueue(w.shoot());
-			}
+			game.addQueue(w.shoot());
 		}
 	}
 	
