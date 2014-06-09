@@ -180,7 +180,6 @@ public class Explosion implements Drawable, Updatable, Sendable {
 class ProxyExplosion implements Serializable, Drawable {
 //	private double timeAtStart;
 	private double timeSinceStart;
-	private boolean isDone;
 	private double maxSize;
 	private double xc;
 	private double yc;
@@ -191,7 +190,6 @@ class ProxyExplosion implements Serializable, Drawable {
 			double xc, double yc, double[][] places, double timelapse) {
 //		this.timeAtStart = timeStart;
 		this.timeSinceStart = timeSince;
-		this.isDone = done;
 		this.maxSize = maxSize;
 		this.xc = xc;
 		this.yc = yc;
@@ -219,9 +217,6 @@ class ProxyExplosion implements Serializable, Drawable {
 						(int)yc - (int)(.5*(maxSize - maxSize * (timeSinceStart - timelapse))), 
 						(int)(maxSize - maxSize * (timeSinceStart - timelapse)), 
 						(int)(maxSize - maxSize * (timeSinceStart - timelapse)));
-		}
-		else if(timeSinceStart >= timelapse * 8){
-			isDone = true;
 		}
 		 g2.setColor(initColor);
 	}

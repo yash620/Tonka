@@ -6,7 +6,6 @@ import game.Transform;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -129,8 +128,8 @@ public abstract class Weapon implements Drawable, Updatable, Sendable {
 	}
 
 	//Sets the target angle of the weapon
-	public void clickPoint(Point tgt){
-		double tgtAng = Math.atan2(tgt.y - getCenter().getY(), tgt.x - getCenter().getX());
+	public void clickPoint(Point2D tgt){
+		double tgtAng = Math.atan2(tgt.getY() - getCenter().getY(), tgt.getX() - getCenter().getX());
 		this.setTgtAngle(AngleMath.adjustAngle((int)Math.toDegrees(tgtAng)));
 	}
 

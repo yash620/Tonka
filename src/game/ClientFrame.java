@@ -54,6 +54,7 @@ public class ClientFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ti = new Timer(TIMESTEP, li);
 		ti.start();
+		JOptionPane.showMessageDialog(frame, "Connected");
 	}
 
 	@SuppressWarnings("serial")

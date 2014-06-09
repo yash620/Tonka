@@ -1,6 +1,5 @@
 package weapon;
 
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -34,9 +33,8 @@ public class GrenadeLauncher extends Weapon {
 	}
 
 	@Override
-	public void clickPoint(Point tgt){
-		double tgtAng = Math.atan2(tgt.y - getCenter().getY(), tgt.x - getCenter().getX());
-		this.setTgtAngle(AngleMath.adjustAngle((int)Math.toDegrees(tgtAng)));
+	public void clickPoint(Point2D tgt){
+		super.clickPoint(tgt);
 		this.distance = this.getCenter().distance(tgt);
 	}
 	

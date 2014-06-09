@@ -17,12 +17,7 @@ import util.Drawable;
 import util.KeyInput;
 import util.Sendable;
 import util.Updatable;
-import weapon.BasicMissile;
-import weapon.BasicTurret;
-import weapon.GrenadeLauncher;
-import weapon.Machinegun;
-import weapon.Shotgun;
-import weapon.Weapon;
+import weapon.*;
 
 public class Game implements Drawable {
 	private HashSet<Collidable> collidables;
@@ -59,18 +54,18 @@ public class Game implements Drawable {
 		}
 		
 		for (int i = 0;i<playerNum;i++){
-			System.out.println(i);
 			Tank t = new Tank(100,100 + 50*i, i + 1, this);
 			double r = Math.random();
-			if(r<.3) {
-				t.addWeapon(new Machinegun(t, 0, 10));
-			} else if(r<.6) {
-				t.addWeapon(new GrenadeLauncher(t, 0, 10));
-			} else if(r<.9) {
-				t.addWeapon(new Shotgun(t, 0, 10));
-			} else if(r<1) {
-				t.addWeapon(new BasicTurret(t, 0, 10));
-			}
+//			if(r<.3) {
+//				t.addWeapon(new Machinegun(t, 0, 10));
+//			} else if(r<.6) {
+//				t.addWeapon(new GrenadeLauncher(t, 0, 10));
+//			} else if(r<.9) {
+//				t.addWeapon(new Shotgun(t, 0, 10));
+//			} else if(r<1) {
+//				t.addWeapon(new BasicTurret(t, 0, 10));
+//			}
+			t.addWeapon(new AutoTurret(t, 0, 0));
 			addObject(t);
 			for (int j = 0;j<7;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);
