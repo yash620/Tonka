@@ -42,6 +42,9 @@ public class ClientFrame {
 
 	public ClientFrame() {
 		String ip = JOptionPane.showInputDialog("IP?");
+		if (ip == null) {
+			ip = "localhost";
+		}
 		client = new Client(ip, 34556);
 		client.startThread();
 		

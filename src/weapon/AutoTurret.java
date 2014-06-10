@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+import util.Drawable;
 import util.Timer;
 import util.Timer.Action;
 
@@ -92,7 +96,7 @@ public class AutoTurret extends Weapon {
 		this.setAmmo(getAmmo()-1);
 		this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
 		if (getAmmo() == this.getMAXAMMO()-1){
-			this.addTimer(new Timer(350, Action.AMMO));
+			this.addTimer(new Timer(300, Action.AMMO));
 		}
 		Random die = new Random();
 		ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
@@ -122,5 +126,51 @@ public class AutoTurret extends Weapon {
 	public void updateSpread() {
 		
 	}
-	
+	@Override
+	public Drawable getProxyClass() {
+		return new AutoProxy(this.getAngle(), this.diameter, this.getCenter().getX(),
+				this.getCenter().getY(), this.getWeaponShape(),
+				this.getAmmo(), mouseHeld || this.getTank().isAI());
+	}
 }
+
+class AutoProxy implements Serializable, Drawable {
+	private final double theta;
+	private final double xcenter;
+	private final double ycenter;
+	private final Shape shape;
+	private final int ammo;
+	private final int diameter;
+	private final boolean isOn;
+	
+	public AutoProxy(double theta, int diameter, double xcenter, double ycenter, Shape s, int ammo,
+			boolean isOn){
+		this.theta = theta;
+		this.xcenter = xcenter;
+		this.ycenter = ycenter;
+		this.shape = s;
+		this.ammo = ammo;
+		this.diameter = diameter;
+		this.isOn = isOn;
+	}
+
+	@Override
+	public void draw(Graphics2D g2) {
+		AffineTransform old = g2.getTransform();
+		g2.rotate(Math.toRadians(theta), xcenter, ycenter);
+		g2.setColor(Color.black);
+		g2.fill(shape);
+		g2.setTransform(old);
+		g2.drawString(Integer.toString(ammo), (int)xcenter, (int)ycenter-10);
+		g2.drawOval((int)xcenter-diameter/2, (int)ycenter-diameter/2,
+				diameter, diameter);
+		if (isOn) {
+			g2.setColor(Color.blue);
+		} else {
+			g2.setColor(Color.red);
+		}
+		g2.fillOval((int)xcenter-2, (int)ycenter-2, 4, 4);
+		g2.setColor(Color.black);
+	}
+}
+	

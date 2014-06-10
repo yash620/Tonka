@@ -39,12 +39,12 @@ import weapon.Weapon.WeaponList;
 				slider.setPaintLabels(true);
 				slider.setMajorTickSpacing(20);
 				slider.setPaintTicks(true);
-				labels.add(new JLabel(o[0].toString()));
+				labels.add(new JLabel(o[0].toString() + ": " + o[1].toString()));
 			}
 			JSlider frequency = new JSlider(0,100,3);
 			frequency.setName("Frequency");
 			sliders.add(frequency);
-			labels.add(new JLabel("Frequency"));
+			labels.add(new JLabel("Frequency" + ": " + .03));
 			frequency.addChangeListener(this);
 			frequency.setMajorTickSpacing(20);
 			frequency.setPaintTicks(true);
@@ -77,8 +77,8 @@ import weapon.Weapon.WeaponList;
 			layout.putConstraint(SpringLayout.WEST, previouslbl, 10, SpringLayout.WEST, this);		//Initial Label
 			layout.putConstraint(SpringLayout.NORTH, previouslbl, 10, SpringLayout.NORTH, this);
 			
-			layout.putConstraint(SpringLayout.WEST, previousSlider, 100, SpringLayout.EAST, previouslbl);	//Initial field
-			layout.putConstraint(SpringLayout.NORTH, previousSlider, 0, SpringLayout.NORTH, previouslbl);
+			layout.putConstraint(SpringLayout.EAST, previousSlider, -10, SpringLayout.EAST, this);	//Initial field
+			layout.putConstraint(SpringLayout.NORTH, previousSlider, 10, SpringLayout.NORTH, this);
 			this.add(previousSlider);
 			this.add(previouslbl);
 			previouslbl.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -112,12 +112,14 @@ import weapon.Weapon.WeaponList;
 			}
 			if (slider.getName() == "Frequency") {
 				frequency = slider.getValue()/100.0;
+				if (frequency == 1) {
+					frequency = .99;
+				}
 			}
+			int index = sliders.indexOf(slider);
+			labels.get(index).setText(slider.getName() + ": " + slider.getValue()/100.0);
 		}
 		public double getFrequency() {
-			if (frequency == 1) {
-				frequency = .99;
-			}
 			return frequency;
 		}
 	}

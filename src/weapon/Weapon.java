@@ -290,7 +290,6 @@ class WeaponProxy implements Serializable, Drawable {
 		g2.setColor(Color.black);
 		g2.fill(shape);
 		g2.setTransform(old);
-		g2.drawOval((int)xcenter-2, (int)ycenter-2, 4, 4);
 		g2.drawString(Integer.toString(ammo), (int)xcenter, (int)ycenter-10);
 	}
 	

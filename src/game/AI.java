@@ -86,7 +86,7 @@ public class AI {
 		if (hasAmmo == false) {
 			fire = false;
 		}
-		return new KeyInput(down, right, target, fire);
+		return new KeyInput(0, right, target, false);
 	}
 	
 	public ArrayList<Block> getBlocks(){
@@ -103,8 +103,11 @@ public class AI {
 				for (Tank e : enemies) {
 					if (tank.getCenter().distanceSq(e.getCenter()) >
 						tank.getCenter().distanceSq(t.getCenter())) {
-						index = enemies.indexOf(e);
+						index = enemies.indexOf(e)-1;
 					}
+				}
+				if (index < 0) {
+					index = 0;
 				}
 				enemies.add(index, t);
 			}
