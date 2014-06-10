@@ -37,6 +37,8 @@ import weapon.Weapon.WeaponList;
 				slider.addChangeListener(this);
 				this.add(slider);
 				slider.setPaintLabels(true);
+				slider.setMajorTickSpacing(20);
+				slider.setPaintTicks(true);
 				labels.add(new JLabel(o[0].toString()));
 			}
 			JSlider frequency = new JSlider(0,100,3);
@@ -44,6 +46,8 @@ import weapon.Weapon.WeaponList;
 			sliders.add(frequency);
 			labels.add(new JLabel("Frequency"));
 			frequency.addChangeListener(this);
+			frequency.setMajorTickSpacing(20);
+			frequency.setPaintTicks(true);
 			this.add(frequency);
 			SpringLayout sl = this.createLayout();
 			JButton button = new JButton();

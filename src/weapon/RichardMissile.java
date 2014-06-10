@@ -18,7 +18,10 @@ public class RichardMissile extends BasicMissile{
 	}
 	
 	public void update(){
-		if ((int)this.getBoundingBox().getCenterX() > (int)SinglePlayer.windowSize.width || (int)this.getBoundingBox().getCenterX() < 0 && this.getBoundingBox().getCenterY() > (int)SinglePlayer.windowSize.height || this.getBoundingBox().getCenterY() < 0){
+		if ((int)this.getBoundingBox().getCenterX() > (int)Game.windowSize.width ||
+				(int)this.getBoundingBox().getCenterX() < 0 &&
+				this.getBoundingBox().getCenterY() > (int)Game.windowSize.height ||
+				this.getBoundingBox().getCenterY() < 0){
 			game.removeQueue(this);
 			numOfRockets--;
 			return;
