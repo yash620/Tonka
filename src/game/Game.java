@@ -320,7 +320,7 @@ public class Game implements Drawable {
 			Object[] basic = 		{WeaponList.BasicTurret, .2};
 			Object[] auto = 		{WeaponList.AutoTurret, .15};
 			Object[] grenade = 		{WeaponList.GrenadeLauncher, .15};
-			Object[] richard = 		{WeaponList.RichardWeapon, 0};
+			Object[] richard = 		{WeaponList.RichardWeapon, 0.0};
 			
 			randWeap.add(shotgun);
 			randWeap.add(machinegun);
