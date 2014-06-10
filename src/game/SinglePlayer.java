@@ -16,36 +16,30 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class SinglePlayer {
+import util.Startable;
+
+public class SinglePlayer implements Startable {
 	public static void main(String[] args) {
 		new SinglePlayer();
 	}
 
 	private JFrame frame;
 	private Timer ti;
-	public static Dimension windowSize;
 	private Game game;
+	private Settings settings;
 	
 	int frameMS;
+	
+	private double frequency;
 
 	public static final int TIMESTEP = 17;
 
 	public SinglePlayer() {
-		game = new Game(1);
 		frame = new JFrame();
-		windowSize = new Dimension(1280, 720);
-		Listener li = new Listener();
-		frame.addKeyListener(li);
-		JPanel mainDraw = new MainDraw();
-		mainDraw.setPreferredSize(windowSize);
-		frame.add(mainDraw);
-		frame.pack();
-		mainDraw.addMouseListener(li);
-		mainDraw.addMouseMotionListener(li);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ti = new Timer(TIMESTEP, li);
-		ti.start();
+		settings = new Settings(this);
+		frame.add(settings);
+		frame.pack();
 	}
 	@SuppressWarnings("serial")
 	public class MainDraw extends JPanel {
@@ -95,7 +89,7 @@ public class SinglePlayer {
 				}
 			}
 			if (arg0.getKeyCode() == KeyEvent.VK_R){
-				game = new Game(1);
+				game = new Game(frequency);
 			}
 		}
 
@@ -122,7 +116,7 @@ public class SinglePlayer {
 			if (game.isFinished() == false){
 			game.update(down, right, clickpoint, shoot);
 			} else {
-				game = new Game(1);
+				game = new Game(frequency);
 			}
 			frame.repaint();
 
@@ -170,6 +164,28 @@ public class SinglePlayer {
 			cp = arg0.getPoint();
 		}
 
+	}
+
+	@Override
+	public void startGame() {
+		System.out.println("Start");
+		frame.remove(settings);
+		frequency = settings.getFrequency();
+		game = new Game(frequency);
+		Listener li = new Listener();
+		frame.addKeyListener(li);
+		JPanel mainDraw = new MainDraw();
+		mainDraw.setPreferredSize(Game.windowSize);
+		mainDraw.requestFocus();
+		frame.requestFocus();
+		frame.add(mainDraw);
+		frame.pack();
+		mainDraw.addMouseListener(li);
+		mainDraw.addMouseMotionListener(li);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ti = new Timer(TIMESTEP, li);
+		ti.start();
 	}
 
 }

@@ -13,19 +13,33 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.Timer;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentListener;
 
 import util.Drawable;
 import util.KeyInput;
+import util.Startable;
+import weapon.Weapon.WeaponList;
 
-public class Server implements ActionListener, Runnable {
+public class Server implements ActionListener, Runnable, Startable {
 	
 	public static void main(String[] args) {
 		new Server().startThread();
@@ -43,22 +57,14 @@ public class Server implements ActionListener, Runnable {
 	
 	private int time;
 	
+	private double frequency;	//Frequency you get a double weapon
+	
 	private JFrame frame;
 		
-	public Server(){
+	public Server() {
 		frame = new JFrame();
-		JButton button = new JButton();
-		button.setText("PLAY");
-		frame.add(button);
-		button.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startGame();
-			}
-			
-		});
-		button.setPreferredSize(new Dimension(50,50));
+		frame.add(new Settings((Startable) this));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 		allconnections = new ArrayList<Connection>();
@@ -71,9 +77,10 @@ public class Server implements ActionListener, Runnable {
 		}
 	}
 	
+	@Override
 	public void startGame(){
 		System.out.println("Start");
-		game = new Game(allconnections.size());
+		game = new Game(allconnections.size(), .03);
 		ti.start();
 	}
 	public void startThread(){

@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -22,6 +23,8 @@ import weapon.*;
 import weapon.Weapon.WeaponList;
 
 public class Game implements Drawable {
+	public static Dimension windowSize = new Dimension(1280, 720);
+	
 	private HashSet<Collidable> collidables;
 	private HashSet<Drawable> drawables;
 	private HashSet<Updatable> updatables;
@@ -39,7 +42,9 @@ public class Game implements Drawable {
 	private HashSet<Object> removeQue;
 	private HashSet<Object> addQue;
 	
-	public Game(int playerNum){
+	private static ArrayList<Object[]> randWeap;
+	
+	public Game(int playerNum, double frequency){
 		collidables = new HashSet<Collidable>();
 		drawables = new HashSet<Drawable>();
 		updatables = new HashSet<Updatable>();
@@ -57,25 +62,21 @@ public class Game implements Drawable {
 		
 		for (int i = 0;i<playerNum;i++){
 			Tank t = new Tank(100,100 + 50*i, i + 1, this);
-			double r = Math.random();
-//			if(r<.3) {
-//				t.addWeapon(new Machinegun(t, 0, 10));
-//			} else if(r<.6) {
-//				t.addWeapon(new GrenadeLauncher(t, 0, 10));
-//			} else if(r<.9) {
-//				t.addWeapon(new Shotgun(t, 0, 10));
-//			} else if(r<1) {
-//				t.addWeapon(new BasicTurret(t, 0, 10));
+			this.addRandomWeapons(t, frequency);
+//			addRandomWeapon(t, 0, t.getBoundingBox().height/2);
+//			int asdf1 = 0;
+//			while(Math.random()<.03) {
+//				addRandomWeapon(t, 0, t.getBoundingBox().height/2-(++asdf1)*8);
 //			}
-			t.addWeapon(new AutoTurret(t, 0, 0));
 			addObject(t);
 			for (int j = 0;j<6;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);
-				addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2);
-				int asdf2 = 0;
-				while(Math.random()<.03) {
-					addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2-(++asdf2)*8);
-				}
+				this.addRandomWeapons(enemy, frequency);
+//				addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2);
+//				int asdf2 = 0;
+//				while(Math.random()<.03) {
+//					addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2-(++asdf2)*8);
+//				}
 				enemy.addAI(new AI(enemy, this));
 				boolean colliding = false;
 				for (Collidable c : collidables){
@@ -109,25 +110,48 @@ public class Game implements Drawable {
 //			}
 //		}
 	}
-	public void addRandomWeapon(Tank t, int x, int y) {
-		HashMap<Double,WeaponList> randomWeapon = new HashMap<Double, WeaponList>();
-		randomWeapon.put(.25, WeaponList.Machinegun);
-		randomWeapon.put(.15, WeaponList.GrenadeLauncher);
-		randomWeapon.put(.15, WeaponList.Shotgun);
-		randomWeapon.put(.15, WeaponList.AutoTurret);
-		randomWeapon.put(.2, WeaponList.BasicTurret);
+	public Game(double freqeuncy) {
+		this(1,freqeuncy);
+	}
+	private void addRandomWeapons(Tank t, double probability) {
+		ArrayList<Object[]> weaps = Game.getRandWeaps();
+		//Normalizez the weapon values
+		double sum = 0.0;
+		for (Object[] o : weaps) {
+			sum += (Double)o[1];
+		}
+		if (sum == 0) {
+			for (Object[] o : weaps) {
+				o[1] = new Double(100/weaps.size());
+			}
+		}
+		if (sum != 100) {
+			for (Object[] o : weaps) {
+				o[1] = new Double((Double)o[1]/sum);
+			}
+		}
 		double num = Math.random();
-//		if(r<.25) {
-//			t.addWeapon(new Machinegun(t, x, y));
-//		} else if(r<.40) {
-//			t.addWeapon(new GrenadeLauncher(t, x, y));
-//		} else if(r<.65) {
-//			t.addWeapon(new Shotgun(t, x, y));
-//		} else if(r<.8) {
-//			t.addWeapon(new AutoTurret(t, x, y));
-//		} else if(r<1) {
-//			t.addWeapon(new BasicTurret(t, x, y));
-//		}
+		double prob = 0.0;
+		for (Object[] o : weaps) {
+			prob += (double)o[1];
+			if (prob > num) {
+				t.addWeapon(WeaponList.getWeapon((WeaponList) o[0], t,
+						0, 0));
+				break;
+			}
+		}
+		int pos = 0;
+		while(Math.random() < probability) {
+			num = Math.random();
+			prob = 0.0;
+			for (Object[] o : weaps) {
+				prob += (double)o[1];
+				if (prob > num) {
+					t.addWeapon(WeaponList.getWeapon((WeaponList) o[0], t,
+							0, t.getBoundingBox().height/2-(++pos)*8));
+				}
+			}
+		}
 	}
 	// Test method, draw whatever you want on the panel
 	private Shape test;
@@ -285,5 +309,24 @@ public class Game implements Drawable {
 	
 	public int getNumPlayers() {
 		return playerTanks.size();
+	}
+	public static ArrayList<Object[]> getRandWeaps() {
+		if (randWeap == null) {
+			//Create the random weapon Stuff
+			randWeap = new ArrayList<Object[]>();
+
+			Object[] shotgun = 		{WeaponList.Shotgun, .25};
+			Object[] machinegun = 	{WeaponList.Machinegun, .25};
+			Object[] basic = 		{WeaponList.BasicTurret, .2};
+			Object[] auto = 		{WeaponList.AutoTurret, .15};
+			Object[] grenade = 		{WeaponList.GrenadeLauncher, .15};
+			
+			randWeap.add(shotgun);
+			randWeap.add(machinegun);
+			randWeap.add(basic);
+			randWeap.add(auto);
+			randWeap.add(grenade);
+		}
+		return randWeap;
 	}
 }
