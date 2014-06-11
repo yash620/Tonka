@@ -75,7 +75,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		for (Weapon w : myWeapons){
 			w.draw(g2);
 		}
-		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
+//		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
 	}
 	
 	public void addWeapon(Weapon w){
@@ -246,44 +246,6 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	@Override
 	public Drawable getProxyClass() {
 		return new TankProxy(this.getColor(), this.getShape(),
-				this.xcenter, this.ycenter, this.getHp(), this.getWeapons());
-	}
-}
-
-class TankProxy implements Serializable, Drawable {
-	public final Color color;
-	public final Shape tankShape;
-	public final double xcenter;
-	public final double ycenter;
-	public final double hp;
-	public final ArrayList<Drawable> myWeapons;
-	
-	public TankProxy(Color c, Shape s, double x, double y, double hp, ArrayList<Weapon> weps){
-		this.color = c;
-		this.tankShape = s;
-		this.xcenter = x;
-		this.ycenter = y;
-		this.hp = hp;
-		myWeapons = new ArrayList<Drawable>();
-		for (Weapon w : weps){
-			myWeapons.add(w.getProxyClass());
-		}
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		g2.setColor(color);
-		g2.fill(tankShape);
-		g2.setColor(Color.black);
-		g2.draw(tankShape);
-		g2.setColor(Color.red);
-		g2.fillRect((int)xcenter - 25, (int)ycenter - 30, (int)(((double)this.hp)/100 * 50), 5);
-		g2.setColor(Color.black);
-		g2.drawRect((int)xcenter - 25, (int)ycenter - 30, 50, 5);
-		//g2.drawString("HP" + this.hp, (int)xcenter, (int)ycenter);
-		g2.setColor(color);
-		for (Drawable d : myWeapons){
-			d.draw(g2);
-		}
+				this.xcenter, this.ycenter, this.getHp(), this.getWeapons(), this.getTeam());
 	}
 }

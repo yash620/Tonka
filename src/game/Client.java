@@ -25,6 +25,7 @@ public class Client implements Runnable {
 	private ObjectOutputStream clientOut;
 	private Thread clientThread;		//Thread for reading
 	private HashSet<Drawable> drawables;
+	private int index;
 	
 	public Client(String hostname, int port){
 		this.hostName = hostname;
@@ -55,7 +56,7 @@ public class Client implements Runnable {
 
 	@Override
 	public void run() {
-		while (true){
+		while (true) {
 			this.read();
 		}
 	}
@@ -73,6 +74,8 @@ public class Client implements Runnable {
 	public void read(){
 		try {
 			Object o = clientIn.readObject();
+			int i = clientIn.readInt();
+			index = i;
 			drawables = (HashSet<Drawable>) o;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
@@ -86,5 +89,9 @@ public class Client implements Runnable {
 	
 	public HashSet<Drawable> getGame() {
 		return drawables;
+	}
+	
+	public int getIndex() {
+		return index;
 	}
 }

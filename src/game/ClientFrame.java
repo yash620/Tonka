@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -37,11 +38,15 @@ public class ClientFrame {
 	private Dimension windowSize;
 	private Client client;
 	private HashSet<Drawable> drawables;
+	private TankProxy myTank;
 
 	public static final int TIMESTEP = 17;
 
 	public ClientFrame() {
 		String ip = JOptionPane.showInputDialog("IP?");
+		if (ip == null) {
+			ip = "localhost";
+		}
 		client = new Client(ip, 34556);
 		client.startThread();
 		
@@ -69,14 +74,27 @@ public class ClientFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
+			AffineTransform old = g2.getTransform();
+			if (myTank != null) {
+				g2.translate(-myTank.getX() + Game.windowSize.getWidth()/2,
+						-myTank.getY() + Game.windowSize.getHeight()/2);
+			}
 			if (drawables != null){
 				for (Drawable d : drawables){
 					d.draw(g2);
-					if (d instanceof Tank && ((Tank)d).isAI() == false){
-//						System.out.println(((Tank)d).getCenter());
-					}
 				}
 			}
+			g2.setTransform(old);
+			
+			//Draw the minimap
+			g2.translate(Game.windowSize.getWidth()-256, 0);
+			g2.scale(1.0/5, 1.0/5);
+			if (drawables != null) {
+				for (Drawable d : drawables) {
+					d.draw(g2);
+				}
+			}
+			g2.setTransform(old);
 		}
 	}
 	
@@ -144,6 +162,20 @@ public class ClientFrame {
 		public void actionPerformed(ActionEvent arg0) {
 //			game.update(down, right, clickpoint);
 			drawables = client.getGame();
+			int index = client.getIndex();
+			for (Drawable d : drawables) {
+				if (d instanceof TankProxy) {
+					if (((TankProxy)d).getTeam() == index) {
+//						System.out.println(((TankProxy)d).getTeam());
+						myTank = ((TankProxy)d);
+					}
+				}
+			}
+			if (myTank != null) {
+				int dx = (int) -(-myTank.getX() + Game.windowSize.getWidth()/2);
+				int dy = (int) -(-myTank.getY() + Game.windowSize.getHeight()/2);
+				clickPoint.translate(dx, dy);
+			}
 			client.sendInputs(new KeyInput(down, right, clickPoint, shoot));
 			frame.repaint();
 		}

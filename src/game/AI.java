@@ -103,8 +103,11 @@ public class AI {
 				for (Tank e : enemies) {
 					if (tank.getCenter().distanceSq(e.getCenter()) >
 						tank.getCenter().distanceSq(t.getCenter())) {
-						index = enemies.indexOf(e);
+						index = enemies.indexOf(e)-1;
 					}
+				}
+				if (index < 0) {
+					index = 0;
 				}
 				enemies.add(index, t);
 			}

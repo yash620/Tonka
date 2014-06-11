@@ -71,6 +71,7 @@ public class Game implements Drawable {
 			addObject(t);
 			for (int j = 0;j<6;j++){
 				Tank enemy = new Tank(900 + 100*i, 100*j + 100, 0, this);
+				enemy.setColor(Color.red);
 				this.addRandomWeapons(enemy, frequency);
 //				addRandomWeapon(enemy, 0, enemy.getBoundingBox().height/2);
 //				int asdf2 = 0;
@@ -216,7 +217,7 @@ public class Game implements Drawable {
 	}
 	//MultiPlayer update
 	public void update(KeyInput i, int player){
-		if (player < playerTanks.size()) {
+		if (playerTanks.containsKey(player+1)) {
 			playerTanks.get(player+1).movement(i);
 		}
 	}
@@ -320,16 +321,16 @@ public class Game implements Drawable {
 			Object[] basic = 		{WeaponList.BasicTurret, .2};
 			Object[] auto = 		{WeaponList.AutoTurret, .15};
 			Object[] grenade = 		{WeaponList.GrenadeLauncher, .15};
-			Object[] richard = 		{WeaponList.RichardWeapon, 0.0};
 			Object[] shuriken =     {WeaponList.ShurikenLauncher, 0.0};
+//			Object[] richard = 		{WeaponList.RichardWeapon, 0.0};
 			
 			randWeap.add(shotgun);
 			randWeap.add(machinegun);
 			randWeap.add(basic);
 			randWeap.add(auto);
 			randWeap.add(grenade);
-			randWeap.add(richard);
 			randWeap.add(shuriken);
+//			randWeap.add(richard);
 		}
 		return randWeap;
 	}

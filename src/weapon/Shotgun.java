@@ -43,7 +43,7 @@ public class Shotgun extends Weapon {
 			this.setAmmo(getAmmo()-1);
 			this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
 			if (getAmmo() == 1){
-				this.addTimer(new Timer(150, Action.AMMO));
+				this.addTimer(new Timer(100, Action.AMMO));
 			}
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>();

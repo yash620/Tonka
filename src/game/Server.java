@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -63,10 +65,29 @@ public class Server implements ActionListener, Runnable, Startable {
 		
 	public Server() {
 		frame = new JFrame();
-		frame.add(new Settings((Startable) this));
+		Settings s = new Settings((Startable) this);
+		frame.add(s);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+		s.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_BACK_SPACE) {
+					game = new Game(allconnections.size(), .03);
+				}
+			}
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		allconnections = new ArrayList<Connection>();
 		ti = new Timer(17, this);
 		serverThread = new Thread(this);
@@ -79,7 +100,6 @@ public class Server implements ActionListener, Runnable, Startable {
 	
 	@Override
 	public void startGame(){
-		System.out.println("Start");
 		game = new Game(allconnections.size(), .03);
 		ti.start();
 	}
@@ -202,7 +222,8 @@ class Connection implements Runnable {
 //		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
-			this.writeToFile(sends, "sends.txt");
+			objectOut.writeInt(index+1);
+//			this.writeToFile(sends, "sends.txt");
 			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
