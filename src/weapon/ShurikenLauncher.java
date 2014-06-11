@@ -14,7 +14,7 @@ import util.Timer.Action;
 public class ShurikenLauncher extends Weapon{
 
 	public ShurikenLauncher(Tank t, Point2D center, double atot, double dtot){
-		super(t, 3, center, 5, 17, 2, atot, dtot);
+		super(t, 3, center, 50, 10, 2, atot, dtot);
 		int[] x = { 0,  6, 6, 3,  2, -2, -3, -6, -6};
 		int[] y = {-8, -5, 2, 4, 15, 15,  4,  2, -5};
 		setWeaponShape(new Polygon(x, y, 9));
@@ -68,7 +68,7 @@ public class ShurikenLauncher extends Weapon{
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
 			missiles.add(new Shuriken(this.getCenter(),
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(), 6, this, this.getTank().getGame()));
+					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(), 4, this, this.getTank().getGame()));
 			return missiles;
 		}
 		return null;
