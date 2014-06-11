@@ -55,7 +55,7 @@ public class Game implements Drawable {
 		collisions = new CollisionMap();
 //		thHand = new ThreadHandler();
 		map = new Map(this);
-		map.basicMap();
+		map.destructiblepaintBall();
 		for(Block b: map.showBlocks()){
 			addObject(b);
 		}
