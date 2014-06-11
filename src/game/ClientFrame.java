@@ -78,6 +78,8 @@ public class ClientFrame {
 			if (myTank != null) {
 				g2.translate(-myTank.getX() + Game.windowSize.getWidth()/2,
 						-myTank.getY() + Game.windowSize.getHeight()/2);
+			} else {
+				g2.setTransform(old);
 			}
 			if (drawables != null){
 				for (Drawable d : drawables){
@@ -163,6 +165,7 @@ public class ClientFrame {
 //			game.update(down, right, clickpoint);
 			drawables = client.getGame();
 			int index = client.getIndex();
+			myTank = null;
 			for (Drawable d : drawables) {
 				if (d instanceof TankProxy) {
 					if (((TankProxy)d).getTeam() == index) {
