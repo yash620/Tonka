@@ -85,6 +85,16 @@ public class ClientFrame {
 				}
 			}
 			g2.setTransform(old);
+			
+			//Draw the minimap
+			g2.translate(Game.windowSize.getWidth()-256, 0);
+			g2.scale(1.0/5, 1.0/5);
+			if (drawables != null) {
+				for (Drawable d : drawables) {
+					d.draw(g2);
+				}
+			}
+			g2.setTransform(old);
 		}
 	}
 	
