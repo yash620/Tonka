@@ -1,6 +1,7 @@
 package game;
 
 
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
