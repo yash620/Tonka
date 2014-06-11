@@ -222,7 +222,7 @@ class Connection implements Runnable {
 //		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
-			objectOut.writeInt(index);
+			objectOut.writeInt(index+1);
 //			this.writeToFile(sends, "sends.txt");
 			objectOut.flush();
 		} catch (IOException e) {

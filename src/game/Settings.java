@@ -68,10 +68,10 @@ import weapon.Weapon.WeaponList;
 			frequency.setPaintLabels(true);
 			this.add(frequency);
 			SpringLayout sl = this.createLayout();
-			JButton button = new JButton();
-			button.setText("PLAY");
-			this.add(button);
-			button.addActionListener(new ActionListener(){
+			JButton startButton = new JButton();
+			startButton.setText("New Game");
+			this.add(startButton);
+			startButton.addActionListener(new ActionListener(){
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -79,9 +79,9 @@ import weapon.Weapon.WeaponList;
 				}
 				
 			});
-			button.setPreferredSize(new Dimension(100,30));
-			sl.putConstraint(SpringLayout.SOUTH, button, -10, SpringLayout.SOUTH, this);
-			sl.putConstraint(SpringLayout.WEST, button, 150, SpringLayout.WEST, this);
+			startButton.setPreferredSize(new Dimension(100,30));
+			sl.putConstraint(SpringLayout.SOUTH, startButton, -10, SpringLayout.SOUTH, this);
+			sl.putConstraint(SpringLayout.WEST, startButton, 150, SpringLayout.WEST, this);
 			
 			this.setLayout(sl);
 			this.setPreferredSize(new Dimension(400,50 + sliders.size() * 50));

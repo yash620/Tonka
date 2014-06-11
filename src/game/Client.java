@@ -90,4 +90,8 @@ public class Client implements Runnable {
 	public HashSet<Drawable> getGame() {
 		return drawables;
 	}
+	
+	public int getIndex() {
+		return index;
+	}
 }
