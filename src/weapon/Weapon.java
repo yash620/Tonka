@@ -39,7 +39,11 @@ public abstract class Weapon implements Drawable, Updatable, Sendable {
 	private final int MAXAMMO;
 	
 	public static enum WeaponList {AutoTurret, BasicTurret, GrenadeLauncher,
+<<<<<<< HEAD
 		Machinegun, RichardWeapon, Shotgun, Saber;
+=======
+		Machinegun, RichardWeapon, Shotgun, ShurikenLauncher;
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 		public static Weapon getWeapon(WeaponList w, Tank t, double atot, double dtot) {
 			if (w == AutoTurret) {
 				return new AutoTurret(t, atot, dtot);
@@ -59,8 +63,13 @@ public abstract class Weapon implements Drawable, Updatable, Sendable {
 			if (w == Shotgun) {
 				return new Shotgun(t, atot, dtot);
 			}
+<<<<<<< HEAD
 			if(w == Saber){
 				return new Saber(t, atot, dtot);
+=======
+			if (w == ShurikenLauncher) {
+				return new ShurikenLauncher(t, atot, dtot);
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 			}
 			return null;
 		}

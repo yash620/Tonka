@@ -11,6 +11,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+<<<<<<< HEAD
+=======
+import java.awt.geom.AffineTransform;
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -37,6 +41,10 @@ public class ClientFrame {
 	private Dimension windowSize;
 	private Client client;
 	private HashSet<Drawable> drawables;
+<<<<<<< HEAD
+=======
+	private TankProxy myTank;
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 
 	public static final int TIMESTEP = 17;
 
@@ -72,6 +80,7 @@ public class ClientFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
+<<<<<<< HEAD
 			if (drawables != null){
 				for (Drawable d : drawables){
 					d.draw(g2);
@@ -80,6 +89,31 @@ public class ClientFrame {
 					}
 				}
 			}
+=======
+			AffineTransform old = g2.getTransform();
+			if (myTank != null) {
+				g2.translate(-myTank.getX() + Game.windowSize.getWidth()/2,
+						-myTank.getY() + Game.windowSize.getHeight()/2);
+			} else {
+				g2.setTransform(old);
+			}
+			if (drawables != null){
+				for (Drawable d : drawables){
+					d.draw(g2);
+				}
+			}
+			g2.setTransform(old);
+			
+			//Draw the minimap
+			g2.translate(Game.windowSize.getWidth()-256, 0);
+			g2.scale(1.0/5, 1.0/5);
+			if (drawables != null) {
+				for (Drawable d : drawables) {
+					d.draw(g2);
+				}
+			}
+			g2.setTransform(old);
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 		}
 	}
 	
@@ -147,6 +181,24 @@ public class ClientFrame {
 		public void actionPerformed(ActionEvent arg0) {
 //			game.update(down, right, clickpoint);
 			drawables = client.getGame();
+<<<<<<< HEAD
+=======
+			int index = client.getIndex();
+			myTank = null;
+			for (Drawable d : drawables) {
+				if (d instanceof TankProxy) {
+					if (((TankProxy)d).getTeam() == index) {
+//						System.out.println(((TankProxy)d).getTeam());
+						myTank = ((TankProxy)d);
+					}
+				}
+			}
+			if (myTank != null) {
+				int dx = (int) -(-myTank.getX() + Game.windowSize.getWidth()/2);
+				int dy = (int) -(-myTank.getY() + Game.windowSize.getHeight()/2);
+				clickPoint.translate(dx, dy);
+			}
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 			client.sendInputs(new KeyInput(down, right, clickPoint, shoot));
 			frame.repaint();
 		}

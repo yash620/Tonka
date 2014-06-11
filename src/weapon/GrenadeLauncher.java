@@ -48,7 +48,11 @@ public class GrenadeLauncher extends Weapon {
 				this.addTimer(new Timer(75, Action.AMMO));
 			}
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
+<<<<<<< HEAD
 			missiles.add(new Grenade(this.getCenter(), distance, 30, this.getAngle(),
+=======
+			missiles.add(new Grenade(this.getCenter(), distance, 20, this.getAngle(),
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 					this, this.getTank().getGame()));
 			this.addTimer(new Timer((int) this.getFirerate(), Action.FIRE));
 			return missiles;

@@ -55,7 +55,8 @@ public class Game implements Drawable {
 		collisions = new CollisionMap();
 //		thHand = new ThreadHandler();
 		map = new Map(this);
-		map.basicMap();
+
+		map.destructiblepaintBall();
 		for(Block b: map.showBlocks()){
 			addObject(b);
 		}
@@ -164,6 +165,7 @@ public class Game implements Drawable {
 		g2.setColor(Color.black);
 		for (Drawable d : drawables){
 			d.draw(g2);
+<<<<<<< HEAD
 //			if(d instanceof Block){
 //				Block b = (Block)d;
 //				g2.setColor(Color.red);
@@ -172,6 +174,8 @@ public class Game implements Drawable {
 //							allTanks.get(0).getCenter())), (int)b.getCenter().getX(),(int)b.getCenter().getY());
 //				}
 //			}
+=======
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 		}
 		if (test != null){
 			g2.draw(test);
@@ -318,10 +322,17 @@ public class Game implements Drawable {
 
 			Object[] shotgun = 		{WeaponList.Shotgun, .25};
 			Object[] machinegun = 	{WeaponList.Machinegun, .25};
+<<<<<<< HEAD
 			Object[] basic = 		{WeaponList.BasicTurret, .1};
 			Object[] auto = 		{WeaponList.AutoTurret, .15};
 			Object[] grenade = 		{WeaponList.GrenadeLauncher, .15};
 			Object[] saber = {WeaponList.Saber, .1};
+=======
+			Object[] basic = 		{WeaponList.BasicTurret, .2};
+			Object[] auto = 		{WeaponList.AutoTurret, .15};
+			Object[] grenade = 		{WeaponList.GrenadeLauncher, .15};
+			Object[] shuriken =     {WeaponList.ShurikenLauncher, 0.0};
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 //			Object[] richard = 		{WeaponList.RichardWeapon, 0.0};
 			
 			randWeap.add(shotgun);
@@ -329,7 +340,11 @@ public class Game implements Drawable {
 			randWeap.add(basic);
 			randWeap.add(auto);
 			randWeap.add(grenade);
+<<<<<<< HEAD
 			randWeap.add(saber);
+=======
+			randWeap.add(shuriken);
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 //			randWeap.add(richard);
 		}
 		return randWeap;

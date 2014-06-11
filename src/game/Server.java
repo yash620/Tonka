@@ -100,7 +100,10 @@ public class Server implements ActionListener, Runnable, Startable {
 	
 	@Override
 	public void startGame(){
+<<<<<<< HEAD
 		System.out.println("Start");
+=======
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 		game = new Game(allconnections.size(), .03);
 		ti.start();
 	}
@@ -223,7 +226,12 @@ class Connection implements Runnable {
 //		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
+<<<<<<< HEAD
 			this.writeToFile(sends, "sends.txt");
+=======
+			objectOut.writeInt(index+1);
+//			this.writeToFile(sends, "sends.txt");
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

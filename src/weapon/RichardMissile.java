@@ -18,12 +18,10 @@ public class RichardMissile extends BasicMissile{
 	}
 	
 	public void update(){
-		if ((int)this.getBoundingBox().getCenterX() > (int)Game.windowSize.width ||
-				(int)this.getBoundingBox().getCenterX() < 0 &&
-				this.getBoundingBox().getCenterY() > (int)Game.windowSize.height ||
-				this.getBoundingBox().getCenterY() < 0){
+		if (lifespan>0){
+			lifespan--;
+		} else {
 			game.removeQueue(this);
-			numOfRockets--;
 			return;
 		}
 		damage = damage * 1.01;

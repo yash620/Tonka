@@ -4,6 +4,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+<<<<<<< HEAD
+=======
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,6 +36,10 @@ import weapon.Weapon.WeaponList;
 			this.frame = fr;
 			sliders = new ArrayList<JSlider>();
 			labels = new ArrayList<JLabel>();
+<<<<<<< HEAD
+=======
+			//Creates the weapon sliders
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 			ArrayList<Object[]> randWeaps = Game.getRandWeaps();
 			for (Object[] o : randWeaps) {
 				JSlider slider = new JSlider(0,100, (int)(((Double)o[1]).doubleValue()*100));
@@ -37,15 +48,30 @@ import weapon.Weapon.WeaponList;
 				slider.addChangeListener(this);
 				this.add(slider);
 				slider.setPaintLabels(true);
+<<<<<<< HEAD
 				slider.setMajorTickSpacing(20);
 				slider.setPaintTicks(true);
 				labels.add(new JLabel(o[0].toString() + ": " + o[1].toString()));
 			}
+=======
+//				slider.setMajorTickSpacing(20);
+				slider.setPaintTicks(true);
+				Dictionary<Integer, JLabel> lbltbl = new Hashtable<Integer, JLabel>();
+				for (int i = 0;i<=100;i+=20) {
+					lbltbl.put(i, new JLabel(Double.toString(i/100.0)));
+				}
+				slider.setMinorTickSpacing(5);
+				slider.setLabelTable(lbltbl);
+				labels.add(new JLabel(o[0].toString() + ": " + o[1].toString()));
+			}
+			//Creates the frequency slider
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 			JSlider frequency = new JSlider(0,100,3);
 			frequency.setName("Frequency");
 			sliders.add(frequency);
 			labels.add(new JLabel("Frequency" + ": " + .03));
 			frequency.addChangeListener(this);
+<<<<<<< HEAD
 			frequency.setMajorTickSpacing(20);
 			frequency.setPaintTicks(true);
 			this.add(frequency);
@@ -54,6 +80,22 @@ import weapon.Weapon.WeaponList;
 			button.setText("PLAY");
 			this.add(button);
 			button.addActionListener(new ActionListener(){
+=======
+			frequency.setPaintTicks(true);
+			Dictionary<Integer, JLabel> lbltbl = new Hashtable<Integer, JLabel>();
+			for (int i = 0;i<=100;i+=20) {
+				lbltbl.put(i, new JLabel(Double.toString(i/100.0)));
+			}
+			frequency.setMinorTickSpacing(5);
+			frequency.setLabelTable(lbltbl);
+			frequency.setPaintLabels(true);
+			this.add(frequency);
+			SpringLayout sl = this.createLayout();
+			JButton startButton = new JButton();
+			startButton.setText("New Game");
+			this.add(startButton);
+			startButton.addActionListener(new ActionListener(){
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -61,9 +103,15 @@ import weapon.Weapon.WeaponList;
 				}
 				
 			});
+<<<<<<< HEAD
 			button.setPreferredSize(new Dimension(100,30));
 			sl.putConstraint(SpringLayout.SOUTH, button, -10, SpringLayout.SOUTH, this);
 			sl.putConstraint(SpringLayout.WEST, button, 150, SpringLayout.WEST, this);
+=======
+			startButton.setPreferredSize(new Dimension(100,30));
+			sl.putConstraint(SpringLayout.SOUTH, startButton, -10, SpringLayout.SOUTH, this);
+			sl.putConstraint(SpringLayout.WEST, startButton, 150, SpringLayout.WEST, this);
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 			
 			this.setLayout(sl);
 			this.setPreferredSize(new Dimension(400,50 + sliders.size() * 50));

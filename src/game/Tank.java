@@ -75,7 +75,11 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		for (Weapon w : myWeapons){
 			w.draw(g2);
 		}
+<<<<<<< HEAD
 		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
+=======
+//		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 	}
 	
 	public void addWeapon(Weapon w){
@@ -246,6 +250,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 	@Override
 	public Drawable getProxyClass() {
 		return new TankProxy(this.getColor(), this.getShape(),
+<<<<<<< HEAD
 				this.xcenter, this.ycenter, this.getHp(), this.getWeapons());
 	}
 }
@@ -285,5 +290,8 @@ class TankProxy implements Serializable, Drawable {
 		for (Drawable d : myWeapons){
 			d.draw(g2);
 		}
+=======
+				this.xcenter, this.ycenter, this.getHp(), this.getWeapons(), this.getTeam());
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 	}
 }

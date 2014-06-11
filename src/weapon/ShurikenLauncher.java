@@ -1,27 +1,20 @@
 package weapon;
 
-import game.AngleMath;
 import game.Tank;
 import game.Transform;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Random;
 
 import util.Timer;
 import util.Timer.Action;
 
-public class BasicTurret extends Weapon {
-	
-	public BasicTurret(Tank t, Point2D center, double atot, double dtot){
-		super(t, 3, center, 5, 17, 2, atot, dtot);
+public class ShurikenLauncher extends Weapon{
+
+	public ShurikenLauncher(Tank t, Point2D center, double atot, double dtot){
+		super(t, 3, center, 50, 10, 2, atot, dtot);
 		int[] x = { 0,  6, 6, 3,  2, -2, -3, -6, -6};
 		int[] y = {-8, -5, 2, 4, 15, 15,  4,  2, -5};
 		setWeaponShape(new Polygon(x, y, 9));
@@ -33,15 +26,15 @@ public class BasicTurret extends Weapon {
 				xcenter, ycenter));
 	}
 	
-	public BasicTurret(Tank t, double atot, double dtot){
+	public ShurikenLauncher(Tank t, double atot, double dtot){
 		this(t, t.getCenter(), atot, dtot);
 	}
 	
-	public BasicTurret(Point2D t, double atot, double dtot){
+	public ShurikenLauncher(Point2D t, double atot, double dtot){
 		this(null, t, atot, dtot);
 	}
 	
-	public BasicTurret(double x, double y){
+	public ShurikenLauncher(double x, double y){
 		this(null, new Point2D.Double(x, y), 0, 0);
 	}
 	
@@ -74,12 +67,8 @@ public class BasicTurret extends Weapon {
 			}
 			Random die = new Random();
 			ArrayList<Projectile> missiles = new ArrayList<Projectile>(1);
-			missiles.add(new BasicMissile(this.getCenter(),
-<<<<<<< HEAD
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(), 6, this, this.getTank().getGame()));
-=======
-					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(), 10, this, this.getTank().getGame()));
->>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
+			missiles.add(new Shuriken(this.getCenter(),
+					(die.nextInt(2)*2-1)*die.nextDouble()*this.getSpread() + getAngle(), 4, this, this.getTank().getGame()));
 			return missiles;
 		}
 		return null;

@@ -36,6 +36,10 @@ public class SinglePlayer implements Startable {
 
 	public SinglePlayer() {
 		frame = new JFrame();
+<<<<<<< HEAD
+=======
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 		frame.setVisible(true);
 		settings = new Settings(this);
 		frame.add(settings);
@@ -48,8 +52,13 @@ public class SinglePlayer implements Startable {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			game.draw(g2);
+<<<<<<< HEAD
 			g2.drawString(cp.toString(), 100, 100);
 			g2.drawString(Integer.toString(frameMS) + "   " + Integer.toString(game.getSize()), 1100,100);
+=======
+//			g2.drawString(cp.toString(), 100, 100);
+//			g2.drawString(Integer.toString(frameMS) + "   " + Integer.toString(game.getSize()), 1100,100);
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 //			g2.drawString(Double.toString(AI.angleToPoint(game.getTanks().get(0).getCenter(),
 //					cp)), 100,100);
 		}
@@ -183,7 +192,10 @@ public class SinglePlayer implements Startable {
 		mainDraw.addMouseListener(li);
 		mainDraw.addMouseMotionListener(li);
 		frame.setVisible(true);
+<<<<<<< HEAD
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+=======
+>>>>>>> 8ee743646ad6af89fbfc6e4a4267dac2f69c97f9
 		ti = new Timer(TIMESTEP, li);
 		ti.start();
 	}
