@@ -164,14 +164,6 @@ public class Game implements Drawable {
 		g2.setColor(Color.black);
 		for (Drawable d : drawables){
 			d.draw(g2);
-//			if(d instanceof Block){
-//				Block b = (Block)d;
-//				g2.setColor(Color.red);
-//				if (allTanks.size() == 1){
-//					g2.drawString(Double.toString(AI.angleToRect(b.getBoundingBox(),
-//							allTanks.get(0).getCenter())), (int)b.getCenter().getX(),(int)b.getCenter().getY());
-//				}
-//			}
 		}
 		if (test != null){
 			g2.draw(test);
