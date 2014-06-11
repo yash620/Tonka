@@ -75,7 +75,7 @@ public class Tank implements Drawable, Collidable, Updatable, Sendable {
 		for (Weapon w : myWeapons){
 			w.draw(g2);
 		}
-		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
+//		g2.drawString(Double.toString(this.getTheta()), (int)this.getCenter().getX() + 20, (int)this.getCenter().getY());
 	}
 	
 	public void addWeapon(Weapon w){

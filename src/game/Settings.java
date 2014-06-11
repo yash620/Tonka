@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -29,6 +33,7 @@ import weapon.Weapon.WeaponList;
 			this.frame = fr;
 			sliders = new ArrayList<JSlider>();
 			labels = new ArrayList<JLabel>();
+			//Creates the weapon sliders
 			ArrayList<Object[]> randWeaps = Game.getRandWeaps();
 			for (Object[] o : randWeaps) {
 				JSlider slider = new JSlider(0,100, (int)(((Double)o[1]).doubleValue()*100));
@@ -37,17 +42,30 @@ import weapon.Weapon.WeaponList;
 				slider.addChangeListener(this);
 				this.add(slider);
 				slider.setPaintLabels(true);
-				slider.setMajorTickSpacing(20);
+//				slider.setMajorTickSpacing(20);
 				slider.setPaintTicks(true);
+				Dictionary<Integer, JLabel> lbltbl = new Hashtable<Integer, JLabel>();
+				for (int i = 0;i<=100;i+=20) {
+					lbltbl.put(i, new JLabel(Double.toString(i/100.0)));
+				}
+				slider.setMinorTickSpacing(5);
+				slider.setLabelTable(lbltbl);
 				labels.add(new JLabel(o[0].toString() + ": " + o[1].toString()));
 			}
+			//Creates the frequency slider
 			JSlider frequency = new JSlider(0,100,3);
 			frequency.setName("Frequency");
 			sliders.add(frequency);
 			labels.add(new JLabel("Frequency" + ": " + .03));
 			frequency.addChangeListener(this);
-			frequency.setMajorTickSpacing(20);
 			frequency.setPaintTicks(true);
+			Dictionary<Integer, JLabel> lbltbl = new Hashtable<Integer, JLabel>();
+			for (int i = 0;i<=100;i+=20) {
+				lbltbl.put(i, new JLabel(Double.toString(i/100.0)));
+			}
+			frequency.setMinorTickSpacing(5);
+			frequency.setLabelTable(lbltbl);
+			frequency.setPaintLabels(true);
 			this.add(frequency);
 			SpringLayout sl = this.createLayout();
 			JButton button = new JButton();

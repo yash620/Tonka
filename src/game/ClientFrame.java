@@ -75,9 +75,6 @@ public class ClientFrame {
 			if (drawables != null){
 				for (Drawable d : drawables){
 					d.draw(g2);
-					if (d instanceof Tank && ((Tank)d).isAI() == false){
-//						System.out.println(((Tank)d).getCenter());
-					}
 				}
 			}
 		}

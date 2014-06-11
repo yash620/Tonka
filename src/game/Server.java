@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
@@ -98,7 +100,6 @@ public class Server implements ActionListener, Runnable, Startable {
 	
 	@Override
 	public void startGame(){
-		System.out.println("Start");
 		game = new Game(allconnections.size(), .03);
 		ti.start();
 	}
@@ -221,7 +222,8 @@ class Connection implements Runnable {
 //		long start = System.currentTimeMillis();
 		try {
 			objectOut.writeObject(sends);
-			this.writeToFile(sends, "sends.txt");
+			objectOut.writeInt(index);
+//			this.writeToFile(sends, "sends.txt");
 			objectOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

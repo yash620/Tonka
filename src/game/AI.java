@@ -86,7 +86,7 @@ public class AI {
 		if (hasAmmo == false) {
 			fire = false;
 		}
-		return new KeyInput(0, right, target, false);
+		return new KeyInput(down, right, target, fire);
 	}
 	
 	public ArrayList<Block> getBlocks(){
