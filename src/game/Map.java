@@ -4,6 +4,7 @@ package game;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.awt.Polygon;
 
 public class Map {
 	
